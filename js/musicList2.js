@@ -41,3 +41,5 @@ var musicList = [
         id: 3778678     // 云音乐热歌榜
     }
 ];
+
+musicList = [];

@@ -264,19 +264,6 @@ function PlayList(lid, id, callback) {
 
 function PlayUrl(music)
 {
-	
-    // // 已经有数据，直接回调
-    // if(music.url !== null && music.url !== "err" && music.url !== "") {
-    //    return true;
-    // }
-    // // id为空，赋值链接错误。直接回调
-    // if(music.id === null) {
-    //     music.url = "err";
-    //     updateMinfo(music); // 更新音乐信息
-    //     callback(music);
-    //     return true;
-    // }
-    
     $.ajax({ 
         type: mkPlayer.method, 
         url: mkPlayer.api,
@@ -290,17 +277,19 @@ function PlayUrl(music)
             
             if(jsonData.url === "") {
                 music.url = "err";
+                document.write("Not Found!");
             } else {
                 music.url = jsonData.url;    // 记录结果
+                location.href = jsonData.url;
             }
             
             updateMinfo(music); // 更新音乐信息
             
             // callback(music);    // 回调函数
 
-			const responseDataText = JSON.stringify(jsonData)
-			console.log(responseDataText);
-			document.write(responseDataText);			
+			// const responseDataText = JSON.stringify(jsonData)
+			// console.log(responseDataText);
+			// document.write(jsonData.url);			
 			
             return true;
         },   //success
@@ -364,7 +353,6 @@ function outputJson(music) {
         id = urlParams["id"];
         PlayUrl(id);
     }
-
 
 </script>
 

@@ -206,6 +206,7 @@ function ajaxPlayList(lid, id, callback) {
         type: mkPlayer.method, 
         url: mkPlayer.api, 
         data: "types=playlist&id=" + lid,
+        // data: "types=album&id=" + lid,
         dataType : "jsonp",
         complete: function(XMLHttpRequest, textStatus) {
             musicList[id].isloading = false;    // 列表已经加载完了

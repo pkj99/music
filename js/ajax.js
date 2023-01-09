@@ -190,8 +190,8 @@ function ajaxPic(music, callback)
 // 参数：歌单网易云 id, 歌单存储 id，回调函数
 function ajaxPlayList(lid, id, callback) {
 
-    console.log(lid);
-    console.log(id);
+    // console.log(lid);
+    // console.log(id);
     
     if(!lid) return false;
     
@@ -385,3 +385,282 @@ function ajaxUserList(uid)
     });//ajax
     return true;
 }
+
+
+
+function ajaxAlbumList(lid, id, callback) {
+
+    if(!lid) return false;
+    
+    // 已经在加载了，跳过
+    // if(musicList[id].isloading === true) {
+    //     return true;
+    // }
+    
+    // musicList[id].isloading = true; // 更新状态：列表加载中
+    
+    $.ajax({
+        type: "GET", 
+        url: "https://cors-anywhere.herokuapp.com/https://music.163.com/album", 
+        data: "id=" + lid,
+        // data: "types=album&id=" + lid,
+        dataType : "text",
+        complete: function(XMLHttpRequest, textStatus) {
+            musicList[id].isloading = false;    // 列表已经加载完了
+        },  // complete
+        success: function(Data){
+            // console.log(Data);
+            const parser = new DOMParser();
+            const d = parser.parseFromString(Data, "text/html");
+            var list = d.getElementById('song-list-pre-data');
+            var x = JSON.parse(list.textContent);
+            var album = x[0]["album"]["name"];
+            var picUrl = x[0]["album"]["picUrl"];
+
+            // 存储歌单信息
+            var tempList = {
+                id: lid,    // 列表的网易云 id
+                name: album,   // 列表名字
+                cover: picUrl + '?param=200y200',   // 列表封面
+                creatorName: 'James',   // 列表创建者名字
+                creatorAvatar: 'PKJ',   // 列表创建者头像
+                item: []
+            };
+
+            // if(jsonData.playlist.coverImgUrl !== '') {
+            //     tempList.cover = jsonData.playlist.coverImgUrl + "?param=200y200";
+            // } else {
+            //     tempList.cover = musicList[id].cover;
+            // }
+            
+            // if(typeof jsonData.playlist.tracks !== undefined || jsonData.playlist.tracks.length !== 0) {
+            //     // 存储歌单中的音乐信息
+            //     for (var i = 0; i < jsonData.playlist.tracks.length; i++) {
+            //         tempList.item[i] =  {
+            //             id: jsonData.playlist.tracks[i].id,  // 音乐ID
+            //             name: jsonData.playlist.tracks[i].name,  // 音乐名字
+            //             artist: jsonData.playlist.tracks[i].ar[0].name, // 艺术家名字
+            //             album: jsonData.playlist.tracks[i].al.name,    // 专辑名字
+            //             source: "netease",     // 音乐来源
+            //             url_id: jsonData.playlist.tracks[i].id,  // 链接ID
+            //             pic_id: null,  // 封面ID
+            //             lyric_id: jsonData.playlist.tracks[i].id,  // 歌词ID
+            //             pic: jsonData.playlist.tracks[i].al.picUrl + "?param=300y300",    // 专辑图片
+            //             url: null   // mp3链接
+            //         };
+            //     }
+            // }
+
+            for (let i=0; i<x.length;i++){
+                var artist = '';
+                for (let j=0; j < x[i]["artists"].length; j++) { 
+                    artist += x[i]["artists"][j]["name"]
+                    if (j<x[i]["artists"].length-1 ) { artist += '/' }
+                }
+                tempList.item[i] =  {
+                    id: x[i]["id"],  // 音乐ID
+                    name: x[i]["name"],  // 音乐名字
+                    artist: artist, // 艺术家名字
+                    album: x[i]["album"]["name"],    // 专辑名字
+                    source: "netease",     // 音乐来源
+                    url_id: x[i]["id"],  // 链接ID
+                    pic_id: null,  // 封面ID
+                    lyric_id: x[i]["id"],  // 歌词ID
+                    pic: picUrl + "?param=300y300",    // 专辑图片
+                    url: null   // mp3链接
+                };
+
+                // var id = x[i]["id"];
+                // var title = x[i]["name"];
+                // var artist = '';
+                // for (let j=0; j < x[i]["artists"].length; j++) { 
+                //     artist += x[i]["artists"][j]["name"]
+                //     if (j<x[i]["artists"].length-1 ) { artist += '/' }
+                // }
+                // console.log(album,picUrl,id,title,artist);
+            }
+
+            
+
+            // 歌单用户 id 不能丢
+            if(musicList[id].creatorID) {
+                tempList.creatorID = musicList[id].creatorID;
+                if(musicList[id].creatorID === rem.uid) {   // 是当前登录用户的歌单，要保存到缓存中
+                    var tmpUlist = playerReaddata('ulist');    // 读取本地记录的用户歌单
+                    if(tmpUlist) {  // 读取到了
+                        for(i=0; i<tmpUlist.length; i++) {  // 匹配歌单
+                            if(tmpUlist[i].id == lid) {
+                                tmpUlist[i] = tempList; // 保存歌单中的歌曲
+                                playerSavedata('ulist', tmpUlist);  // 保存
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // 存储列表信息
+            musicList[id] = tempList;
+            // console.log(musicList);
+
+            // 首页显示默认列表
+
+            if(id == mkPlayer.defaultlist) loadList(id);
+            if(callback) callback(id);    // 调用回调函数
+            
+            // 改变前端列表
+            $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面
+            $(".sheet-item[data-no='" + id + "'] .sheet-name").html(tempList.name);     // 专辑名字
+            
+            // 调试信息输出
+            if(mkPlayer.debug) {
+                console.debug("歌单 [" +tempList.name+ "] 中的音乐获取成功");
+            }
+        },   //success
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            layer.msg('歌单读取失败 - ' + XMLHttpRequest.status);
+            console.error(XMLHttpRequest + textStatus + errorThrown);
+            $(".sheet-item[data-no='" + id + "'] .sheet-name").html('<span style="color: #EA8383">读取失败</span>');     // 专辑名字
+        }   // error  
+    });//ajax
+}
+
+
+function ajaxArtistList(lid, id, callback) {
+
+    if(!lid) return false;
+    
+    // 已经在加载了，跳过
+    // if(musicList[id].isloading === true) {
+    //     return true;
+    // }
+    
+    // musicList[id].isloading = true; // 更新状态：列表加载中
+    
+    $.ajax({
+        type: "GET", 
+        url: "https://cors-anywhere.herokuapp.com/https://music.163.com/artist", 
+        data: "id=" + lid,
+        // data: "types=album&id=" + lid,
+        dataType : "text",
+        complete: function(XMLHttpRequest, textStatus) {
+            musicList[id].isloading = false;    // 列表已经加载完了
+        },  // complete
+        success: function(Data){
+            // console.log(Data);
+            const parser = new DOMParser();
+            const d = parser.parseFromString(Data, "text/html");
+            var list = d.getElementById('song-list-pre-data');
+            var x = JSON.parse(list.textContent);
+            var album = x[0]["album"]["name"];
+            var picUrl = x[0]["album"]["picUrl"];
+            var artist = x[0]["artists"][0]["name"]
+
+            // 存储歌单信息
+            var tempList = {
+                id: lid,    // 列表的网易云 id
+                name: artist,   // 列表名字
+                cover: picUrl + '?param=200y200',   // 列表封面
+                creatorName: 'James',   // 列表创建者名字
+                creatorAvatar: 'PKJ',   // 列表创建者头像
+                item: []
+            };
+            
+            // if(jsonData.playlist.coverImgUrl !== '') {
+            //     tempList.cover = jsonData.playlist.coverImgUrl + "?param=200y200";
+            // } else {
+            //     tempList.cover = musicList[id].cover;
+            // }
+            
+            // if(typeof jsonData.playlist.tracks !== undefined || jsonData.playlist.tracks.length !== 0) {
+            //     // 存储歌单中的音乐信息
+            //     for (var i = 0; i < jsonData.playlist.tracks.length; i++) {
+            //         tempList.item[i] =  {
+            //             id: jsonData.playlist.tracks[i].id,  // 音乐ID
+            //             name: jsonData.playlist.tracks[i].name,  // 音乐名字
+            //             artist: jsonData.playlist.tracks[i].ar[0].name, // 艺术家名字
+            //             album: jsonData.playlist.tracks[i].al.name,    // 专辑名字
+            //             source: "netease",     // 音乐来源
+            //             url_id: jsonData.playlist.tracks[i].id,  // 链接ID
+            //             pic_id: null,  // 封面ID
+            //             lyric_id: jsonData.playlist.tracks[i].id,  // 歌词ID
+            //             pic: jsonData.playlist.tracks[i].al.picUrl + "?param=300y300",    // 专辑图片
+            //             url: null   // mp3链接
+            //         };
+            //     }
+            // }
+
+            for (let i=0; i<x.length;i++){
+                var artist = '';
+                for (let j=0; j < x[i]["artists"].length; j++) { 
+                    artist += x[i]["artists"][j]["name"]
+                    if (j<x[i]["artists"].length-1 ) { artist += '/' }
+                }
+                tempList.item[i] =  {
+                    id: x[i]["id"],  // 音乐ID
+                    name: x[i]["name"],  // 音乐名字
+                    artist: artist, // 艺术家名字
+                    album: x[i]["album"]["name"],    // 专辑名字
+                    source: "netease",     // 音乐来源
+                    url_id: x[i]["id"],  // 链接ID
+                    pic_id: null,  // 封面ID
+                    lyric_id: x[i]["id"],  // 歌词ID
+                    pic: picUrl + "?param=300y300",    // 专辑图片
+                    url: null   // mp3链接
+                };
+
+                // var id = x[i]["id"];
+                // var title = x[i]["name"];
+                // var artist = '';
+                // for (let j=0; j < x[i]["artists"].length; j++) { 
+                //     artist += x[i]["artists"][j]["name"]
+                //     if (j<x[i]["artists"].length-1 ) { artist += '/' }
+                // }
+                // console.log(album,picUrl,id,title,artist);
+            }
+
+            
+
+            // 歌单用户 id 不能丢
+            if(musicList[id].creatorID) {
+                tempList.creatorID = musicList[id].creatorID;
+                if(musicList[id].creatorID === rem.uid) {   // 是当前登录用户的歌单，要保存到缓存中
+                    var tmpUlist = playerReaddata('ulist');    // 读取本地记录的用户歌单
+                    if(tmpUlist) {  // 读取到了
+                        for(i=0; i<tmpUlist.length; i++) {  // 匹配歌单
+                            if(tmpUlist[i].id == lid) {
+                                tmpUlist[i] = tempList; // 保存歌单中的歌曲
+                                playerSavedata('ulist', tmpUlist);  // 保存
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // 存储列表信息
+            musicList[id] = tempList;
+            // console.log(musicList);
+
+            // 首页显示默认列表
+
+            if(id == mkPlayer.defaultlist) loadList(id);
+            if(callback) callback(id);    // 调用回调函数
+            
+            // 改变前端列表
+            $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面
+            $(".sheet-item[data-no='" + id + "'] .sheet-name").html(tempList.name);     // 专辑名字
+            
+            // 调试信息输出
+            if(mkPlayer.debug) {
+                console.debug("歌单 [" +tempList.name+ "] 中的音乐获取成功");
+            }
+        },   //success
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            layer.msg('歌单读取失败 - ' + XMLHttpRequest.status);
+            console.error(XMLHttpRequest + textStatus + errorThrown);
+            $(".sheet-item[data-no='" + id + "'] .sheet-name").html('<span style="color: #EA8383">读取失败</span>');     // 专辑名字
+        }   // error  
+    });//ajax
+}
+

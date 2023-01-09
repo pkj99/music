@@ -35,7 +35,6 @@ $(function(){
     initProgress();     // 初始化音量条、进度条（进度条初始化要在 Audio 前，别问我为什么……）
     initAudio();    // 初始化 audio 标签，事件绑定
     
-    
     if(rem.isMobile) {  // 加了滚动条插件和没加滚动条插件所操作的对象是不一样的
         rem.sheetList = $("#sheet");
         rem.mainList = $("#main-list");
@@ -72,9 +71,10 @@ $(function(){
             case "sheet":   // 播放列表
                 dataBox("sheet");    // 在主界面显示出音乐专辑
             break;
+
         }
     });
-    
+        
     // 列表项双击播放
     $(".music-list").on("dblclick",".list-item", function() {
         var num = parseInt($(this).data("no"));
@@ -156,7 +156,21 @@ $(function(){
         }
         loadList(num);
     });
+
+    // 点击专辑显示专辑歌曲
+    $("#album").on("click",".sheet-cover,.sheet-name", function() {
+        var num = parseInt($(this).parent().data("no"));
+        // 是用户列表，但是还没有加载数据
+        if(musicList[num].item.length === 0 && musicList[num].creatorID) {
+            layer.msg('列表读取中...', {icon: 16,shade: 0.01,time: 500}); // 0代表加载的风格，支持0-2
+            // ajax加载数据
+            ajaxPlayList(musicList[num].id, num, loadList);
+            return true;
+        }
+        loadList(num);
+    });
     
+
     // 点击同步云音乐
     $("#sheet").on("click",".login-in", function() {
         layer.prompt(
@@ -272,9 +286,23 @@ $(function(){
     $('img').error(function(){
         $(this).attr('src', 'images/player_cover.png');
     });
-    
+
+
     // 初始化播放列表
     initList(); 
+    
+    var index = 12;
+    for (let i=0; i<artistList.length;i++){
+        index += 1
+        ajaxArtistList(artistList[i],index);    
+    }
+
+    for (let i=0; i<albumList.length;i++){
+        index += 1
+        ajaxAlbumList(albumList[i],index);    
+    }
+
+
 });
 
 // 展现系统列表中任意首歌的歌曲信息
@@ -483,7 +511,7 @@ function loadList(list) {
         layer.msg('列表读取中...', {icon: 16,shade: 0.01,time: 500});
         return true;
     }
-    
+
     rem.dislist = list;     // 记录当前显示的列表
     
     dataBox("list");    // 在主界面显示出播放列表
@@ -732,6 +760,7 @@ function dataBox(choose) {
             $("#main-list").fadeOut();
             $(".btn[data-action='player']").addClass('active');
         break;
+
     }
 }
 
@@ -798,7 +827,7 @@ function initList() {
                 if(!musicList[i].name) musicList[i].name = '未命名';
             }
         }
-        
+
         // 在前端显示出来
         addSheet(i, musicList[i].name, musicList[i].cover);
     }

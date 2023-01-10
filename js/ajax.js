@@ -550,11 +550,12 @@ function ajaxArtistList(lid, id, callback) {
             // console.log(Data);
             const parser = new DOMParser();
             const d = parser.parseFromString(Data, "text/html");
+            var artist = d.getElementById('artist-name').textContent;
             var list = d.getElementById('song-list-pre-data');
             var x = JSON.parse(list.textContent);
             var album = x[0]["album"]["name"];
             var picUrl = x[0]["album"]["picUrl"];
-            var artist = x[0]["artists"][0]["name"]
+
 
             // 存储歌单信息
             var tempList = {
@@ -565,30 +566,6 @@ function ajaxArtistList(lid, id, callback) {
                 creatorAvatar: 'PKJ',   // 列表创建者头像
                 item: []
             };
-            
-            // if(jsonData.playlist.coverImgUrl !== '') {
-            //     tempList.cover = jsonData.playlist.coverImgUrl + "?param=200y200";
-            // } else {
-            //     tempList.cover = musicList[id].cover;
-            // }
-            
-            // if(typeof jsonData.playlist.tracks !== undefined || jsonData.playlist.tracks.length !== 0) {
-            //     // 存储歌单中的音乐信息
-            //     for (var i = 0; i < jsonData.playlist.tracks.length; i++) {
-            //         tempList.item[i] =  {
-            //             id: jsonData.playlist.tracks[i].id,  // 音乐ID
-            //             name: jsonData.playlist.tracks[i].name,  // 音乐名字
-            //             artist: jsonData.playlist.tracks[i].ar[0].name, // 艺术家名字
-            //             album: jsonData.playlist.tracks[i].al.name,    // 专辑名字
-            //             source: "netease",     // 音乐来源
-            //             url_id: jsonData.playlist.tracks[i].id,  // 链接ID
-            //             pic_id: null,  // 封面ID
-            //             lyric_id: jsonData.playlist.tracks[i].id,  // 歌词ID
-            //             pic: jsonData.playlist.tracks[i].al.picUrl + "?param=300y300",    // 专辑图片
-            //             url: null   // mp3链接
-            //         };
-            //     }
-            // }
 
             for (let i=0; i<x.length;i++){
                 var artist = '';
@@ -609,14 +586,6 @@ function ajaxArtistList(lid, id, callback) {
                     url: null   // mp3链接
                 };
 
-                // var id = x[i]["id"];
-                // var title = x[i]["name"];
-                // var artist = '';
-                // for (let j=0; j < x[i]["artists"].length; j++) { 
-                //     artist += x[i]["artists"][j]["name"]
-                //     if (j<x[i]["artists"].length-1 ) { artist += '/' }
-                // }
-                // console.log(album,picUrl,id,title,artist);
             }
 
             
@@ -640,7 +609,7 @@ function ajaxArtistList(lid, id, callback) {
             
             // 存储列表信息
             musicList[id] = tempList;
-            // console.log(musicList);
+            // console.log(musicList[id]);
 
             // 首页显示默认列表
 
@@ -662,5 +631,9 @@ function ajaxArtistList(lid, id, callback) {
             $(".sheet-item[data-no='" + id + "'] .sheet-name").html('<span style="color: #EA8383">读取失败</span>');     // 专辑名字
         }   // error  
     });//ajax
+
+    // console.log(musicList);
+
 }
+
 

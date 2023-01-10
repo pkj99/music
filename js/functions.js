@@ -290,6 +290,7 @@ $(function(){
 
     // 初始化播放列表
     initList(); 
+    OriginalMusicList = musicList;
     
     var index = 12;
     for (let i=0; i<artistList.length;i++){
@@ -301,8 +302,7 @@ $(function(){
         index += 1
         ajaxAlbumList(albumList[i],index);    
     }
-
-
+    // console.log(musicList);
 });
 
 // 展现系统列表中任意首歌的歌曲信息
@@ -717,9 +717,14 @@ function sheetBar() {
     } else {
         barHtml = '我的歌单 <span class="login-btn login-in">[点击同步]</span>';
     }
+
+    barHtml += '<span><a href="https://cors-anywhere.herokuapp.com/corsdemo"> [corsdemo] </a></span>';
+
     barHtml = '<span id="sheet-bar"><div class="clear-fix"></div>' +
     '<div id="user-login" class="sheet-title-bar">' + barHtml + 
-    '</div></span>'; 
+    '</div></span>';
+    
+ 
     rem.sheetList.append(barHtml);
 }
 
@@ -908,4 +913,23 @@ function playerReaddata(key) {
     if(!window.localStorage) return '';
     key = 'mkPlayer2_' + key;
     return JSON.parse(localStorage.getItem(key));
+}
+
+
+function switchPl(id){
+    switch(id) {
+        case 'original':
+            musicList = OriginalMusicList;
+        break;
+        case 'collection':
+            musicList = myList;
+        break;
+        case 'playlist':
+            musicList = plList;
+        break;
+    }
+    // console.log(musicList);
+    clearSheet();
+    initList();
+    dataBox("sheet");
 }

@@ -63,6 +63,9 @@
                 <span class="btn" data-action="player" hidden>播放器</span>
                 <span class="btn" data-action="playing" title="正在播放列表">正在播放</span>
                 <span class="btn" data-action="sheet" title="音乐播放列表">播放列表</span>
+                <span class="btn" data-action="original" title="音乐排行榜"><p href=# onclick="switchPl('original');">排行榜</p></span>
+                <span class="btn" data-action="collection" title="音乐精選輯"><p href=# onclick="switchPl('collection');">精選輯</p></span>
+                <span class="btn" data-action="playlisy" title="音乐流行歌單"><p href=# onclick="switchPl('playlist');">流行歌單</p></span>
                 <span class="btn" data-action="search" title="点击搜索音乐">歌曲搜索</span>
             </div>
         </div>  <!--class="btn-bar"-->
@@ -70,9 +73,7 @@
         <div class="data-area">
             <!--歌曲歌单-->
             <div id="sheet" class="data-box" hidden></div>
-
-            <div id="album" class="data-box" hidden></div>
-            
+           
             <!--音乐播放列表-->
             <div id="main-list" class="music-list data-box"></div>
         </div>  <!--class="data-area"-->
@@ -131,6 +132,7 @@
 <script src="js/lyric.js"></script>
 
 <!-- 音乐列表配置 -->
+<script src="js/myList.js"></script>
 <script src="js/musicList.js"></script>
 
 <!-- 封装函数及ui交互模块 -->

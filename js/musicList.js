@@ -44,7 +44,10 @@ var musicList = [
         id: 3779629     // 云音乐新歌榜
     },
     {
-        id: 4395559     // 华语金曲榜
+        id: 19723756     // 云音乐飙升榜
+    },
+    {
+        id: 2884035     // "网易原创歌曲榜"
     },
     {
         id: 64016     // 中国TOP排行榜（内地榜）
@@ -52,16 +55,15 @@ var musicList = [
     {
         id: 112504     // 中国TOP排行榜（港台榜）
     },
-    {
-        id: 19723756     // 云音乐飙升榜
-    },
-    {
-        id: 2884035     // "网易原创歌曲榜"
-    },
     {   id: 60198      }, // "美国Billboard榜"
     {   id: 180106      }, // "UK排行榜周榜"
-    {   id: 21845217      } // "KTV唛榜"
-
+    {   id: 21845217      }, // "KTV唛榜"
+    {id:3812895}, // Beatport全球电子舞曲榜
+    {id:2809513713},
+    {id:2809577409},
+    {id:60131},
+    {id:745956260},
+    {id:4395559} // 华语金曲榜
 ];
 
 
@@ -74,5 +76,8 @@ var albumList = [];
 // musicList = musicList.concat(playList);
 
 // for(var i=0; i<artistList.length; i++) {
-//     musicList.push({id:artistList[i]})
+//     musicList.push({id:3778678})
+// }
+// for(var i=0; i<albumList.length; i++) {
+//     musicList.push({id:3778678})
 // }

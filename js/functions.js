@@ -292,17 +292,19 @@ $(function(){
     initList(); 
     OriginalMusicList = musicList;
     
-    var index = 12;
-    for (let i=0; i<artistList.length;i++){
-        index += 1
-        ajaxArtistList(artistList[i],index);    
-    }
+    if (artistList.length>0 ||albumList.length>0){
+        var index = musicList.length-1;
+        for (let i=0; i<artistList.length;i++){
+            index += 1
+            ajaxArtistList(artistList[i],index);    
+        }
 
-    for (let i=0; i<albumList.length;i++){
-        index += 1
-        ajaxAlbumList(albumList[i],index);    
-    }
-    // console.log(musicList);
+        for (let i=0; i<albumList.length;i++){
+            index += 1
+            ajaxAlbumList(albumList[i],index);    
+        }
+        console.log(musicList);
+    };
 });
 
 // 展现系统列表中任意首歌的歌曲信息
@@ -539,7 +541,7 @@ function loadList(list) {
         // 逐项添加数据
         for(var i=0; i<musicList[list].item.length; i++) {
             var tmpMusic = musicList[list].item[i];
-            
+
             addItem(i + 1, tmpMusic.name, tmpMusic.artist, tmpMusic.album);
             
             // 音乐链接均有有效期限制,重新显示列表时清空处理

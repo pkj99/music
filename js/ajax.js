@@ -422,8 +422,8 @@ function ajaxAlbumList(lid, id, callback) {
                 id: lid,    // 列表的网易云 id
                 name: album,   // 列表名字
                 cover: picUrl + '?param=200y200',   // 列表封面
-                creatorName: 'James',   // 列表创建者名字
-                creatorAvatar: 'PKJ',   // 列表创建者头像
+                creatorName: album,   // 列表创建者名字
+                creatorAvatar: picUrl,   // 列表创建者头像
                 item: []
             };
 
@@ -483,21 +483,21 @@ function ajaxAlbumList(lid, id, callback) {
             
 
             // 歌单用户 id 不能丢
-            if(musicList[id].creatorID) {
-                tempList.creatorID = musicList[id].creatorID;
-                if(musicList[id].creatorID === rem.uid) {   // 是当前登录用户的歌单，要保存到缓存中
-                    var tmpUlist = playerReaddata('ulist');    // 读取本地记录的用户歌单
-                    if(tmpUlist) {  // 读取到了
-                        for(i=0; i<tmpUlist.length; i++) {  // 匹配歌单
-                            if(tmpUlist[i].id == lid) {
-                                tmpUlist[i] = tempList; // 保存歌单中的歌曲
-                                playerSavedata('ulist', tmpUlist);  // 保存
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+            // if(musicList[id].creatorID) {
+            //     tempList.creatorID = musicList[id].creatorID;
+            //     if(musicList[id].creatorID === rem.uid) {   // 是当前登录用户的歌单，要保存到缓存中
+            //         var tmpUlist = playerReaddata('ulist');    // 读取本地记录的用户歌单
+            //         if(tmpUlist) {  // 读取到了
+            //             for(i=0; i<tmpUlist.length; i++) {  // 匹配歌单
+            //                 if(tmpUlist[i].id == lid) {
+            //                     tmpUlist[i] = tempList; // 保存歌单中的歌曲
+            //                     playerSavedata('ulist', tmpUlist);  // 保存
+            //                     break;
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
             
             // 存储列表信息
             musicList[id] = tempList;
@@ -562,8 +562,8 @@ function ajaxArtistList(lid, id, callback) {
                 id: lid,    // 列表的网易云 id
                 name: artist,   // 列表名字
                 cover: picUrl + '?param=200y200',   // 列表封面
-                creatorName: 'James',   // 列表创建者名字
-                creatorAvatar: 'PKJ',   // 列表创建者头像
+                creatorName: artist,   // 列表创建者名字
+                creatorAvatar: picUrl,   // 列表创建者头像
                 item: []
             };
 
@@ -591,25 +591,24 @@ function ajaxArtistList(lid, id, callback) {
             
 
             // 歌单用户 id 不能丢
-            if(musicList[id].creatorID) {
-                tempList.creatorID = musicList[id].creatorID;
-                if(musicList[id].creatorID === rem.uid) {   // 是当前登录用户的歌单，要保存到缓存中
-                    var tmpUlist = playerReaddata('ulist');    // 读取本地记录的用户歌单
-                    if(tmpUlist) {  // 读取到了
-                        for(i=0; i<tmpUlist.length; i++) {  // 匹配歌单
-                            if(tmpUlist[i].id == lid) {
-                                tmpUlist[i] = tempList; // 保存歌单中的歌曲
-                                playerSavedata('ulist', tmpUlist);  // 保存
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+            // if(musicList[id].creatorID) {
+            //     tempList.creatorID = musicList[id].creatorID;
+            //     if(musicList[id].creatorID === rem.uid) {   // 是当前登录用户的歌单，要保存到缓存中
+            //         var tmpUlist = playerReaddata('ulist');    // 读取本地记录的用户歌单
+            //         if(tmpUlist) {  // 读取到了
+            //             for(i=0; i<tmpUlist.length; i++) {  // 匹配歌单
+            //                 if(tmpUlist[i].id == lid) {
+            //                     tmpUlist[i] = tempList; // 保存歌单中的歌曲
+            //                     playerSavedata('ulist', tmpUlist);  // 保存
+            //                     break;
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
             
             // 存储列表信息
             musicList[id] = tempList;
-            // console.log(musicList[id]);
 
             // 首页显示默认列表
 

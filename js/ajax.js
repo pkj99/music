@@ -388,7 +388,7 @@ function ajaxUserList(uid)
 
 
 
-function ajaxAlbumList(lid, id, callback) {
+function ajaxAlbumList(lid, callback) {
 
     if(!lid) return false;
     
@@ -399,6 +399,9 @@ function ajaxAlbumList(lid, id, callback) {
     
     // musicList[id].isloading = true; // 更新状态：列表加载中
     
+    id = musicList.length
+
+
     $.ajax({
         type: "GET", 
         url: "https://cors-anywhere.herokuapp.com/https://music.163.com/album", 
@@ -427,30 +430,6 @@ function ajaxAlbumList(lid, id, callback) {
                 item: []
             };
 
-            // if(jsonData.playlist.coverImgUrl !== '') {
-            //     tempList.cover = jsonData.playlist.coverImgUrl + "?param=200y200";
-            // } else {
-            //     tempList.cover = musicList[id].cover;
-            // }
-            
-            // if(typeof jsonData.playlist.tracks !== undefined || jsonData.playlist.tracks.length !== 0) {
-            //     // 存储歌单中的音乐信息
-            //     for (var i = 0; i < jsonData.playlist.tracks.length; i++) {
-            //         tempList.item[i] =  {
-            //             id: jsonData.playlist.tracks[i].id,  // 音乐ID
-            //             name: jsonData.playlist.tracks[i].name,  // 音乐名字
-            //             artist: jsonData.playlist.tracks[i].ar[0].name, // 艺术家名字
-            //             album: jsonData.playlist.tracks[i].al.name,    // 专辑名字
-            //             source: "netease",     // 音乐来源
-            //             url_id: jsonData.playlist.tracks[i].id,  // 链接ID
-            //             pic_id: null,  // 封面ID
-            //             lyric_id: jsonData.playlist.tracks[i].id,  // 歌词ID
-            //             pic: jsonData.playlist.tracks[i].al.picUrl + "?param=300y300",    // 专辑图片
-            //             url: null   // mp3链接
-            //         };
-            //     }
-            // }
-
             for (let i=0; i<x.length;i++){
                 var artist = '';
                 for (let j=0; j < x[i]["artists"].length; j++) { 
@@ -469,43 +448,17 @@ function ajaxAlbumList(lid, id, callback) {
                     pic: picUrl + "?param=300y300",    // 专辑图片
                     url: null   // mp3链接
                 };
-
-                // var id = x[i]["id"];
-                // var title = x[i]["name"];
-                // var artist = '';
-                // for (let j=0; j < x[i]["artists"].length; j++) { 
-                //     artist += x[i]["artists"][j]["name"]
-                //     if (j<x[i]["artists"].length-1 ) { artist += '/' }
-                // }
-                // console.log(album,picUrl,id,title,artist);
             }
 
-            
-
-            // 歌单用户 id 不能丢
-            // if(musicList[id].creatorID) {
-            //     tempList.creatorID = musicList[id].creatorID;
-            //     if(musicList[id].creatorID === rem.uid) {   // 是当前登录用户的歌单，要保存到缓存中
-            //         var tmpUlist = playerReaddata('ulist');    // 读取本地记录的用户歌单
-            //         if(tmpUlist) {  // 读取到了
-            //             for(i=0; i<tmpUlist.length; i++) {  // 匹配歌单
-            //                 if(tmpUlist[i].id == lid) {
-            //                     tmpUlist[i] = tempList; // 保存歌单中的歌曲
-            //                     playerSavedata('ulist', tmpUlist);  // 保存
-            //                     break;
-            //                 }
-            //             }
-            //         }
-            //     }
-            // }
-            
+           
             // 存储列表信息
             musicList[id] = tempList;
-            // console.log(musicList);
 
             // 首页显示默认列表
+            // if(id == mkPlayer.defaultlist) loadList(id);
 
-            if(id == mkPlayer.defaultlist) loadList(id);
+            loadList(id);
+
             if(callback) callback(id);    // 调用回调函数
             
             // 改变前端列表
@@ -526,7 +479,7 @@ function ajaxAlbumList(lid, id, callback) {
 }
 
 
-function ajaxArtistList(lid, id, callback) {
+function ajaxArtistList(lid, callback) {
 
     if(!lid) return false;
     
@@ -537,6 +490,8 @@ function ajaxArtistList(lid, id, callback) {
     
     // musicList[id].isloading = true; // 更新状态：列表加载中
     
+    id = musicList.length
+
     $.ajax({
         type: "GET", 
         url: "https://cors-anywhere.herokuapp.com/https://music.163.com/artist", 
@@ -587,8 +542,7 @@ function ajaxArtistList(lid, id, callback) {
                 };
 
             }
-
-            
+           
 
             // 歌单用户 id 不能丢
             // if(musicList[id].creatorID) {
@@ -611,8 +565,10 @@ function ajaxArtistList(lid, id, callback) {
             musicList[id] = tempList;
 
             // 首页显示默认列表
+            // if(id == mkPlayer.defaultlist) loadList(id);
 
-            if(id == mkPlayer.defaultlist) loadList(id);
+            loadList(id);
+
             if(callback) callback(id);    // 调用回调函数
             
             // 改变前端列表

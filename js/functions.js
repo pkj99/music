@@ -156,19 +156,6 @@ $(function(){
         }
         loadList(num);
     });
-
-    // 点击专辑显示专辑歌曲
-    $("#album").on("click",".sheet-cover,.sheet-name", function() {
-        var num = parseInt($(this).parent().data("no"));
-        // 是用户列表，但是还没有加载数据
-        if(musicList[num].item.length === 0 && musicList[num].creatorID) {
-            layer.msg('列表读取中...', {icon: 16,shade: 0.01,time: 500}); // 0代表加载的风格，支持0-2
-            // ajax加载数据
-            ajaxPlayList(musicList[num].id, num, loadList);
-            return true;
-        }
-        loadList(num);
-    });
     
 
     // 点击同步云音乐
@@ -297,14 +284,14 @@ $(function(){
         var index = musicList.length-1;
         for (let i=0; i<artistList.length;i++){
             index += 1
-            ajaxArtistList(artistList[i],index);    
+            ajaxArtistList(artistList[i]);    
         }
 
         for (let i=0; i<albumList.length;i++){
             index += 1
-            ajaxAlbumList(albumList[i],index);    
+            ajaxAlbumList(albumList[i]);
         }
-        console.log(musicList);
+        // console.log(musicList);
     };
 });
 
@@ -510,10 +497,14 @@ function changeCover(music) {
 
 // 向列表中载入某个播放列表
 function loadList(list) {
-    if(musicList[list].isloading === true) {
-        layer.msg('列表读取中...', {icon: 16,shade: 0.01,time: 500});
-        return true;
-    }
+    // console.log('loadlist');
+    // console.log(list);
+    // console.log(musicList);
+    // console.log(musicList[list]);
+    // if(musicList[list].isloading === true) {
+    //     layer.msg('列表读取中...', {icon: 16,shade: 0.01,time: 500});
+    //     return true;
+    // }
 
     rem.dislist = list;     // 记录当前显示的列表
     
@@ -660,6 +651,8 @@ function urlEncode(String) {
 // 参数：要进行更新的音乐
 function updateMinfo(music) {
     // 不含有 id 的歌曲无法更新
+
+    // console.log(music);
     if(!music.id) return false;
     
     // 循环查找播放列表并更新信息
@@ -933,6 +926,7 @@ function switchPl(id){
     }
     // console.log(musicList);
     clearSheet();
+    // clearDislist();
     initList();
     dataBox("sheet");
 }

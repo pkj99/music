@@ -153,5 +153,46 @@
     
 </span>
 
+
+<script>
+// get params
+(window.onpopstate = function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+
+    urlParams = {};
+    while (match = search.exec(query))
+        urlParams[decode(match[1])] = decode(match[2]);
+})();
+
+if (urlParams["album_id"] != null) { 
+    album_id = urlParams["album_id"];
+
+    ajaxAlbumList(album_id);
+    dataBox("player");
+
+}
+
+if (urlParams["wd"] != null) { 
+    rem.wd = urlParams["wd"];
+
+    rem.source = $("#music-source input[name='source']:checked").val();
+    
+    // layer.closeAll('page');     // 关闭搜索框
+    
+    rem.loadPage = 1;   // 已加载页数复位
+    // rem.wd = wd;    // 搜索词
+    ajaxSearch();   // 加载搜索结果
+
+    // ajaxSearch();
+    // dataBox("player");
+
+}
+
+</script>
+
 </body>
 </html>

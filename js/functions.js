@@ -291,7 +291,8 @@ $(function(){
     // 初始化播放列表
     initList(); 
     OriginalMusicList = musicList;
-    
+    // console.log(albumList.length);
+    // console.log(musicList.length);
     if (artistList.length>0 ||albumList.length>0){
         var index = musicList.length-1;
         for (let i=0; i<artistList.length;i++){

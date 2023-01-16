@@ -399,7 +399,7 @@ function ajaxAlbumList(lid, callback) {
     
     // musicList[id].isloading = true; // 更新状态：列表加载中
     
-    id = musicList.length
+    id = musicList.length;
 
 
     $.ajax({
@@ -490,7 +490,7 @@ function ajaxArtistList(lid, callback) {
     
     // musicList[id].isloading = true; // 更新状态：列表加载中
     
-    id = musicList.length
+    id = musicList.length;
 
     $.ajax({
         type: "GET", 
@@ -592,3 +592,75 @@ function ajaxArtistList(lid, callback) {
 }
 
 
+
+function dbMusicList(lid, callback) {
+
+    if(!lid) return false;
+
+    var db_url = 'https://pkj99.github.io/music/db/music.db';
+   
+    id = musicList.length;
+    
+    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img from musics a, albums b, artists c where a.album_id = b.album_id and b.artist_id = c.artist_id and a.album_id="+lid;
+    // console.log(sqlstring);
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', db_url, true);
+    xhr.responseType = 'arraybuffer';
+
+    xhr.onload = e => {
+        const uInt8Array = new Uint8Array(xhr.response);
+        const db = new SQL.Database(uInt8Array);
+        const contents = db.exec(sqlstring);
+        var data = JSON.parse(JSON.stringify(contents));
+        if (typeof data[0] == "undefined" ) { data = [];} else { data = data[0].values; }        
+
+        var album = data[0][3];
+        var picUrl = data[0][4];
+        var artist = data[0][5];
+
+        // 存储歌单信息
+        var tempList = {
+            id: lid,    // 列表的网易云 id
+            name: album,   // 列表名字
+            cover: picUrl + '?param=200y200',   // 列表封面
+            creatorName: album,   // 列表创建者名字
+            creatorAvatar: picUrl,   // 列表创建者头像
+            item: []
+        };
+
+        for (var i = 0; i < data.length; i++) {
+            tempList.item[i] =  {
+                id: data[i][0],  // 音乐ID
+                name: data[i][1],  // 音乐名字
+                artist: artist, // 艺术家名字
+                album: album,    // 专辑名字
+                source: "netease",     // 音乐来源
+                url_id: data[i][0],  // 链接ID
+                pic_id: null,  // 封面ID
+                lyric_id: data[i][0],  // 歌词ID
+                pic: picUrl + "?param=300y300",    // 专辑图片
+                url: null   // mp3链接
+            };
+        }
+           
+        // 存储列表信息
+        musicList[id] = tempList;
+
+        // 首页显示默认列表
+        // if(id == mkPlayer.defaultlist) loadList(id);
+
+        loadList(id);
+
+        if(callback) callback(id);    // 调用回调函数
+        
+        // 改变前端列表
+        $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面
+        $(".sheet-item[data-no='" + id + "'] .sheet-name").html(tempList.name);     // 专辑名字
+        
+        // 调试信息输出
+        if(mkPlayer.debug) {
+            console.debug("歌单 [" +tempList.name+ "] 中的音乐获取成功");
+        }
+    };
+    xhr.send();
+}

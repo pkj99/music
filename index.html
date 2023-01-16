@@ -73,7 +73,9 @@
         <div class="data-area">
             <!--歌曲歌单-->
             <div id="sheet" class="data-box" hidden></div>
-           
+
+            <div id="myui-panel" class="data-box" hidden></div>
+            
             <!--音乐播放列表-->
             <div id="main-list" class="music-list data-box"></div>
         </div>  <!--class="data-area"-->
@@ -153,6 +155,9 @@
     
 </span>
 
+<script type="text/javascript" src='js/sql.js'></script>
+<!-- <script type="text/javascript" src="js/vod.js"></script> -->
+
 
 <script>
 // get params
@@ -168,30 +173,27 @@
         urlParams[decode(match[1])] = decode(match[2]);
 })();
 
+
+
 if (urlParams["album_id"] != null) { 
     album_id = urlParams["album_id"];
 
-    ajaxAlbumList(album_id);
+    // ajaxAlbumList(album_id);
+    dbMusicList(album_id);
     dataBox("player");
 
 }
 
 if (urlParams["wd"] != null) { 
     rem.wd = urlParams["wd"];
-
     rem.source = $("#music-source input[name='source']:checked").val();
-    
     // layer.closeAll('page');     // 关闭搜索框
-    
     rem.loadPage = 1;   // 已加载页数复位
     // rem.wd = wd;    // 搜索词
     ajaxSearch();   // 加载搜索结果
-
     // ajaxSearch();
     // dataBox("player");
-
 }
-
 </script>
 
 </body>

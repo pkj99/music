@@ -510,7 +510,7 @@ function ajaxArtistList(lid, callback) {
             var x = JSON.parse(list.textContent);
             var album = x[0]["album"]["name"];
             var picUrl = x[0]["album"]["picUrl"];
-
+           
 
             // 存储歌单信息
             var tempList = {
@@ -664,3 +664,4 @@ function dbMusicList(lid, callback) {
     };
     xhr.send();
 }
+

@@ -59,5 +59,5 @@ singers=['玖壹壹', '八三夭', '灭火器乐团', '卜学亮', '毕书尽', 
 artistList=[]
 
 if __name__ == '__main__':
-    # artistSpider()
-    playistSpider('hot','流行')
+    artistSpider()
+    # playistSpider('hot','流行')

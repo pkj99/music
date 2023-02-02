@@ -37,7 +37,7 @@
                 htmlString += 'style="background-image: url(' + artist_img +')"';
 
                 htmlString += '<span class="play hidden-xs"></span>';
-                htmlString += '<span class="pic-text text-left">'+group_id+'</span>';
+                // htmlString += '<span class="pic-text text-left">'+group_id+'</span>';
 
                 htmlString += '</a>';
                 htmlString += '</div>';
@@ -224,9 +224,12 @@
             // movieById(sqlstring);
         }
     }
-    if (t==1001){ document.getElementById('menu-male').classList.add("active"); } 
-    if (t==1002){ document.getElementById('menu-female').classList.add("active"); } 
-    if (t==1003){ document.getElementById('menu-group').classList.add("active"); } 
+    if (t==1001){ document.getElementById('menu-1001').classList.add("active"); } 
+    if (t==1002){ document.getElementById('menu-1002').classList.add("active"); } 
+    if (t==1003){ document.getElementById('menu-1003').classList.add("active"); } 
+    if (t==2001){ document.getElementById('menu-2001').classList.add("active"); } 
+    if (t==2002){ document.getElementById('menu-2002').classList.add("active"); } 
+    if (t==2003){ document.getElementById('menu-2003').classList.add("active"); } 
 
 
  

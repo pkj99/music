@@ -338,16 +338,21 @@ function searchBox() {
     var tmpHtml = '<form onSubmit="return searchSubmit()"><div id="search-area">' + 
     '    <div class="search-group">' + 
     '        <input type="text" name="wd" id="search-wd" placeholder="搜索歌手、歌名、专辑" autofocus required>' + 
+    '        <input type="radio" name="source" value="netease" checked="" hidden>' + 
     '        <button class="search-submit" type="submit">搜 索</button>' + 
     '    </div>' + 
-    '    <div class="radio-group" id="music-source">' + 
-    '       <label><input type="radio" name="source" value="netease" checked=""> 网易云</label>' + 
-    '       <label><input type="radio" name="source" value="tencent"> QQ</label>' + 
-    '       <label><input type="radio" name="source" value="xiami"> 虾米</label>' + 
-    '       <label><input type="radio" name="source" value="kugou"> 酷狗</label>' + 
-    '       <label><input type="radio" name="source" value="baidu"> 百度</label>' + 
-    '   </div>' + 
-    '</div></form>';
+    // '    <div>' + 
+    // '    <a href="artist.html">專輯列表</a>'
+    // '    </div>' + 
+    // '    <div class="radio-group" id="music-source">' + 
+    // '       <label><input type="radio" name="source" value="netease" checked=""> 网易云</label>' + 
+    // '       <label><input type="radio" name="source" value="tencent"> QQ</label>' + 
+    // '       <label><input type="radio" name="source" value="xiami"> 虾米</label>' + 
+    // '       <label><input type="radio" name="source" value="kugou"> 酷狗</label>' + 
+    // '       <label><input type="radio" name="source" value="baidu"> 百度</label>' + 
+    // '   </div>' + 
+    '</div><div style="text-align: center;"><a href="artist.html">專輯列表</a></div><br></form>';
+
     layer.open({
         type: 1,
         shade: false,

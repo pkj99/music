@@ -349,7 +349,8 @@ function searchBox() {
     // '       <label><input type="radio" name="source" value="baidu"> 百度</label>' + 
     // '   </div>' + 
     // '</div></form>';
-    '</div><div style="text-align: center;"><a href="artist.html">專輯列表</a></div><br><img src="images/music_qr.png" width="300px"></form>';
+    // '</div><div style="text-align: center;"><a href="artist.html">專輯列表</a></div><br><img src="images/music_qr.png" width="300px"></form>';
+    '</div><img src="images/music_qr.png" width="300px"></form>';
 
     layer.open({
         type: 1,
@@ -925,6 +926,9 @@ function switchPl(id){
         break;
         case 'playlist':
             musicList = plList;
+        break;
+        case 'album':
+            location.href = 'artist.html';
         break;
     }
     // console.log(musicList);

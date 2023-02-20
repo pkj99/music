@@ -310,7 +310,7 @@ function musicInfo(list, index) {
     '<span class="info-btn" onclick="thisDownload(this)" data-list="' + list + '" data-index="' + index + '">下载</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>' +
 
-    '<span style="margin-left: 10px" class="info-btn" onclick="thisMyCollection(this)" data-list="' + list + '" data-index="' + index + '" id="favorites">收藏</span>' ;
+    '<span style="margin-left: 10px" class="info-btn" onclick="thisMusic(this)" data-list="' + list + '" data-index="' + index + '" id="favorites">收藏</span>' ;
     
     layer.open({
         type: 0,
@@ -320,7 +320,7 @@ function musicInfo(list, index) {
         content: tempStr
     });
     
-    checkCookieBySourceId('mycollection',music.id);
+    checkCookieBySourceId('music',music.id);
     
     if(mkPlayer.debug) {
         console.info('id: "' + music.id + '",\n' + 
@@ -401,9 +401,9 @@ function thisShare(obj) {
 }
 
 // 收藏这首歌
-function thisMyCollection(obj) {
+function thisMusic(obj) {
     // alert(musicList[$(obj).data("list")].item[$(obj).data("index")].id);
-    setCookieBySourceId('mycollection',musicList[$(obj).data("list")].item[$(obj).data("index")].id)
+    setCookieBySourceId('music',musicList[$(obj).data("list")].item[$(obj).data("index")].id)
 }
 
 

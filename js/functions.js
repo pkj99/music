@@ -308,7 +308,9 @@ function musicInfo(list, index) {
     
     tempStr += '<br><span class="info-title">操作：</span>' + 
     '<span class="info-btn" onclick="thisDownload(this)" data-list="' + list + '" data-index="' + index + '">下载</span>' + 
-    '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>';
+    '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>' +
+
+    '<span style="margin-left: 10px" class="info-btn" onclick="thisMyCollection(this)" data-list="' + list + '" data-index="' + index + '" id="favorites">收藏</span>' ;
     
     layer.open({
         type: 0,
@@ -317,6 +319,8 @@ function musicInfo(list, index) {
         btn: false,
         content: tempStr
     });
+    
+    checkCookieBySourceId('mycollection',music.id);
     
     if(mkPlayer.debug) {
         console.info('id: "' + music.id + '",\n' + 
@@ -395,6 +399,13 @@ function thisDownload(obj) {
 function thisShare(obj) {
     ajaxUrl(musicList[$(obj).data("list")].item[$(obj).data("index")], ajaxShare);
 }
+
+// 收藏这首歌
+function thisMyCollection(obj) {
+    // alert(musicList[$(obj).data("list")].item[$(obj).data("index")].id);
+    setCookieBySourceId('mycollection',musicList[$(obj).data("list")].item[$(obj).data("index")].id)
+}
+
 
 // 下载歌曲
 // 参数：包含歌曲信息的数组
@@ -936,4 +947,63 @@ function switchPl(id){
     // clearDislist();
     initList();
     dataBox("sheet");
+}
+
+
+    
+// 收藏設定 Cookie 
+
+function parseCookie() {
+    var cookieObj = {};
+    var cookieAry = document.cookie.split(';');
+    var cookie;
+    
+    for (var i=0, l=cookieAry.length; i<l; ++i) {
+        cookie = jQuery.trim(cookieAry[i]);
+        cookie = cookie.split('=');
+        cookieObj[cookie[0]] = cookie[1];
+    }
+    return cookieObj;
+} 
+
+function getCookieByName(name) {
+    var value = parseCookie()[name];
+    if (value) {
+        value = decodeURIComponent(value);
+    }
+
+    return value;
+}
+
+function setCookieBySourceId(source,id) {
+    var ids = getCookieByName(source);
+    var idNew = ',' + id ;
+    const d = new Date();
+    d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+    let expires = "expires="+d.toUTCString();
+
+    if (ids == null) { ids = '';}
+    if (ids.includes(idNew)){
+        document.getElementById('favorites').textContent = '收藏';
+        // document.getElementById('favorites').className = 'btn btn-secondary';
+        ids = ids.replace(idNew,'');
+        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+    } else {
+        document.getElementById('favorites').textContent = '已收藏';
+        // document.getElementById('favorites').className = 'btn btn-danger';
+        ids += idNew ;
+        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+    }
+}
+
+function checkCookieBySourceId(source,id) {
+    var ids = getCookieByName(source);
+    var idsAry = ids.split(',');
+    if (ids == null) { ids = '';}
+    for (var i=0, l=idsAry.length; i<l; ++i) {
+        if (id == idsAry[i]){
+            document.getElementById('favorites').textContent = '已收藏';
+            // document.getElementById('favorites').className = 'btn btn-danger';
+        }
+    }      
 }

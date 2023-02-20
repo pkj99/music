@@ -192,7 +192,7 @@
     }
     if (urlParams["album_id"] != null){
          var album_id = urlParams["album_id"];
-         var sqlstring = "select * from musics where album_id="+album_id;
+         var sqlstring = "select * from musics where url=1 and album_id="+album_id;
          musiclists(sqlstring);
          bypass = true;
      }

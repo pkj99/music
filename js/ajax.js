@@ -601,7 +601,7 @@ function dbMusicList(lid, callback) {
    
     id = musicList.length;
     
-    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img from musics a, albums b, artists c where a.album_id = b.album_id and b.artist_id = c.artist_id and a.album_id="+lid;
+    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url from musics a, albums b, artists c where a.album_id = b.album_id and b.artist_id = c.artist_id and a.album_id="+lid;
     // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);

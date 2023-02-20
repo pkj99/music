@@ -104,16 +104,18 @@ $(function(){
         if(isNaN(num)) return false;
         // 还没有追加菜单则加上菜单
         if(!$(this).data("loadmenu")) {
-            var target = $(this).find(".music-name");
-            var html = '<span class="music-name-cult">' + 
-            target.html() + 
-            '</span>' +
-            '<div class="list-menu" data-no="' + num + '">' +
-                '<span class="list-icon icon-play" data-function="play" title="点击播放这首歌"></span>' +
-                '<span class="list-icon icon-download" data-function="download" title="点击下载这首歌"></span>' +
-                '<span class="list-icon icon-share" data-function="share" title="点击分享这首歌"></span>' +
-            '</div>';
-            target.html(html);
+            // if (musicList[rem.dislist].item[num].url == 1){
+                var target = $(this).find(".music-name");
+                var html = '<span class="music-name-cult">' + 
+                target.html() + 
+                '</span>' +
+                '<div class="list-menu" data-no="' + num + '">' +
+                    '<span class="list-icon icon-play" data-function="play" title="点击播放这首歌"></span>' +
+                    '<span class="list-icon icon-download" data-function="download" title="点击下载这首歌"></span>' +
+                    '<span class="list-icon icon-share" data-function="share" title="点击分享这首歌"></span>' +
+                '</div>';
+                target.html(html);
+            // }
             $(this).data("loadmenu", true);
         }
     });

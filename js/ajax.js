@@ -241,7 +241,7 @@ function ajaxPlayList(lid, id, callback) {
                         pic_id: null,  // 封面ID
                         lyric_id: jsonData.playlist.tracks[i].id,  // 歌词ID
                         pic: jsonData.playlist.tracks[i].al.picUrl + "?param=300y300",    // 专辑图片
-                        url: null   // mp3链接
+                        url: "https://link.hhtjim.com/163/" + jsonData.playlist.tracks[i].id + ".mp3"   // mp3链接
                     };
                 }
             }
@@ -639,7 +639,7 @@ function dbMusicList(lid, callback) {
                 pic_id: null,  // 封面ID
                 lyric_id: data[i][0],  // 歌词ID
                 pic: picUrl + "?param=300y300",    // 专辑图片
-                url: null   // mp3链接
+                url: "https://link.hhtjim.com/163/" + data[i][0] + ".mp3"   // mp3链接
             };
         }
            

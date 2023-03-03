@@ -1000,8 +1000,8 @@ function setCookieBySourceId(source,id) {
 
 function checkCookieBySourceId(source,id) {
     var ids = getCookieByName(source);
-    var idsAry = ids.split(',');
     if (ids == null) { ids = '';}
+    var idsAry = ids.split(',');
     for (var i=0, l=idsAry.length; i<l; ++i) {
         if (id == idsAry[i]){
             document.getElementById('favorites').textContent = '已收藏';

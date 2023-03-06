@@ -106,6 +106,21 @@ $(function(){
     $(".music-list").on("mousemove",".list-item", function() {
         var num = parseInt($(this).data("no"));
         var id = musicList[rem.dislist].item[num].id;
+
+        var ids = getCookieByName('music');
+        var cookieStr = '';
+        if (ids == null) { ids = '';}
+        if (ids.includes(',' + id)){
+            cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>'
+            // document.getElementById(id).title = '已收藏';
+            // document.getElementById(id).className = 'list-icon icon-share-click';
+        } else {
+            cookieStr = '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>'
+            // document.getElementById(id).title = '收藏';
+            // document.getElementById(id).className = 'list-icon icon-share';
+        }
+
+
         if(isNaN(num)) return false;
         // 还没有追加菜单则加上菜单
         if(!$(this).data("loadmenu")) {
@@ -118,7 +133,8 @@ $(function(){
                     '<span class="list-icon icon-play" data-function="play" title="播放"></span>' +
                     '<span class="list-icon icon-download" data-function="download" title="下載"></span>' +
                     // '<span class="list-icon icon-share" data-function="share" title="分享"></span>' +
-                    '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>' +
+                    // '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>' +
+                    cookieStr +
                 '</div>';
                 target.html(html);
             // }
@@ -142,8 +158,6 @@ $(function(){
                 ajaxUrl(musicList[rem.dislist].item[num], ajaxShare);
             break;
             case "cookie":   // 收藏
-                // thisMusic(musicList[rem.dislist].item[num].id);
-                // setCookieBySourceId('music',musicList[rem.dislist].item[num].id);
                 var source = 'music';
                 var id = musicList[rem.dislist].item[num].id;
                 var ids = getCookieByName(source);

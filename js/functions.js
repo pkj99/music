@@ -23,6 +23,10 @@ var isMobile = {
     }
 };
 
+Array.prototype.findIndexBy = function(key, value) {
+    return this.findIndex(item => item[key] === value)
+}
+
 $(function(){
     if(mkPlayer.debug) {
         console.warn('播放器调试模式已开启，正常使用时请在 js/player.js 中按说明关闭调试模式');
@@ -150,6 +154,23 @@ $(function(){
     $("#sheet").on("click",".sheet-cover,.sheet-name", function() {
         var num = parseInt($(this).parent().data("no"));
         // 是用户列表，但是还没有加载数据
+
+        console.log(musicList[num].id,musicList[num].creatorID);
+        if(musicList[num].creatorID == 0){
+            // switchPl('music');
+
+            var i = myMusic.findIndexBy('id', musicList[num].id);
+            
+            musicList = DefaultMusicList;
+            musicList = musicList.concat(myMusic[i]["albums"]);
+
+            clearSheet();
+            // clearDislist();
+            initList();
+            dataBox("sheet");            
+            return true;
+        } else {
+        
         if(musicList[num].item.length === 0 && musicList[num].creatorID) {
             layer.msg('列表读取中...', {icon: 16,shade: 0.01,time: 500}); // 0代表加载的风格，支持0-2
             // ajax加载数据
@@ -157,6 +178,8 @@ $(function(){
             return true;
         }
         loadList(num);
+
+        }
     });
     
 
@@ -278,23 +301,27 @@ $(function(){
 
 
     // 初始化播放列表
+    clearSheet();
+    playerSavedata('playing', '');
+    playerSavedata('his', '');
     initList(); 
-    OriginalMusicList = musicList;
+
+    // OriginalMusicList = musicList;
     // console.log(albumList.length);
     // console.log(musicList.length);
-    if (artistList.length>0 ||albumList.length>0){
-        var index = musicList.length-1;
-        for (let i=0; i<artistList.length;i++){
-            index += 1
-            ajaxArtistList(artistList[i]);    
-        }
+    // if (artistList.length>0 ||albumList.length>0){
+    //     var index = musicList.length-1;
+    //     for (let i=0; i<artistList.length;i++){
+    //         index += 1
+    //         ajaxArtistList(artistList[i]);    
+    //     }
 
-        for (let i=0; i<albumList.length;i++){
-            index += 1
-            ajaxAlbumList(albumList[i]);
-        }
+    //     for (let i=0; i<albumList.length;i++){
+    //         index += 1
+    //         ajaxAlbumList(albumList[i]);
+    //     }
         // console.log(musicList);
-    };
+    // };
 });
 
 // 展现系统列表中任意首歌的歌曲信息
@@ -719,6 +746,8 @@ function addSheet(no, name, cover) {
 }
 // 清空歌单显示
 function clearSheet() {
+
+    // console.log('rem.sheetList:',rem.sheetList);
     rem.sheetList.html('');
 }
 
@@ -840,7 +869,9 @@ function initList() {
             musicList[i].item = [];
             if(musicList[i].id) {   // 列表ID已定义
                 // ajax获取列表信息
-                ajaxPlayList(musicList[i].id, i);
+                if(musicList[i].creatorID != 0){
+                    ajaxPlayList(musicList[i].id, i);
+                }
             } else {    // 列表 ID 未定义
                 if(!musicList[i].name) musicList[i].name = '未命名';
             }
@@ -930,22 +961,33 @@ function playerReaddata(key) {
 
 
 function switchPl(id){
+    clearSheet();
+
     switch(id) {
         case 'original':
             musicList = OriginalMusicList;
         break;
         case 'collection':
-            musicList = myList;
+            musicList = DefaultMusicList;
+            musicList = musicList.concat(myList);            
+            // musicList = myList;
         break;
         case 'playlist':
-            musicList = plList;
+            musicList = DefaultMusicList;
+            musicList = musicList.concat(plList);            
+            // musicList = plList;
         break;
         case 'album':
+            musicList = DefaultMusicList;
+            musicList = musicList.concat(myMusic);
+            // location.href = 'artist.html';
+        break;
+        case 'artist':
             location.href = 'artist.html';
         break;
     }
     // console.log(musicList);
-    clearSheet();
+    // clearSheet();
     // clearDislist();
     initList();
     dataBox("sheet");

@@ -321,6 +321,19 @@ function play(music) {
         refreshList();  // 更新列表显示
     }
     
+    // 優先使用 kuwo 播放
+    // var idx = myId.findIndexBy('music_id', music.id);
+    // var url ="";
+    // if (idx >= 0) {
+    //     var kuwo_id = myId[idx]["kuwo_id"];
+    //     url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";
+    // } else {
+    //     url = "https://link.hhtjim.com/163/" + music.id + ".mp3";
+    // }
+    // console.log(idx,url);
+    // music.url = url;
+
+
     try {
         rem.audio[0].pause();
         rem.audio.attr('src', music.url);

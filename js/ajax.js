@@ -96,6 +96,8 @@ function ajaxSearch() {
 // 音乐所在列表ID、音乐对应ID、回调函数
 function ajaxUrl(music, callback)
 {
+    
+    console.log('music.url:',music.url);
     // 已经有数据，直接回调
     if(music.url !== null && music.url !== "err" && music.url !== "") {
         callback(music);
@@ -200,7 +202,7 @@ function ajaxPlayList(lid, id, callback) {
         return true;
     }
     
-    musicList[id].isloading = true; // 更新状态：列表加载中
+    // musicList[id].isloading = true; // 更新状态：列表加载中
     
     $.ajax({
         type: mkPlayer.method, 
@@ -291,9 +293,11 @@ function ajaxPlayList(lid, id, callback) {
 // 参数：音乐ID，回调函数
 function ajaxLyric(music, callback) {
     lyricTip('歌词加载中...');
-    
+
     if(!music.lyric_id) callback('');  // 没有歌词ID，直接返回
     
+    console.log('music.lyric_id:',music.lyric_id);
+
     $.ajax({
         type: mkPlayer.method,
         url: mkPlayer.api,
@@ -305,6 +309,8 @@ function ajaxLyric(music, callback) {
                 console.debug("歌词获取成功");
             }
             
+            console.debug(jsonData);
+
             if (jsonData.lyric) {
                 callback(jsonData.lyric, music.lyric_id);    // 回调函数
             } else {

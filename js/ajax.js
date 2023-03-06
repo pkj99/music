@@ -296,7 +296,7 @@ function ajaxLyric(music, callback) {
 
     if(!music.lyric_id) callback('');  // 没有歌词ID，直接返回
     
-    console.log('music.lyric_id:',music.lyric_id);
+    // console.log('music.lyric_id:',music.lyric_id);
 
     $.ajax({
         type: mkPlayer.method,

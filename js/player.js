@@ -334,6 +334,13 @@ function play(music) {
     // music.url = url;
 
 
+    // var url = "https://cors-anywhere.herokuapp.com/"+music.url;
+	// if (url.includes('/kw/')){
+	// 	fetch( url, { redirect: 'manual' } )
+	// 		.then( res => url = res.headers.get('Location') );		
+	// }
+	// console.log(url);
+	
     try {
         rem.audio[0].pause();
         rem.audio.attr('src', music.url);

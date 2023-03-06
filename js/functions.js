@@ -105,6 +105,7 @@ $(function(){
     // 列表鼠标移过显示对应的操作按钮
     $(".music-list").on("mousemove",".list-item", function() {
         var num = parseInt($(this).data("no"));
+        console.log(musicList);
         var id = musicList[rem.dislist].item[num].id;
 
         var ids = getCookieByName('music');
@@ -154,7 +155,7 @@ $(function(){
                 ajaxUrl(musicList[rem.dislist].item[num], ajaxShare);
             break;
             case "cookie":   // 收藏
-                console.log(musicList);
+                
                 var source = 'music';
                 var id = musicList[rem.dislist].item[num].id;
                 var ids = getCookieByName(source);

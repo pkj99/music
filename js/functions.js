@@ -142,7 +142,25 @@ $(function(){
             break;
             case "cookie":   // 收藏
                 // thisMusic(musicList[rem.dislist].item[num].id);
-                setCookieBySourceId('music',musicList[rem.dislist].item[num].id);
+                // setCookieBySourceId('music',musicList[rem.dislist].item[num].id);
+                var ids = getCookieByName('music');
+                var idNew = ',' + id ;
+                const d = new Date();
+                d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+                let expires = "expires="+d.toUTCString();
+            
+                if (ids == null) { ids = '';}
+                if (ids.includes(idNew)){
+                    // document.getElementById('favorites').textContent = '收藏';
+                    // document.getElementById('favorites').className = 'btn btn-secondary';
+                    ids = ids.replace(idNew,'');
+                    document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+                } else {
+                    // document.getElementById('favorites').textContent = '已收藏';
+                    // document.getElementById('favorites').className = 'btn btn-danger';
+                    ids += idNew ;
+                    document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+                }
             break;
         }
         return true;

@@ -673,7 +673,7 @@ function dbMusicList(lid, callback) {
 
 
 
-function CookiedbMusicList() {
+function CookieMusicList() {
     var db_url = 'https://pkj99.github.io/music/db/music.db';
     id = 0;
     var ids = getCookieByName('music');

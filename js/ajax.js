@@ -678,10 +678,10 @@ function CookieMusicList(callback) {
     id = 0;
     var ids = getCookieByName('music');
     ids = '0' + ids;
-    console.log(ids);
-    
+    // console.log(ids);
+
     var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url from musics a, albums b, artists c where a.album_id = b.album_id and b.artist_id = c.artist_id and a.music_id in ("+ids+")";
-    console.log(sqlstring);
+    // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';
@@ -721,7 +721,7 @@ function CookieMusicList(callback) {
         // 存储列表信息
         musicList = DefaultMusicList;
         musicList = musicList.concat(tempList);        
-        console.log(musicList);
+        // console.log(musicList);
 
         // // 首页显示默认列表
         // // if(id == mkPlayer.defaultlist) loadList(id);

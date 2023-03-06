@@ -114,9 +114,10 @@ $(function(){
                 target.html() + 
                 '</span>' +
                 '<div class="list-menu" data-no="' + num + '">' +
-                    '<span class="list-icon icon-play" data-function="play" title="点击播放这首歌"></span>' +
-                    '<span class="list-icon icon-download" data-function="download" title="点击下载这首歌"></span>' +
-                    '<span class="list-icon icon-share" data-function="share" title="点击分享这首歌"></span>' +
+                    '<span class="list-icon icon-play" data-function="play" title="播放"></span>' +
+                    '<span class="list-icon icon-download" data-function="download" title="下載"></span>' +
+                    // '<span class="list-icon icon-share" data-function="share" title="分享"></span>' +
+                    '<span class="list-icon icon-share" data-function="cookie" title="收藏"></span>' +
                 '</div>';
                 target.html(html);
             // }
@@ -138,6 +139,10 @@ $(function(){
             case "share":   // 分享
                 // ajax 请求数据
                 ajaxUrl(musicList[rem.dislist].item[num], ajaxShare);
+            break;
+            case "cookie":   // 收藏
+                // thisMusic(musicList[rem.dislist].item[num].id);
+                setCookieBySourceId('music',musicList[rem.dislist].item[num].id);
             break;
         }
         return true;
@@ -432,7 +437,7 @@ function thisShare(obj) {
 // 收藏这首歌
 function thisMusic(obj) {
     // alert(musicList[$(obj).data("list")].item[$(obj).data("index")].id);
-    setCookieBySourceId('music',musicList[$(obj).data("list")].item[$(obj).data("index")].id)
+    setCookieBySourceId('music',musicList[$(obj).data("list")].item[$(obj).data("index")].id);
 }
 
 
@@ -655,7 +660,7 @@ function addListbar(types) {
         break;
         
         case "nodata":  // 列表中没有内容
-            html = '<div class="list-item text-center" id="list-foot">可能是个假列表，什么也没有</div>';
+            html = '<div class="list-item text-center" id="list-foot">列表中没有内容</div>';
         break;
         
         case "clear":   // 清空列表

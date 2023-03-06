@@ -105,9 +105,9 @@ $(function(){
     // 列表鼠标移过显示对应的操作按钮
     $(".music-list").on("mousemove",".list-item", function() {
         var num = parseInt($(this).data("no"));
-        console.log(musicList);
-        var id = musicList[rem.dislist].item[num].id;
+        if(isNaN(num)) return false;
 
+        var id = musicList[rem.dislist].item[num].id;
         var ids = getCookieByName('music');
         var cookieStr = '';
         if (ids == null) { ids = '';}
@@ -118,7 +118,6 @@ $(function(){
         }
 
 
-        if(isNaN(num)) return false;
         // 还没有追加菜单则加上菜单
         if(!$(this).data("loadmenu")) {
             // if (musicList[rem.dislist].item[num].url == 1){

@@ -988,7 +988,6 @@ function switchPl(id){
             location.href = 'artist.html';
         break;
         case 'cookie':
-            alert('cookie');
             CookieMusicList();
         break;
     }

@@ -111,13 +111,9 @@ $(function(){
         var cookieStr = '';
         if (ids == null) { ids = '';}
         if (ids.includes(',' + id)){
-            cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>'
-            // document.getElementById(id).title = '已收藏';
-            // document.getElementById(id).className = 'list-icon icon-share-click';
+            cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>';
         } else {
-            cookieStr = '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>'
-            // document.getElementById(id).title = '收藏';
-            // document.getElementById(id).className = 'list-icon icon-share';
+            cookieStr = '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>';
         }
 
 

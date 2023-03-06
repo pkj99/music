@@ -154,6 +154,7 @@ $(function(){
                 ajaxUrl(musicList[rem.dislist].item[num], ajaxShare);
             break;
             case "cookie":   // 收藏
+                console.log(musicList);
                 var source = 'music';
                 var id = musicList[rem.dislist].item[num].id;
                 var ids = getCookieByName(source);

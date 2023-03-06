@@ -105,6 +105,7 @@ $(function(){
     // 列表鼠标移过显示对应的操作按钮
     $(".music-list").on("mousemove",".list-item", function() {
         var num = parseInt($(this).data("no"));
+        var id = musicList[rem.dislist].item[num].id;
         if(isNaN(num)) return false;
         // 还没有追加菜单则加上菜单
         if(!$(this).data("loadmenu")) {
@@ -117,7 +118,7 @@ $(function(){
                     '<span class="list-icon icon-play" data-function="play" title="播放"></span>' +
                     '<span class="list-icon icon-download" data-function="download" title="下載"></span>' +
                     // '<span class="list-icon icon-share" data-function="share" title="分享"></span>' +
-                    '<span class="list-icon icon-share" data-function="cookie" title="收藏"></span>' +
+                    '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>' +
                 '</div>';
                 target.html(html);
             // }
@@ -143,7 +144,9 @@ $(function(){
             case "cookie":   // 收藏
                 // thisMusic(musicList[rem.dislist].item[num].id);
                 // setCookieBySourceId('music',musicList[rem.dislist].item[num].id);
-                var ids = getCookieByName('music');
+                var source = 'music';
+                var id = musicList[rem.dislist].item[num].id;
+                var ids = getCookieByName(source);
                 var idNew = ',' + id ;
                 const d = new Date();
                 d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
@@ -151,13 +154,13 @@ $(function(){
             
                 if (ids == null) { ids = '';}
                 if (ids.includes(idNew)){
-                    // document.getElementById('favorites').textContent = '收藏';
-                    // document.getElementById('favorites').className = 'btn btn-secondary';
+                    document.getElementById(id).title = '收藏';
+                    document.getElementById(id).className = 'list-icon icon-share';
                     ids = ids.replace(idNew,'');
                     document.cookie = source + '=' + ids + ";" + expires + ";path=/";
                 } else {
-                    // document.getElementById('favorites').textContent = '已收藏';
-                    // document.getElementById('favorites').className = 'btn btn-danger';
+                    document.getElementById(id).title = '已收藏';
+                    document.getElementById(id).className = 'list-icon icon-share-click';
                     ids += idNew ;
                     document.cookie = source + '=' + ids + ";" + expires + ";path=/";
                 }

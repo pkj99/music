@@ -21,6 +21,7 @@ var mkPlayer = {
     debug: true   // 是否开启调试模式(true/false)
 };
 
+var myMusic = [];
 
 
 /*******************************************************
@@ -288,20 +289,49 @@ function initAudio() {
 
 
 
-function GetUrl(url,callback)
+function GetUrl(id,callback)
 {
     var x = new XMLHttpRequest();
-    x.open('GET', 'https://cors-anywhere.herokuapp.com/'+url);
+    x.open('GET', 'https://cors-anywhere.herokuapp.com/https://link.hhtjim.com/163/'+id+'.mp3');
     x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    x.send();
     x.onreadystatechange = () => {
         if (x.readyState === x.HEADERS_RECEIVED) {
                 var mp3Url = x.getResponseHeader('x-final-url');
-                // console.log(mp3Url);
+                console.log(mp3Url);
+                // console.log(myId);
+                if (mp3Url.includes('vip_link')){
+                    var i = myId.findIndexBy('music_id', id);
+                    if ( i >= 0 ){
+                        var kuwo_id = myId[i]["kuwo_id"];
+                        KuwoUrl(kuwo_id,function(mp3Url){
+                            music.url = mp3Url;
+                        })	
+                    }
+                }
                 if(callback) callback(mp3Url);
             }
           }
+    x.send();
 }
+
+function KuwoUrl(id,callback)
+{
+    var x = new XMLHttpRequest();
+    x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?=type=music&mid='+id);
+    x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    x.onload = () => {
+        console.log(x.responseText);
+        var j = JSON.parse(x.responseText);
+        if (j.success){
+            console.log(j.data.url);
+            mp3Url = j.data.url;
+            if(callback) callback(mp3Url);
+        }
+    }
+    x.send();
+}
+
+
 
 // 播放音乐
 // 参数：要播放的音乐数组
@@ -321,7 +351,20 @@ function play(music) {
         'pic: "' + music.pic + '",\n' +
         'url: "' + music.url + '"');
     }
+
     
+	if (music.url.includes('/kw/')){
+		KuwoUrl(music.id,function(mp3Url){
+            music.url = mp3Url;
+        })	
+	}
+	if (music.url.includes('/163/')){
+		GetUrl(music.id,function(mp3Url){
+            music.url = mp3Url;
+        })	
+	}
+
+
     // 遇到错误播放下一首歌
     if(music.url == "err") {
         audioErr(); // 调用错误处理函数
@@ -338,12 +381,6 @@ function play(music) {
     }
     
 
-	// if (music.url.includes('/kw/')){
-	// 	GetUrl(music.url,function(mp3Url){
-    //         music.url = mp3Url;
-    //     })	
-	// }
-	
     try {
         rem.audio[0].pause();
         rem.audio.attr('src', music.url);

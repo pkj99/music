@@ -419,7 +419,7 @@ function searchBox() {
     // '       <label><input type="radio" name="source" value="baidu"> 百度</label>' + 
     // '   </div>' + 
     // '</div></form>';
-    // '</div><div style="text-align: center;"><a href="artist.html">專輯列表</a></div><br><img src="images/music_qr.png" width="300px"></form>';
+    '</div><div style="text-align: center;"><a href="https://cors-anywhere.herokuapp.com/corsdemo" target=_blank>Enable CORS</a>' +
     '</div><img src="images/music_qr.png" width="300px"></form>';
 
     layer.open({
@@ -1018,6 +1018,13 @@ function switchPl(id){
         break;
         case 'album':
             musicList = DefaultMusicList;
+            myMusic = myMusic163;
+            musicList = musicList.concat(myMusic);
+            // location.href = 'artist.html';
+        break;
+        case 'kuwo':
+            musicList = DefaultMusicList;
+            myMusic = myMusicKuwo;
             musicList = musicList.concat(myMusic);
             // location.href = 'artist.html';
         break;

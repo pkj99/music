@@ -350,13 +350,11 @@ function play(music) {
     // music.url = url;
 
 
-    var url = music.url;
 	if (music.url.includes('/kw/')){
 		GetUrl(music.url,function(mp3Url){
             music.url = mp3Url;
         })	
 	}
-	// alert(url);
 	
     try {
         rem.audio[0].pause();

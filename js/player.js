@@ -354,10 +354,10 @@ function play(music) {
 	if (music.url.includes('/kw/')){
 		GetUrl(music.url, function(mp3Url){
             music.url = mp3Url;
-            console.log(mp3Url);
+            // console.log(mp3Url);
         })	
 	}
-	console.log(music.url);
+	// console.log(music.url);
 	
     try {
         rem.audio[0].pause();

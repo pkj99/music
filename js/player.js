@@ -287,6 +287,22 @@ function initAudio() {
 }
 
 
+
+function GetUrl(url,callback)
+{
+    var x = new XMLHttpRequest();
+    x.open('GET', 'https://cors-anywhere.herokuapp.com/'+url);
+    x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    x.send();
+    x.onreadystatechange = () => {
+        if (x.readyState === x.HEADERS_RECEIVED) {
+                var mp3Url = x.getResponseHeader('x-final-url');
+                // console.log(mp3Url);
+                if(callback) callback(mp3Url);
+            }
+          }
+}
+
 // 播放音乐
 // 参数：要播放的音乐数组
 function play(music) {
@@ -334,12 +350,14 @@ function play(music) {
     // music.url = url;
 
 
-    // var url = "https://cors-anywhere.herokuapp.com/"+music.url;
-	// if (url.includes('/kw/')){
-	// 	fetch( url, { redirect: 'manual' } )
-	// 		.then( res => url = res.headers.get('Location') );		
-	// }
-	// console.log(url);
+    // var url = music.url;
+	if (music.url.includes('/kw/')){
+		GetUrl(music.url, function(mp3Url){
+            music.url = mp3Url;
+            console.log(mp3Url);
+        })	
+	}
+	console.log(music.url);
 	
     try {
         rem.audio[0].pause();

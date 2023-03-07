@@ -364,7 +364,7 @@ function play(music) {
         rem.audio.attr('src', music.url);
         rem.audio[0].play();
     } catch(e) {
-        windows.location = music.url;
+        window.location = music.url;
         audioErr(); // 调用错误处理函数
         return;
     }

@@ -350,21 +350,20 @@ function play(music) {
     // music.url = url;
 
 
-    // var url = music.url;
+    var url = music.url;
 	if (music.url.includes('/kw/')){
-		GetUrl(music.url, function(mp3Url){
+		GetUrl(music.url,function(mp3Url){
             music.url = mp3Url;
-            // console.log(mp3Url);
         })	
 	}
-	// console.log(music.url);
+	// alert(url);
 	
     try {
         rem.audio[0].pause();
         rem.audio.attr('src', music.url);
         rem.audio[0].play();
     } catch(e) {
-        window.location = music.url;
+        window.location.href = music.url;
         audioErr(); // 调用错误处理函数
         return;
     }

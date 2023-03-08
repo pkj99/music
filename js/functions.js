@@ -139,7 +139,7 @@ $(function(){
     });
     
     // 列表中的菜单点击
-    $(".music-list").on("click",".icon-play,.icon-download,.icon-share", function() {
+    $(".music-list").on("click",".icon-play,.icon-download,.icon-share,.icon-share-click", function() {
         var num = parseInt($(this).parent().data("no"));
         if(isNaN(num)) return false;
         switch($(this).data("function")) {
@@ -341,24 +341,15 @@ $(function(){
     clearSheet();
     playerSavedata('playing', '');
     playerSavedata('his', '');
-    initList(); 
 
-    // OriginalMusicList = musicList;
-    // console.log(albumList.length);
-    // console.log(musicList.length);
-    // if (artistList.length>0 ||albumList.length>0){
-    //     var index = musicList.length-1;
-    //     for (let i=0; i<artistList.length;i++){
-    //         index += 1
-    //         ajaxArtistList(artistList[i]);    
-    //     }
 
-    //     for (let i=0; i<albumList.length;i++){
-    //         index += 1
-    //         ajaxAlbumList(albumList[i]);
-    //     }
-        // console.log(musicList);
-    // };
+    switchPl('playlist')
+
+    // musicList = DefaultMusicList;
+    // musicList = musicList.concat(plList);
+
+    // initList(); 
+
 });
 
 // 展现系统列表中任意首歌的歌曲信息

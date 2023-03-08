@@ -214,6 +214,8 @@ function ajaxPlayList(lid, id, callback) {
             musicList[id].isloading = false;    // 列表已经加载完了
         },  // complete
         success: function(jsonData){
+            // console.log(jsonData);
+            if (jsonData == undefined){ return false; }
             // 存储歌单信息
             var tempList = {
                 id: lid,    // 列表的网易云 id

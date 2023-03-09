@@ -348,7 +348,7 @@ $(function(){
     // musicList = DefaultMusicList;
     // musicList = musicList.concat(plList);
 
-    // initList(); 
+    //initList(); 
 
 });
 
@@ -946,6 +946,7 @@ function clearUserlist() {
 
 // 清空当前显示的列表
 function clearDislist() {
+	if (rem.dislist == undefined) { return }
     musicList[rem.dislist].item.length = 0;  // 清空内容
     if(rem.dislist == 1) {  // 正在播放列表
         playerSavedata('playing', '');  // 清空本地记录
@@ -1022,11 +1023,15 @@ function switchPl(id){
         case 'artist':
             location.href = 'artist.html';
         break;
+        case 'random':
+			//musicList = DefaultMusicList;
+            RandomMusicList(function(List){musicList=List; loadList(3);});
+        break;
         case 'cookie':
             CookieMusicList();
         break;
     }
-    // console.log(musicList);
+    //console.log(rem);
     // clearSheet();
     // clearDislist();
     initList();

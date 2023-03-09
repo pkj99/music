@@ -200,7 +200,7 @@ body {
     filter: alpha(opacity=80);
     cursor: pointer;
     font-size: 14px;
-    padding: 6px 25px;
+    padding: 6px 16px;
     margin: 0 2px;
 }
 .btn:hover {

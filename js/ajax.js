@@ -731,7 +731,7 @@ function CookieMusicList(callback) {
 
         // loadList(3);
 
-        if(callback) callback(id);    // 调用回调函数
+        if(callback) callback(musicList);    // 调用回调函数
         
         // // 改变前端列表
         // $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面

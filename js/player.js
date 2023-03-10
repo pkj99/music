@@ -47,9 +47,8 @@ function audioErr() {
 			rem.audio[0].play(); 
 			return;
 		} catch(e) {
-			window.location.href = music.url;
-			audioErr(); // 调用错误处理函数
-			return;
+            layer.msg('当前歌曲播放失败，自动播放下一首');
+            nextMusic();    // 切换下一首歌
 		}
 	} 
 	

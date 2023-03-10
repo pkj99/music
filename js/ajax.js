@@ -723,7 +723,7 @@ function CookieMusicList(callback) {
 		
         // 存储列表信息
         musicList = DefaultMusicList;
-        musicList = musicList.concat(tempList);        
+        musicList = musicList.concat(tempList);
         // console.log(musicList);
 
         // // 首页显示默认列表

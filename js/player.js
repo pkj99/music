@@ -54,7 +54,6 @@ function audioErr() {
 	} 
 	
 
-
     if(rem.errCount > 10) { // 连续播放失败的歌曲过多
         layer.msg('似乎出了点问题~播放已停止');
         rem.errCount = 0;

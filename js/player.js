@@ -274,7 +274,9 @@ function listClick(no) {
 
     } else {    // 普通列表
         // 与之前不是同一个列表了（在播放别的列表的歌曲）或者是首次播放
-        if((rem.dislist !== rem.playlist && rem.dislist !== 1) || rem.playlist === undefined) {
+
+        // if((rem.dislist !== rem.playlist && rem.dislist !== 1) || rem.playlist === undefined) {
+            
             rem.playlist = rem.dislist;     // 记录正在播放的列表
             musicList[1].item = musicList[rem.playlist].item; // 更新正在播放列表中音乐
             
@@ -283,7 +285,7 @@ function listClick(no) {
             
             // 刷新正在播放的列表的动画
             refreshSheet();     // 更改正在播放的列表的显示
-        }
+        // }
     }
     
     playList(tmpid);

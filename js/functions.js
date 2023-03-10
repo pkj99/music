@@ -60,6 +60,8 @@ $(function(){
     
     // 顶部按钮点击处理
     $(".btn").click(function(){
+		//console.log(musicList);
+		//console.log(rem.playlist);
         switch($(this).data("action")) {
             case "player":    // 播放器
                 dataBox("player");
@@ -72,8 +74,68 @@ $(function(){
                 loadList(1); // 显示正在播放列表
             break;
             
-            case "sheet":   // 播放列表
+            case "sheet":   // 播放列表				
                 dataBox("sheet");    // 在主界面显示出音乐专辑
+            break;
+
+            case "original":   // 排行
+                clearSheet();
+                musicList = OriginalMusicList;
+                initList();
+                dataBox("sheet");
+            break;
+
+            case "collection":   // 精選
+                clearSheet();
+                musicList = DefaultMusicList;
+                musicList = musicList.concat(myList);
+                initList();
+                dataBox("sheet");
+            break;
+
+            case "playlist":   // 歌單
+                clearSheet();
+                musicList = DefaultMusicList;
+                musicList = musicList.concat(plList);            
+                initList();
+                dataBox("sheet");
+            break;
+
+            case "album":   // 專輯
+                clearSheet();
+                musicList = DefaultMusicList;
+                myMusic = myMusic163;
+                musicList = musicList.concat(myMusic);
+                initList();
+                dataBox("sheet");
+            break;
+
+            case "random":   // 隨機列表
+				RandomMusicList(function(List){
+					clearSheet();
+                    musicList=List;
+                    initList();
+                    loadList(3);
+				});    
+            break;
+
+            case "recent":   // 隨機列表
+				RecentMusicList(function(List){
+					clearSheet();
+                    musicList=List;
+                    initList();
+                    loadList(3);
+				});    
+            break;
+
+
+            case "cookie":   // 收藏列表
+                CookieMusicList(function(List){
+                    clearSheet();
+                    musicList=List;
+                    initList();
+                    loadList(3);
+                });
             break;
 
         }
@@ -192,7 +254,7 @@ $(function(){
         var num = parseInt($(this).parent().data("no"));
         // 是用户列表，但是还没有加载数据
 
-        console.log(musicList[num].id,musicList[num].creatorID);
+        console.log(num,musicList[num].id,musicList[num].creatorID);
         if(musicList[num].creatorID == 0){
             // switchPl('music');
 
@@ -339,15 +401,19 @@ $(function(){
 
     // 初始化播放列表
     clearSheet();
-    playerSavedata('playing', '');
-    playerSavedata('his', '');
+    musicList = DefaultMusicList;
+    musicList = musicList.concat(plList);            
+    initList();
+    dataBox("sheet");
+
+    // switchPl('playlist');
 
 
-    switchPl('playlist')
-
+    //clearSheet();
+    //playerSavedata('playing', '');
+    //playerSavedata('his', '');
     // musicList = DefaultMusicList;
     // musicList = musicList.concat(plList);
-
     //initList(); 
 
 });
@@ -366,7 +432,6 @@ function musicInfo(list, index) {
     tempStr += '<br><span class="info-title">操作：</span>' + 
     '<span class="info-btn" onclick="thisDownload(this)" data-list="' + list + '" data-index="' + index + '">下载</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>' +
-
     '<span style="margin-left: 10px" class="info-btn" onclick="thisMusic(this)" data-list="' + list + '" data-index="' + index + '" id="favorites">收藏</span>' ;
     
     layer.open({
@@ -609,7 +674,7 @@ function loadList(list) {
             addItem(i + 1, tmpMusic.name, tmpMusic.artist, tmpMusic.album);
             
             // 音乐链接均有有效期限制,重新显示列表时清空处理
-            if(list == 1 || list == 2) tmpMusic.url = "";
+            // if(list == 1 || list == 2) tmpMusic.url = "";
         }
         
         // 列表加载完成后的处理

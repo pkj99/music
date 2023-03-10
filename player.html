@@ -150,11 +150,43 @@ function AjaxUrl(id,callback)
 }
 
 
-// id=263179506
-id=6186418
-KuwoUrl(id,function(mp3Url){
-    console.log(mp3Url);
-});
+function MVUrl(id,callback)
+{
+    $.ajax({ 
+        type: 'GET', 
+        url: 'https://cors-anywhere.herokuapp.com/https://music.163.com/mv',
+        data: "id=" + id,
+		contentType : 'application/json; charset=utf-8',
+        dataType : "html",
+        success: function(result){
+			var s0 = result.split('data-flashvars="hurl=');
+			var s1 = s0[1].split('&murl=');
+			var url = decodeURIComponent(s1[0]);
+            console.log(url);
+			//document.write(url);
+			location.href = url;
+            return true;
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest + textStatus + errorThrown);
+        }
+    }); 
+    
+}
+
+
+
+
+//id=10798499
+//MVUrl(id,function(mp3Url){
+//    console.log(mp3Url);
+//});
+
+
+//id=6186418
+//KuwoUrl(id,function(mp3Url){
+//    console.log(mp3Url);
+//});
 
 // var url='https://link.hhtjim.com/kw/263179506.mp3';
 // GetUrl(url,function(mp3Url){
@@ -217,7 +249,7 @@ KuwoUrl(id,function(mp3Url){
 
     if (urlParams["id"] != null) { 
         id = urlParams["id"];
-        PlayUrl(id);
+        MVUrl(id);
     }
 
 </script>

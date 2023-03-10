@@ -36,6 +36,25 @@ function audioErr() {
     // 没播放过，直接跳过
     if(rem.playlist === undefined) return true;
     
+
+	var music = musicList[rem.playlist].item[rem.playid];
+	if(music.url_id !=0){
+		music.url = 'https://link.hhtjim.com/kw/'+music.url_id+'.mp3';
+		layer.msg('試聽連結, 切換到 KUWO 播放 ...');
+		try {
+			rem.audio[0].pause();
+			rem.audio.attr('src', music.url);
+			rem.audio[0].play(); 
+			return;
+		} catch(e) {
+			window.location.href = music.url;
+			audioErr(); // 调用错误处理函数
+			return;
+		}
+	} 
+	
+
+
     if(rem.errCount > 10) { // 连续播放失败的歌曲过多
         layer.msg('似乎出了点问题~播放已停止');
         rem.errCount = 0;
@@ -178,13 +197,12 @@ function autoNextMusic() {
 
 // 歌曲时间变动回调函数
 function updateProgress(){
-
     var music = musicList[rem.playlist].item[rem.playid]
     if (music != undefined){
         if ( music.url.includes('/163/') & rem.audio[0].duration<50 ){
             if(music.url_id !=0){
                 music.url = 'https://link.hhtjim.com/kw/'+music.url_id+'.mp3';
-                layer.msg('VIP Link 試聽連結, 切換到 KUWO 播放 ...');
+                layer.msg('試聽連結, 切換到 KUWO 播放 ...');
 
                 try {
                     rem.audio[0].pause();
@@ -255,6 +273,7 @@ function listClick(no) {
         
         // 正在播放 列表项已发生变更，进行保存
         playerSavedata('playing', musicList[1].item);   // 保存正在播放列表
+
     } else {    // 普通列表
         // 与之前不是同一个列表了（在播放别的列表的歌曲）或者是首次播放
         if((rem.dislist !== rem.playlist && rem.dislist !== 1) || rem.playlist === undefined) {
@@ -295,7 +314,9 @@ function playList(id) {
     
     // 如果链接为空，则 ajax 获取数据后再播放
     if(musicList[1].item[id].url === null || musicList[1].item[id].url === "") {
-        ajaxUrl(musicList[1].item[id], play);
+        console.log(id,musicList[1].item[id].url)
+        console.log(musicList);
+        // ajaxUrl(musicList[1].item[id], play);
     } else {
         play(musicList[1].item[id]);
     }

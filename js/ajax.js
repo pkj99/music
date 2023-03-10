@@ -600,7 +600,6 @@ function ajaxArtistList(lid, callback) {
 }
 
 
-
 function dbMusicList(lid, callback) {
 
     if(!lid) return false;
@@ -682,7 +681,7 @@ function CookieMusicList(callback) {
     ids = '0' + ids;
     // console.log(ids);
 
-    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url from musics a, albums b, artists c where a.album_id = b.album_id and b.artist_id = c.artist_id and a.music_id in ("+ids+")";
+    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and a.music_id in ("+ids+")";
     // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
@@ -706,13 +705,15 @@ function CookieMusicList(callback) {
         };
 
         for (var i = 0; i < data.length; i++) {
+			var kuwo_id = data[i][8];
+			if (kuwo_id == null) {kuwo_id = 0}
             tempList.item[i] =  {
                 id: data[i][0],  // 音乐ID
                 name: data[i][1],  // 音乐名字
                 artist: data[i][5], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
-                url_id: data[i][0],  // 链接ID
+                url_id: kuwo_id,  // 链接ID
                 pic_id: data[i][4],  // 封面ID
                 lyric_id: data[i][0],  // 歌词ID
                 pic: data[i][4] + "?param=300y300",    // 专辑图片
@@ -728,9 +729,9 @@ function CookieMusicList(callback) {
         // // 首页显示默认列表
         // // if(id == mkPlayer.defaultlist) loadList(id);
 
-        loadList(3);
+        // loadList(3);
 
-        // if(callback) callback(id);    // 调用回调函数
+        if(callback) callback(id);    // 调用回调函数
         
         // // 改变前端列表
         // $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面
@@ -745,12 +746,11 @@ function CookieMusicList(callback) {
 }
 
 
-
 function RandomMusicList(callback) {
     var db_url = 'https://pkj99.github.io/music/db/music.db';
     id = 0;
 
-    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url from musics a, albums b, artists c where a.album_id = b.album_id and b.artist_id = c.artist_id and a.music_id in (select music_id from musics where url = 1 order by random() limit 50)";
+    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and a.music_id in (select music_id from musics where url = 1 order by random() limit 50)";
     // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
@@ -774,13 +774,84 @@ function RandomMusicList(callback) {
         };
 
         for (var i = 0; i < data.length; i++) {
+			var kuwo_id = data[i][8];
+			if (kuwo_id == null) {kuwo_id = 0}
             tempList.item[i] =  {
                 id: data[i][0],  // 音乐ID
                 name: data[i][1],  // 音乐名字
                 artist: data[i][5], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
-                url_id: data[i][0],  // 链接ID
+                url_id: kuwo_id,  // 链接ID
+                pic_id: data[i][4],  // 封面ID
+                lyric_id: data[i][0],  // 歌词ID
+                pic: data[i][4] + "?param=300y300",    // 专辑图片
+                url: "https://link.hhtjim.com/163/" + data[i][0] + ".mp3"   // mp3链接
+            };
+        }
+		
+        // 存储列表信息
+        musicList = DefaultMusicList;
+        musicList = musicList.concat(tempList);        
+        // console.log(musicList);
+
+        // // 首页显示默认列表
+        // // if(id == mkPlayer.defaultlist) loadList(id);
+		
+        //loadList(3);
+		
+        if(callback) callback(musicList);    // 调用回调函数
+        
+        // // 改变前端列表
+        // $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面
+        // $(".sheet-item[data-no='" + id + "'] .sheet-name").html(tempList.name);     // 专辑名字
+        
+        // 调试信息输出
+        if(mkPlayer.debug) {
+            console.debug("歌单 [" +tempList.name+ "] 中的音乐获取成功");
+        }
+    };
+    xhr.send();
+}
+
+
+function RecentMusicList(callback) {
+    var db_url = 'https://pkj99.github.io/music/db/music.db';
+    id = 0;
+
+    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and c.group_id < 2000 and a.music_name not like '%伴奏%' and a.music_name not like '%试听%' order by b.release_date desc limit 100";
+    // console.log(sqlstring);
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', db_url, true);
+    xhr.responseType = 'arraybuffer';
+
+    xhr.onload = e => {
+        const uInt8Array = new Uint8Array(xhr.response);
+        const db = new SQL.Database(uInt8Array);
+        const contents = db.exec(sqlstring);
+        var data = JSON.parse(JSON.stringify(contents));
+        if (typeof data[0] == "undefined" ) { data = [];} else { data = data[0].values; }        
+
+        // 存储歌单信息
+        var tempList = {
+            id: 0,    // 列表的网易云 id
+            name: '最近新歌100首',   // 列表名字
+            cover: 'images/player_cover.png',   // 列表封面
+            creatorName: '',   // 列表创建者名字
+            creatorAvatar: '',   // 列表创建者头像
+            item: []
+        };
+
+        for (var i = 0; i < data.length; i++) {
+			var kuwo_id = data[i][8];
+			if (kuwo_id == null) {kuwo_id = 0}
+            tempList.item[i] =  {
+                id: data[i][0],  // 音乐ID
+                name: data[i][1],  // 音乐名字
+                artist: data[i][5], // 艺术家名字
+                album: data[i][3],    // 专辑名字
+                source: "netease",     // 音乐来源
+                url_id: kuwo_id,  // 链接ID
                 pic_id: data[i][4],  // 封面ID
                 lyric_id: data[i][0],  // 歌词ID
                 pic: data[i][4] + "?param=300y300",    // 专辑图片

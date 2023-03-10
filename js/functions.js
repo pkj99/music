@@ -855,7 +855,7 @@ function sheetBar() {
 
     barHtml += '<span><a href="https://cors-anywhere.herokuapp.com/corsdemo"> [corsdemo] </a></span>';
 
-    barHtml = '<span><a href="/"> Music Online Player </a></span>';
+    barHtml = '<span><a href="artist.html"> Artists List </a></span>';
 
     barHtml = '<span id="sheet-bar"><div class="clear-fix"></div>' +
     '<div id="user-login" class="sheet-title-bar">' + barHtml + 

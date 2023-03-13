@@ -37,20 +37,21 @@ function audioErr() {
     if(rem.playlist === undefined) return true;
     
 
-	var music = musicList[rem.playlist].item[rem.playid];
-	if(music.url_id !=0){
-		music.url = 'https://link.hhtjim.com/kw/'+music.url_id+'.mp3';
-		layer.msg('試聽連結, 切換到 KUWO 播放 ...');
-		try {
-			rem.audio[0].pause();
-			rem.audio.attr('src', music.url);
-			rem.audio[0].play(); 
-			return;
-		} catch(e) {
-            layer.msg('当前歌曲播放失败，自动播放下一首');
-            nextMusic();    // 切换下一首歌
-		}
-	} 
+	// var music = musicList[rem.playlist].item[rem.playid];
+	// if(music.url_id !=0){
+	// 	music.url = 'https://link.hhtjim.com/kw/'+music.url_id+'.mp3';
+	// 	layer.msg('試聽連結, 切換到 KUWO 播放 ...');
+	// 	try {
+	// 		rem.audio[0].pause();
+	// 		rem.audio.attr('src', music.url);
+	// 		rem.audio[0].play();
+    //         rem.errCount++; 
+	// 		return;
+	// 	} catch(e) {
+    //         layer.msg('当前歌曲播放失败，自动播放下一首');
+    //         nextMusic();    // 切换下一首歌
+	// 	}
+	// } 
 	
 
     if(rem.errCount > 10) { // 连续播放失败的歌曲过多
@@ -196,32 +197,33 @@ function autoNextMusic() {
 // 歌曲时间变动回调函数
 function updateProgress(){
     var music = musicList[rem.playlist].item[rem.playid]
-    if (music != undefined){
-        // console.log(rem.audio[0].duration,music.url_id);
-        if ( music.url.includes('/163/') & rem.audio[0].duration<50 ){
-            if(music.url_id !=0){
-                music.url = 'https://link.hhtjim.com/kw/'+music.url_id+'.mp3';
-                layer.msg('試聽連結, 切換到 KUWO 播放 ...');
 
-                try {
-                    rem.audio[0].pause();
-                    rem.audio.attr('src', music.url);
-                    rem.audio[0].play(); 
-                    return;
-                } catch(e) {
-                    // window.location.href = music.url;
-                    audioErr(); // 调用错误处理函数
-                    return;
-                }
-            } 
-        }
+    // if (music != undefined){
+    //     // console.log(music.url,rem.audio[0].duration,music.url_id);
+    //     if ( music.url.includes('/163/') & rem.audio[0].duration<50 ){
+    //         if(music.url_id !=0){
+    //             music.url = 'https://link.hhtjim.com/kw/'+music.url_id+'.mp3';
+    //             layer.msg('試聽連結, 切換到 KUWO 播放 ...');
+                
+    //             try {
+    //                 rem.audio[0].pause();
+    //                 rem.audio.attr('src', music.url);
+    //                 rem.audio[0].play(); 
+    //                 return;
+    //             } catch(e) {
+    //                 // window.location.href = music.url;
+    //                 audioErr(); // 调用错误处理函数
+    //                 return;
+    //             }
+    //         } 
+    //     }
 
-        if ( music.url.includes('/kw/') & rem.audio[0].duration<50 ){
-            layer.msg('連結失效, 播放下一首');
-            nextMusic();
-            return;
-        }
-    }
+    //     if ( music.url.includes('/kw/') & rem.audio[0].duration<50 ){
+    //         layer.msg('連結失效, 播放下一首');
+    //         nextMusic();
+    //         return;
+    //     }
+    // }
 
 
     // 暂停状态不管
@@ -337,37 +339,6 @@ function initAudio() {
     rem.audio[0].addEventListener('error', audioErr);   // 播放器错误处理
 }
 
-
-
-function GetUrl(id,kuwo_id,callback)
-{
-    var x = new XMLHttpRequest();
-    x.open('GET', 'https://cors-anywhere.herokuapp.com/https://link.hhtjim.com/163/'+id+'.mp3',true);
-    x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    x.send();
-    x.onreadystatechange = () => {
-        if (x.readyState === x.HEADERS_RECEIVED) {
-                
-                var mp3Url = x.getResponseHeader('x-final-url');
-                // console.log(mp3Url);
-                // console.log(myId);
-                if (mp3Url.includes('vip_link')){
-                    if (kuwo_id != 0){
-                        mp3Url = 'https://link.hhtjim.com/kw/'+kuwo_id+'.mp3'
-                    }
-                    // var i = myId.findIndexBy('music_id', id);
-                    // if ( i >= 0 ){
-                    //     var kuwo_id = myId[i]["kuwo_id"];
-                    //     KuwoUrl(kuwo_id,function(mp3Url){
-                    //         music.url = mp3Url;
-                    //     })	
-                    // }
-                }
-                if(callback) callback(mp3Url);
-            }
-        }
-}
-
 function KuwoUrl(id,callback)
 {
     var x = new XMLHttpRequest();
@@ -384,7 +355,6 @@ function KuwoUrl(id,callback)
     }
     x.send();
 }
-
 
 
 // 播放音乐
@@ -405,26 +375,6 @@ function play(music) {
         'pic: "' + music.pic + '",\n' +
         'url: "' + music.url + '"');
     }
-
-    // rem.audio.attr('src', music.url);
-    // var audioDuration = document.getElementById("myAudio").duration;
-    // alert(audioDuration);
-    // if (audioDuration < 50){
-    //     music.url = 'https://link.hhtjim.com/kw/'+music.url_id+'.mp3'
-    // }
-
-
-	// if (music.url.includes('/kw/')){
-	// 	KuwoUrl(music.id,function(mp3Url){
-    //         music.url = mp3Url;
-    //     })	
-	// }
-	// if (music.url.includes('/163/')){
-	// 	GetUrl(music.id,music.url_id,function(mp3Url){
-    //         music.url = mp3Url;
-    //     })	
-	// }
-
     // 遇到错误播放下一首歌
     if(music.url == "err") {
         audioErr(); // 调用错误处理函数

@@ -750,7 +750,7 @@ function RandomMusicList(callback) {
     var db_url = 'https://pkj99.github.io/music/db/music.db';
     id = 0;
 
-    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and a.music_id in (select music_id from musics where url = 1 order by random() limit 50)";
+    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and a.music_id in (select music_id from musics where url = 1 order by random() limit 100)";
     // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
@@ -819,7 +819,7 @@ function RecentMusicList(callback) {
     var db_url = 'https://pkj99.github.io/music/db/music.db';
     id = 0;
 
-    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and c.group_id < 2000 and a.music_name not like '%伴奏%' and a.music_name not like '%试听%' order by b.release_date desc limit 100";
+    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and c.group_id < 2000 and a.music_name not like '%伴奏%' and a.music_name not like '%试听%' order by b.release_date desc limit 200";
     // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);

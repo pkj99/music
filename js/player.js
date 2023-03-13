@@ -324,7 +324,7 @@ function playList(id) {
 
 // 初始化 Audio
 function initAudio() {
-    rem.audio = $('<audio id=myAudio></audio>').appendTo('body');
+    rem.audio = $('<audio id="myAudio" poster="images/history.png"></audio>').appendTo('body');
     
     // 应用初始音量
     rem.audio[0].volume = volume_bar.percent;

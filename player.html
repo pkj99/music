@@ -159,8 +159,13 @@ function MVUrl(id,callback)
 		contentType : 'application/json; charset=utf-8',
         dataType : "html",
         success: function(result){
-			var s0 = result.split('data-flashvars="hurl=');
-			var s1 = s0[1].split('&murl=');
+            if (result.includes('data-flashvars="hurl=&murl=')){
+                var s0 = result.split('data-flashvars="hurl=&murl=');
+    			var s1 = s0[1].split('&');
+            } else if (result.includes('data-flashvars="hurl=')){
+                var s0 = result.split('data-flashvars="hurl=');
+    			var s1 = s0[1].split('&murl=');
+            }
 			var url = decodeURIComponent(s1[0]);
             console.log(url);
 			//document.write(url);

@@ -78,6 +78,16 @@ $(function(){
                 dataBox("sheet");    // 在主界面显示出音乐专辑
             break;
 
+            case "home":   // 主選單
+                clearSheet();
+                musicList = DefaultMusicList;
+                musicList = musicList.concat(HomeMusicList);
+                initList();
+                dataBox("sheet");
+            break;
+
+
+
             case "original":   // 排行
                 clearSheet();
                 musicList = OriginalMusicList;
@@ -268,7 +278,11 @@ $(function(){
             initList();
             dataBox("sheet");            
             return true;
-        } else {
+        } else if (musicList[num].creatorID == -1){
+            switchPl(musicList[num].id);
+        }
+        
+        else {
         
         if(musicList[num].item.length === 0 && musicList[num].creatorID) {
             layer.msg('列表读取中...', {icon: 16,shade: 0.01,time: 500}); // 0代表加载的风格，支持0-2
@@ -402,7 +416,7 @@ $(function(){
     // 初始化播放列表
     clearSheet();
     musicList = DefaultMusicList;
-    musicList = musicList.concat(plList);            
+    musicList = musicList.concat(HomeMusicList);            
     initList();
     dataBox("sheet");
 
@@ -1059,47 +1073,71 @@ function switchPl(id){
     clearSheet();
 
     switch(id) {
+        case "player":    // 播放器
+            dataBox("player");
+        break;
+        case "search":  // 搜索
+            searchBox();
+        break;
+        
+        case "playing": // 正在播放
+            loadList(1); // 显示正在播放列表
+        break;
+        
+        case "sheet":   // 播放列表				
+            dataBox("sheet");    // 在主界面显示出音乐专辑
+        break;
+
         case 'original':
             musicList = OriginalMusicList;
+            initList();
+            dataBox("sheet");
         break;
         case 'collection':
             musicList = DefaultMusicList;
             musicList = musicList.concat(myList);            
-            // musicList = myList;
+            initList();
+            dataBox("sheet");
         break;
         case 'playlist':
             musicList = DefaultMusicList;
             musicList = musicList.concat(plList);            
-            // musicList = plList;
+            initList();
+            dataBox("sheet");
         break;
         case 'album':
             musicList = DefaultMusicList;
             myMusic = myMusic163;
             musicList = musicList.concat(myMusic);
-            // location.href = 'artist.html';
+            initList();
+            dataBox("sheet");
         break;
         case 'kuwo':
             musicList = DefaultMusicList;
             myMusic = myMusicKuwo;
             musicList = musicList.concat(myMusic);
-            // location.href = 'artist.html';
+            initList();
+            dataBox("sheet");
         break;
         case 'artist':
             location.href = 'artist.html';
         break;
         case 'random':
-			//musicList = DefaultMusicList;
-            RandomMusicList(function(List){musicList=List; loadList(3);});
+            RandomMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});
         break;
+        case 'recent':
+            RecentMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});
+        break;        
         case 'cookie':
-            CookieMusicList();
+            CookieMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});
         break;
     }
+
     //console.log(rem);
     // clearSheet();
     // clearDislist();
-    initList();
-    dataBox("sheet");
+    // initList();
+    // dataBox("sheet");
 }
 
 

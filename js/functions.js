@@ -462,7 +462,7 @@ function musicInfo(list, index) {
     '<span class="info-btn" onclick="thisDownload(this)" data-list="' + list + '" data-index="' + index + '">下载</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>' +
     '<span style="margin-left: 10px" class="info-btn" onclick="thisMusic(this)" data-list="' + list + '" data-index="' + index + '" id="favorites">收藏</span>' +
-    '<span style="margin-left: 10px" class="info-btn" onclick="thisAlbum(this)" data-list="' + list + '" data-index="' + index + '" id="favorites-album">專輯收藏</span>' ;
+    '<span style="margin-left: 10px" class="info-btn" onclick="thisAlbum(this)" data-list="' + list + '" data-index="' + index + '" id="favoriteAlbum">專輯收藏</span>' ;
     
     layer.open({
         type: 0,
@@ -559,6 +559,7 @@ function thisMusic(obj) {
 }
 
 function thisAlbum(obj) {
+    console.log('thisAlbum',musicList[$(obj).data("list")].id);
     setAlbumBySourceId('album',musicList[$(obj).data("list")].id);
 }
 
@@ -1211,12 +1212,10 @@ function setCookieBySourceId(source,id) {
     if (ids == null) { ids = '';}
     if (ids.includes(idNew)){
         document.getElementById('favorites').textContent = '收藏';
-        // document.getElementById('favorites').className = 'btn btn-secondary';
         ids = ids.replace(idNew,'');
         document.cookie = source + '=' + ids + ";" + expires + ";path=/";
     } else {
         document.getElementById('favorites').textContent = '已收藏';
-        // document.getElementById('favorites').className = 'btn btn-danger';
         ids += idNew ;
         document.cookie = source + '=' + ids + ";" + expires + ";path=/";
     }
@@ -1229,13 +1228,13 @@ function checkCookieBySourceId(source,id) {
     for (var i=0, l=idsAry.length; i<l; ++i) {
         if (id == idsAry[i]){
             document.getElementById('favorites').textContent = '已收藏';
-            // document.getElementById('favorites').className = 'btn btn-danger';
         }
     }      
 }
 
 function setAlbumBySourceId(source,id) {
     var ids = getCookieByName(source);
+    console.log(ids);
     var idNew = ',' + id ;
     const d = new Date();
     d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
@@ -1243,13 +1242,11 @@ function setAlbumBySourceId(source,id) {
 
     if (ids == null) { ids = '';}
     if (ids.includes(idNew)){
-        document.getElementById('favorites-album').textContent = '專輯收藏';
-        // document.getElementById('favorites').className = 'btn btn-secondary';
+        document.getElementById('favoriteAlbum').textContent = '專輯收藏';
         ids = ids.replace(idNew,'');
         document.cookie = source + '=' + ids + ";" + expires + ";path=/";
     } else {
-        document.getElementById('favorites-album').textContent = '專輯已收藏';
-        // document.getElementById('favorites').className = 'btn btn-danger';
+        document.getElementById('favoriteAlbum').textContent = '專輯已收藏';
         ids += idNew ;
         document.cookie = source + '=' + ids + ";" + expires + ";path=/";
     }
@@ -1261,8 +1258,7 @@ function checkAlbumBySourceId(source,id) {
     var idsAry = ids.split(',');
     for (var i=0, l=idsAry.length; i<l; ++i) {
         if (id == idsAry[i]){
-            document.getElementById('favorites-album').textContent = '專輯已收藏';
-            // document.getElementById('favorites').className = 'btn btn-danger';
+            document.getElementById('favoriteAlbum').textContent = '專輯已收藏';
         }
     }      
 }

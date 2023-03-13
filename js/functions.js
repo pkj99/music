@@ -462,7 +462,7 @@ function musicInfo(list, index) {
     '<span class="info-btn" onclick="thisDownload(this)" data-list="' + list + '" data-index="' + index + '">下载</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>' +
     '<span style="margin-left: 10px" class="info-btn" onclick="thisMusic(this)" data-list="' + list + '" data-index="' + index + '" id="favorites">收藏</span>' +
-    '<span style="margin-left: 10px" class="info-btn" onclick="thisAlbum(this)" data-list="' + list + '" data-index="' + index + '" id="favoriteAlbum">專輯收藏</span>' ;
+    '<span style="margin-left: 10px" class="info-btn" onclick="thisAlbum('+album_id+')" data-list="' + list + '" data-index="' + index + '" id="favoriteAlbum">專輯收藏</span>' ;
     
     layer.open({
         type: 0,
@@ -558,9 +558,8 @@ function thisMusic(obj) {
     setCookieBySourceId('music',musicList[$(obj).data("list")].item[$(obj).data("index")].id);
 }
 
-function thisAlbum(obj) {
-    console.log('thisAlbum',musicList[$(obj).data("list")].id);
-    setAlbumBySourceId('album',musicList[$(obj).data("list")].id);
+function thisAlbum(id) {
+    setAlbumBySourceId('album',id);
 }
 
 // 下载歌曲

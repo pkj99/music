@@ -473,7 +473,10 @@ function musicInfo(list, index) {
     });
     
     checkCookieBySourceId('music',music.id);
-    checkAlbumBySourceId('album',album_id);
+    if (album_id !=0){
+        checkAlbumBySourceId('album',album_id);
+    }
+    
     
     if(mkPlayer.debug) {
         console.info('id: "' + music.id + '",\n' + 
@@ -559,7 +562,9 @@ function thisMusic(obj) {
 }
 
 function thisAlbum(id) {
-    setAlbumBySourceId('album',id);
+    if (id != 0){
+        setAlbumBySourceId('album',id);
+    }    
 }
 
 // 下载歌曲

@@ -197,6 +197,7 @@ function autoNextMusic() {
 function updateProgress(){
     var music = musicList[rem.playlist].item[rem.playid]
     if (music != undefined){
+        // console.log(rem.audio[0].duration,music.url_id);
         if ( music.url.includes('/163/') & rem.audio[0].duration<50 ){
             if(music.url_id !=0){
                 music.url = 'https://link.hhtjim.com/kw/'+music.url_id+'.mp3';
@@ -324,7 +325,7 @@ function playList(id) {
 
 // 初始化 Audio
 function initAudio() {
-    rem.audio = $('<audio id="myAudio" poster="images/history.png"></audio>').appendTo('body');
+    rem.audio = $('<audio id="myAudio"></audio>').appendTo('body');
     
     // 应用初始音量
     rem.audio[0].volume = volume_bar.percent;

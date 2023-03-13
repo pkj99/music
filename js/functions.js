@@ -86,8 +86,6 @@ $(function(){
                 dataBox("sheet");
             break;
 
-
-
             case "original":   // 排行
                 clearSheet();
                 musicList = OriginalMusicList;
@@ -116,6 +114,22 @@ $(function(){
                 musicList = DefaultMusicList;
                 myMusic = myMusic163;
                 musicList = musicList.concat(myMusic);
+                initList();
+                dataBox("sheet");
+            break;
+
+            case "live":   // 專輯
+                clearSheet();
+                musicList = DefaultMusicList;
+                musicList = musicList.concat(myLive163);
+                initList();
+                dataBox("sheet");
+            break;
+
+            case "ost":   // 專輯
+                clearSheet();
+                musicList = DefaultMusicList;
+                musicList = musicList.concat(myOst163);
                 initList();
                 dataBox("sheet");
             break;
@@ -264,7 +278,7 @@ $(function(){
         var num = parseInt($(this).parent().data("no"));
         // 是用户列表，但是还没有加载数据
 
-        console.log(num,musicList[num].id,musicList[num].creatorID);
+        // console.log(num,musicList[num].id,musicList[num].creatorID);
         if(musicList[num].creatorID == 0){
             // switchPl('music');
 
@@ -434,6 +448,7 @@ $(function(){
 
 // 展现系统列表中任意首歌的歌曲信息
 function musicInfo(list, index) {
+    var album_id = musicList[list].id;
     var music = musicList[list].item[index];
     var tempStr = '<span class="info-title">歌名：</span>' + music.name + 
     '<br><span class="info-title">歌手：</span>' + music.artist + 
@@ -446,7 +461,8 @@ function musicInfo(list, index) {
     tempStr += '<br><span class="info-title">操作：</span>' + 
     '<span class="info-btn" onclick="thisDownload(this)" data-list="' + list + '" data-index="' + index + '">下载</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>' +
-    '<span style="margin-left: 10px" class="info-btn" onclick="thisMusic(this)" data-list="' + list + '" data-index="' + index + '" id="favorites">收藏</span>' ;
+    '<span style="margin-left: 10px" class="info-btn" onclick="thisMusic(this)" data-list="' + list + '" data-index="' + index + '" id="favorites">收藏</span>' +
+    '<span style="margin-left: 10px" class="info-btn" onclick="thisAlbum(this)" data-list="' + list + '" data-index="' + index + '" id="favorites-album">專輯收藏</span>' ;
     
     layer.open({
         type: 0,
@@ -457,6 +473,7 @@ function musicInfo(list, index) {
     });
     
     checkCookieBySourceId('music',music.id);
+    checkAlbumBySourceId('album',album_id);
     
     if(mkPlayer.debug) {
         console.info('id: "' + music.id + '",\n' + 
@@ -538,10 +555,12 @@ function thisShare(obj) {
 
 // 收藏这首歌
 function thisMusic(obj) {
-    // alert(musicList[$(obj).data("list")].item[$(obj).data("index")].id);
     setCookieBySourceId('music',musicList[$(obj).data("list")].item[$(obj).data("index")].id);
 }
 
+function thisAlbum(obj) {
+    setAlbumBySourceId('album',musicList[$(obj).data("list")].id);
+}
 
 // 下载歌曲
 // 参数：包含歌曲信息的数组
@@ -1119,6 +1138,18 @@ function switchPl(id){
             initList();
             dataBox("sheet");
         break;
+        case 'live':
+            musicList = DefaultMusicList;
+            musicList = musicList.concat(myLive163);
+            initList();
+            dataBox("sheet");
+        break;
+        case 'ost':
+            musicList = DefaultMusicList;
+            musicList = musicList.concat(myOst163);
+            initList();
+            dataBox("sheet");
+        break;
         case 'artist':
             location.href = 'artist.html';
         break;
@@ -1130,6 +1161,9 @@ function switchPl(id){
         break;        
         case 'cookie':
             CookieMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});
+        break;
+        case 'myalbums':
+            myAlbumsMusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});
         break;
     }
 
@@ -1161,8 +1195,9 @@ function getCookieByName(name) {
     var value = parseCookie()[name];
     if (value) {
         value = decodeURIComponent(value);
+    } else {
+        value = '';
     }
-
     return value;
 }
 
@@ -1194,6 +1229,39 @@ function checkCookieBySourceId(source,id) {
     for (var i=0, l=idsAry.length; i<l; ++i) {
         if (id == idsAry[i]){
             document.getElementById('favorites').textContent = '已收藏';
+            // document.getElementById('favorites').className = 'btn btn-danger';
+        }
+    }      
+}
+
+function setAlbumBySourceId(source,id) {
+    var ids = getCookieByName(source);
+    var idNew = ',' + id ;
+    const d = new Date();
+    d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+    let expires = "expires="+d.toUTCString();
+
+    if (ids == null) { ids = '';}
+    if (ids.includes(idNew)){
+        document.getElementById('favorites-album').textContent = '專輯收藏';
+        // document.getElementById('favorites').className = 'btn btn-secondary';
+        ids = ids.replace(idNew,'');
+        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+    } else {
+        document.getElementById('favorites-album').textContent = '專輯已收藏';
+        // document.getElementById('favorites').className = 'btn btn-danger';
+        ids += idNew ;
+        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+    }
+}
+
+function checkAlbumBySourceId(source,id) {
+    var ids = getCookieByName(source);
+    if (ids == null) { ids = '';}
+    var idsAry = ids.split(',');
+    for (var i=0, l=idsAry.length; i<l; ++i) {
+        if (id == idsAry[i]){
+            document.getElementById('favorites-album').textContent = '專輯已收藏';
             // document.getElementById('favorites').className = 'btn btn-danger';
         }
     }      

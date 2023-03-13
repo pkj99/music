@@ -37,27 +37,15 @@ var musicList = [
     // 以上三个系统预留列表请勿更改，否则可能导致程序无法正常运行！
     //*********************************************
     // 自定义列表开始，您可以自由添加您的自定义列表
-    {
-        id: 3778678     // 云音乐热歌榜
-    },
-    {
-        id: 3779629     // 云音乐新歌榜
-    },
-    {
-        id: 19723756     // 云音乐飙升榜
-    },
-    {
-        id: 2884035     // "网易原创歌曲榜"
-    },
-    {
-        id: 64016     // 中国TOP排行榜（内地榜）
-    },
-    {
-        id: 112504     // 中国TOP排行榜（港台榜）
-    },
-    {   id: 60198      }, // "美国Billboard榜"
-    {   id: 180106      }, // "UK排行榜周榜"
-    {   id: 21845217      }, // "KTV唛榜"
+    {  id: 3778678         }, // 云音乐热歌榜
+    {  id: 3779629         }, // 云音乐新歌榜
+    {  id: 19723756        }, // 云音乐飙升榜 
+    {  id: 2884035         }, // "网易原创歌曲榜"
+    {  id: 64016         }, // 中国TOP排行榜（内地榜）
+    {  id: 112504        },  // 中国TOP排行榜（港台榜）
+    {  id: 60198      }, // "美国Billboard榜"
+    {  id: 180106      }, // "UK排行榜周榜"
+    {  id: 21845217      }, // "KTV唛榜"
     {id:3812895}, // Beatport全球电子舞曲榜
     {id:2809513713},
     {id:2809577409},
@@ -160,6 +148,33 @@ var HomeMusicList = [
         "creatorAvatar": 0,
         "item": []
     },
+    {
+        "id": 'live',
+        "name": "演唱會",
+        "cover": "https://p3.music.126.net/0fmKlds6iJDqBPwc8WrF8Q==/109951168173611755.jpg?param=200y200",
+        "creatorID": -1,
+        "creatorName": "演唱會",
+        "creatorAvatar": 0,
+        "item": []
+    },    
+    {
+        "id": 'ost',
+        "name": "原聲帶",
+        "cover": "https://p3.music.126.net/70unwSA6vWzVxKPrehJ5cQ==/109951168149146680.jpg?param=200y200",
+        "creatorID": -1,
+        "creatorName": "原聲帶",
+        "creatorAvatar": 0,
+        "item": []
+    },
+    {
+        "id": 'myalbums',
+        "name": "專輯收藏",
+        "cover": "	https://p3.music.126.net/KkK14m6QgFrRjWkrv4Cqqw==/5825212604057949.jpg?param=200y200",
+        "creatorID": -1,
+        "creatorName": "專輯收藏",
+        "creatorAvatar": 0,
+        "item": []
+    },    
     {
         "id": 'search',
         "name": "搜索",

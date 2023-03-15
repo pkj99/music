@@ -95,20 +95,15 @@ function GetUrl(url,callback)
 function KuwoUrl(id,callback)
 {
     var x = new XMLHttpRequest();
-    x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?=type=music&mid='+id);
-    x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    // x.onreadystatechange = () => {
-    //     if (x.readyState === x.HEADERS_RECEIVED) {
-    //             var mp3Url = x.getAllResponseHeaders();
-    //             console.log(mp3Url);
-    //             if(callback) callback(mp3Url);
-    //         }
-    //       }
-    x.onload = () => {
-        console.log(x.responseText);
+    x.overrideMimeType("application/json");
+    x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid='+id, true);
+    // x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    x.onload = function() {
+        // console.log(x.responseText);
         var j = JSON.parse(x.responseText);
         if (j.success){
-            console.log(j.data.url)
+            console.log(j.data.url);
+            if (callback) callback(j.data.url);
         }
     }
     x.send();
@@ -254,7 +249,8 @@ function MVUrl(id,callback)
 
     if (urlParams["id"] != null) { 
         id = urlParams["id"];
-        MVUrl(id);
+        // MVUrl(id);
+        KuwoUrl(id);
     }
 
 </script>

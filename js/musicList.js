@@ -86,103 +86,119 @@ var DefaultMusicList = [
 
 var HomeMusicList = [
     {
-        "id": 'original',
-        "name": "排行榜",
-        "cover": "https://p3.music.126.net/lL5KpMsL3mxWkm6_bM1d1g==/109951168165612314.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "排行榜",
-        "creatorAvatar": 0,
-        "item": []
+        name: "搜索结果",   // 播放列表名字
+        cover: "",          // 播放列表封面
+        creatorName: "",        // 列表创建者名字
+        creatorAvatar: "",      // 列表创建者头像
+        item: []
+    }, 
+    {
+        id: 'original',
+        name: "排行榜",
+        cover: "https://p3.music.126.net/lL5KpMsL3mxWkm6_bM1d1g==/109951168165612314.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "排行榜",
+        creatorAvatar: 0,
+        item: []
     },
     {
-        "id": 'collection',
-        "name": "精選輯",
-        "cover": "https://p4.music.126.net/BCw6bptJIibZH3kbwBA8FA==/109951163609551095.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "精選輯",
-        "creatorAvatar": 0,
-        "item": []
+        id: 'playlist',
+        name: "歌單",
+        cover: "http://p4.music.126.net/4Y3MZ9YQ0X5lufAmp-eudg==/109951168296692473.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "歌單",
+        creatorAvatar: 0,
+        item: []
     },
     {
-        "id": 'playlist',
-        "name": "歌單",
-        "cover": "http://p4.music.126.net/4Y3MZ9YQ0X5lufAmp-eudg==/109951168296692473.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "歌單",
-        "creatorAvatar": 0,
-        "item": []
+        id: 'album',
+        name: "專輯",
+        cover: "https://p4.music.126.net/92NWlGo76ha-if-WMK3vCg==/1410673428769729.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "專輯",
+        creatorAvatar: 0,
+        item: []
     },
     {
-        "id": 'album',
-        "name": "專輯",
-        "cover": "https://p4.music.126.net/92NWlGo76ha-if-WMK3vCg==/1410673428769729.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "專輯",
-        "creatorAvatar": 0,
-        "item": []
+        id: 'collection',
+        name: "精選50首",
+        cover: "https://p4.music.126.net/BCw6bptJIibZH3kbwBA8FA==/109951163609551095.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "精選50首",
+        creatorAvatar: 0,
+        item: []
     },
     {
-        "id": 'random',
-        "name": "隨機100首",
-        "cover": "https://p3.music.126.net/JV62wExylJ9UUMFeWqm1ag==/109951168277112584.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "隨機100首",
-        "creatorAvatar": 0,
-        "item": []
+        id: 'random',
+        name: "隨機100首",
+        cover: "https://p3.music.126.net/JV62wExylJ9UUMFeWqm1ag==/109951168277112584.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "隨機100首",
+        creatorAvatar: 0,
+        item: []
     },
     {
-        "id": 'recent',
-        "name": "新歌200首",
-        "cover": "https://p3.music.126.net/NwySj1tvMPmr3W9vJ4ChEQ==/109951168205089190.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "新歌200首",
-        "creatorAvatar": 0,
-        "item": []
+        id: 'recent',
+        name: "新歌200首",
+        cover: "https://p3.music.126.net/NwySj1tvMPmr3W9vJ4ChEQ==/109951168205089190.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "新歌200首",
+        creatorAvatar: 0,
+        item: []
     },
     {
-        "id": 'cookie',
-        "name": "我的收藏",
-        "cover": "https://p4.music.126.net/JSWQbHmxI7Cz5UdpLX377g==/109951168179150903.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "我的收藏",
-        "creatorAvatar": 0,
-        "item": []
-    },
-    {
-        "id": 'live',
-        "name": "演唱會",
-        "cover": "https://p3.music.126.net/0fmKlds6iJDqBPwc8WrF8Q==/109951168173611755.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "演唱會",
-        "creatorAvatar": 0,
-        "item": []
+        id: 'live',
+        name: "演唱會",
+        cover: "https://p3.music.126.net/0fmKlds6iJDqBPwc8WrF8Q==/109951168173611755.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "演唱會",
+        creatorAvatar: 0,
+        item: []
     },    
     {
-        "id": 'ost',
-        "name": "原聲帶",
-        "cover": "https://p3.music.126.net/70unwSA6vWzVxKPrehJ5cQ==/109951168149146680.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "原聲帶",
-        "creatorAvatar": 0,
-        "item": []
+        id: 'ost',
+        name: "原聲帶",
+        cover: "https://p3.music.126.net/70unwSA6vWzVxKPrehJ5cQ==/109951168149146680.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "原聲帶",
+        creatorAvatar: 0,
+        item: []
     },
     {
-        "id": 'myalbums',
-        "name": "專輯收藏",
-        "cover": "	https://p3.music.126.net/KkK14m6QgFrRjWkrv4Cqqw==/5825212604057949.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "專輯收藏",
-        "creatorAvatar": 0,
-        "item": []
-    },    
+        id: 'cookie',
+        name: "我的收藏",
+        cover: "https://p4.music.126.net/JSWQbHmxI7Cz5UdpLX377g==/109951168179150903.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "我的收藏",
+        creatorAvatar: 0,
+        item: []
+    },
     {
-        "id": 'search',
-        "name": "搜索",
-        "cover": "https://p3.music.126.net/0-deIQ8ckyaCh9Sof2CvjQ==/109951168094729294.jpg?param=200y200",
-        "creatorID": -1,
-        "creatorName": "搜索",
-        "creatorAvatar": 0,
-        "item": []
+        id: 'myalbums',
+        name: "專輯收藏",
+        cover: "https://p3.music.126.net/KkK14m6QgFrRjWkrv4Cqqw==/5825212604057949.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "專輯收藏",
+        creatorAvatar: 0,
+        item: []
+    },
+    // {
+    //     id: 'kuwo',
+    //     name: "酷我專輯",
+    //     cover: "https://p3.music.126.net/UbjonnoZfxIta89hT-e8cQ==/109951168262199535.jpg?param=200y200",
+    //     creatorID: -1,
+    //     creatorName: "酷我專輯",
+    //     creatorAvatar: 0,
+    //     item: []
+    // },        
+    {
+        id: 'search',
+        name: "搜索",
+        cover: "https://p3.music.126.net/0-deIQ8ckyaCh9Sof2CvjQ==/109951168094729294.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "搜索",
+        creatorAvatar: 0,
+        item: []
     }
 ]
 

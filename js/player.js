@@ -339,16 +339,25 @@ function initAudio() {
     rem.audio[0].addEventListener('error', audioErr);   // 播放器错误处理
 }
 
+function KuwoError()
+{
+    layer.msg('受限於CORS Policy，嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo">啟用</a> 暫時釋放功能');
+}
 function KuwoUrl(id,callback)
 {
     var x = new XMLHttpRequest();
-    x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?=type=music&mid='+id);
+    x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid='+id);
     x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    // x.addEventListener('error', KuwoError());
+    // console.log(x.readyState);
+    if (x.readyState == 0){
+        KuwoError();
+    }
     x.onload = () => {
         console.log(x.responseText);
         var j = JSON.parse(x.responseText);
         if (j.success){
-            console.log(j.data.url);
+            // console.log(j.data.url);
             mp3Url = j.data.url;
             if(callback) callback(mp3Url);
         }
@@ -390,15 +399,31 @@ function play(music) {
         refreshList();  // 更新列表显示
     }
     
-    try {
-        rem.audio[0].pause();
-        rem.audio.attr('src', music.url);
-        rem.audio[0].play();
-    } catch(e) {
-        // window.location.href = music.url;
-        audioErr(); // 调用错误处理函数
-        return;
+    if (music.url.includes('/kw/')){
+        KuwoUrl(music.url_id,function(mp3Url){
+            // alert(mp3Url);
+            try {
+                rem.audio[0].pause();
+                rem.audio.attr('src', mp3Url);
+                rem.audio[0].play();
+            } catch(e) {
+                audioErr(); // 调用错误处理函数
+                return;
+            }
+        })
+    } else {
+        try {
+            rem.audio[0].pause();
+            rem.audio.attr('src', music.url);
+            rem.audio[0].play();
+        } catch(e) {
+            // window.location.href = music.url;
+            audioErr(); // 调用错误处理函数
+            return;
+        }
     }
+
+
     
     // rem.errCount = 0;   // 连续播放失败的歌曲数归零
     music_bar.goto(0);  // 进度条强制归零

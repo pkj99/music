@@ -82,6 +82,7 @@ $(function(){
                 clearSheet();
                 musicList = DefaultMusicList;
                 musicList = musicList.concat(HomeMusicList);
+                // musicList = HomeMusicList;
                 initList();
                 dataBox("sheet");
             break;
@@ -160,6 +161,14 @@ $(function(){
                     initList();
                     loadList(3);
                 });
+            break;
+
+            case "kuwo":   // 酷我專輯
+                musicList = DefaultMusicList;
+                myMusic = myMusicKuwo;
+                musicList = musicList.concat(myMusic);
+                initList();
+                dataBox("sheet");
             break;
 
         }
@@ -430,7 +439,8 @@ $(function(){
     // 初始化播放列表
     clearSheet();
     musicList = DefaultMusicList;
-    musicList = musicList.concat(HomeMusicList);            
+    musicList = musicList.concat(HomeMusicList);
+    musicList = HomeMusicList;
     initList();
     dataBox("sheet");
 

@@ -196,7 +196,7 @@ function autoNextMusic() {
 
 // 歌曲时间变动回调函数
 function updateProgress(){
-    var music = musicList[rem.playlist].item[rem.playid]
+    // var music = musicList[rem.playlist].item[rem.playid]
 
     // if (music != undefined){
     //     // console.log(music.url,rem.audio[0].duration,music.url_id);

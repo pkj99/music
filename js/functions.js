@@ -80,9 +80,9 @@ $(function(){
 
             case "home":   // 主選單
                 clearSheet();
-                musicList = DefaultMusicList;
-                musicList = musicList.concat(HomeMusicList);
-                // musicList = HomeMusicList;
+                // musicList = DefaultMusicList;
+                // musicList = musicList.concat(HomeMusicList);
+                musicList = HomeMusicList;
                 initList();
                 dataBox("sheet");
             break;
@@ -552,7 +552,10 @@ function searchSubmit() {
     
     rem.loadPage = 1;   // 已加载页数复位
     rem.wd = wd;    // 搜索词
-    ajaxSearch();   // 加载搜索结果
+
+    // ajaxSearch();   // 加载搜索结果
+    SearchMusicList(wd, function(List){clearSheet(); musicList=List; initList(); loadList(3);});
+
     return false;
 }
 

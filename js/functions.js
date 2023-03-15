@@ -438,8 +438,8 @@ $(function(){
 
     // 初始化播放列表
     clearSheet();
-    musicList = DefaultMusicList;
-    musicList = musicList.concat(HomeMusicList);
+    // musicList = DefaultMusicList;
+    // musicList = musicList.concat(HomeMusicList);
     musicList = HomeMusicList;
     initList();
     dataBox("sheet");

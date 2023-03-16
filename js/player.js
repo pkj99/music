@@ -1,9 +1,4 @@
-/**************************************************
- * MKOnlinePlayer v2.41
- * 播放器主功能模块
- * 编写：mengkun(https://mkblog.cn)
- * 时间：2018-3-13
- *************************************************/
+
 // 播放器功能配置
 var mkPlayer = {
     api: "https://duonaovod.com/music/api.php", // api地址
@@ -30,12 +25,14 @@ var mkPlayer = {
 // 存储全局变量
 var rem = [];
 var myMusic = [];
+var db_url = 'https://pkj99.github.io/music/db/music.db';
+
 
 // 音频错误处理函数
 function audioErr() {
     // 没播放过，直接跳过
     if(rem.playlist === undefined) return true;
-    
+   
 
 	// var music = musicList[rem.playlist].item[rem.playid];
 	// if(music.url_id !=0){
@@ -343,18 +340,16 @@ function KuwoError()
 {
     layer.msg('受限於CORS Policy，嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo">啟用</a> 暫時釋放功能');
 }
+
 function KuwoUrl(id,callback)
 {
     var x = new XMLHttpRequest();
     x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid='+id);
     x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     // x.addEventListener('error', KuwoError());
-    // console.log(x.readyState);
-    if (x.readyState == 0){
-        KuwoError();
-    }
     x.onload = () => {
-        console.log(x.responseText);
+        // console.log(x.status,x.readyState);
+        // console.log(x.responseText);
         var j = JSON.parse(x.responseText);
         if (j.success){
             // console.log(j.data.url);

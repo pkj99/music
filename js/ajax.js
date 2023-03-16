@@ -1,9 +1,3 @@
-/**************************************************
- * MKOnlinePlayer v2.4
- * Ajax 后台数据交互请求模块
- * 编写：mengkun(https://mkblog.cn)
- * 时间：2018-3-11
- *************************************************/
 
 // ajax加载搜索结果
 function ajaxSearch() {
@@ -599,12 +593,12 @@ function ajaxArtistList(lid, callback) {
 
 }
 
-
+// 專輯DB
 function dbMusicList(lid, callback) {
 
     if(!lid) return false;
 
-    var db_url = 'https://pkj99.github.io/music/db/music.db';
+    // var db_url = 'https://pkj99.github.io/music/db/music.db';
    
     id = musicList.length;
     
@@ -673,30 +667,21 @@ function dbMusicList(lid, callback) {
 }
 
 
-
+// 收藏
 function CookieMusicList(callback) {
-    var db_url = 'https://pkj99.github.io/music/db/music.db';
-    id = 0;
+
     var ids = getCookieByName('music');
     if (ids == ''){
         layer.msg('找不到收藏清單');
-        if(callback) {
-            musicList = DefaultMusicList;
-            musicList = musicList.concat(HomeMusicList);
-            callback(musicList);
-        }
+        if(callback) { callback(HomeMusicList); }
         return;
     }
     ids = '0' + ids;
-    // console.log(ids);
 
-    // var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and a.music_id in ("+ids+")";
     var sqlstring = "select * from vMusic where music_id in ("+ids+")";
-    // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';
-
     xhr.onload = e => {
         const uInt8Array = new Uint8Array(xhr.response);
         const db = new SQL.Database(uInt8Array);
@@ -734,18 +719,8 @@ function CookieMusicList(callback) {
         // 存储列表信息
         musicList = DefaultMusicList;
         musicList = musicList.concat(tempList);
-        // console.log(musicList);
-
-        // // 首页显示默认列表
-        // // if(id == mkPlayer.defaultlist) loadList(id);
-
-        // loadList(3);
 
         if(callback) callback(musicList);    // 调用回调函数
-        
-        // // 改变前端列表
-        // $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面
-        // $(".sheet-item[data-no='" + id + "'] .sheet-name").html(tempList.name);     // 专辑名字
         
         // 调试信息输出
         if(mkPlayer.debug) {
@@ -755,19 +730,14 @@ function CookieMusicList(callback) {
     xhr.send();
 }
 
-
+// 隨機100首
 function RandomMusicList(callback) {
-    var db_url = 'https://pkj99.github.io/music/db/music.db';
-    id = 0;
 
-    // var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and a.music_id in (select music_id from musics where url = 1 order by random() limit 100)";
     var sqlstring = "select * from vMusic where music_id in (select music_id from musics where url = 1 order by random() limit 100)"
 
-    // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';
-
     xhr.onload = e => {
         const uInt8Array = new Uint8Array(xhr.response);
         const db = new SQL.Database(uInt8Array);
@@ -805,18 +775,8 @@ function RandomMusicList(callback) {
         // 存储列表信息
         musicList = DefaultMusicList;
         musicList = musicList.concat(tempList);        
-        // console.log(musicList);
-
-        // // 首页显示默认列表
-        // // if(id == mkPlayer.defaultlist) loadList(id);
-		
-        //loadList(3);
 		
         if(callback) callback(musicList);    // 调用回调函数
-        
-        // // 改变前端列表
-        // $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面
-        // $(".sheet-item[data-no='" + id + "'] .sheet-name").html(tempList.name);     // 专辑名字
         
         // 调试信息输出
         if(mkPlayer.debug) {
@@ -826,18 +786,14 @@ function RandomMusicList(callback) {
     xhr.send();
 }
 
-
+// 最近新歌200首
 function RecentMusicList(callback) {
-    var db_url = 'https://pkj99.github.io/music/db/music.db';
-    id = 0;
 
-    // var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and a.url =1 and c.group_id < 2000 and a.music_name not like '%伴奏%' and a.music_name not like '%试听%' order by b.release_date desc limit 200";
     var sqlstring = "select * from vMusic where url =1 and music_name not like '%伴奏%' and music_name not like '%试听%' order by release_date desc limit 200";
-    // console.log(sqlstring);
+
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';
-
     xhr.onload = e => {
         const uInt8Array = new Uint8Array(xhr.response);
         const db = new SQL.Database(uInt8Array);
@@ -875,18 +831,8 @@ function RecentMusicList(callback) {
         // 存储列表信息
         musicList = DefaultMusicList;
         musicList = musicList.concat(tempList);        
-        // console.log(musicList);
-
-        // // 首页显示默认列表
-        // // if(id == mkPlayer.defaultlist) loadList(id);
-		
-        //loadList(3);
 		
         if(callback) callback(musicList);    // 调用回调函数
-        
-        // // 改变前端列表
-        // $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面
-        // $(".sheet-item[data-no='" + id + "'] .sheet-name").html(tempList.name);     // 专辑名字
         
         // 调试信息输出
         if(mkPlayer.debug) {
@@ -896,14 +842,11 @@ function RecentMusicList(callback) {
     xhr.send();
 }
 
-
+// 關鍵字搜尋200首
 function SearchMusicList(keyword,callback) {
-    var db_url = 'https://pkj99.github.io/music/db/music.db';
-    id = 0;
-
-    // var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and a.url =1 and c.group_id < 2000 and a.music_name not like '%伴奏%' and a.music_name not like '%试听%' order by b.release_date desc limit 200";
+    
     var sqlstring = "select * from vMusic where artist_name like '%"+keyword+"%' or album_name like '%"+keyword+"%' or music_name like '%"+keyword+"%' order by release_date desc limit 200"
-    // console.log(sqlstring);
+
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';
@@ -966,30 +909,23 @@ function SearchMusicList(keyword,callback) {
     xhr.send();
 }
 
-
+// 專輯收藏清單
 function myAlbumsMusicList(callback) {
-    var db_url = 'https://pkj99.github.io/music/db/music.db';
-    id = 0;
+
     var ids = getCookieByName('album');
     if (ids == ''){
         layer.msg('找不到專輯收藏清單');
-        if(callback) {
-            musicList = DefaultMusicList;
-            musicList = musicList.concat(HomeMusicList);
-            callback(musicList);
-        }
+        if(callback) { callback(HomeMusicList); }
         return;
     }
-    // var ids = '88730427,159400159,159967997';
     ids = '0' + ids;
-    // console.log(ids);
+    // ids = '88730427,159400159,159967997';
 
-    var sqlstring = "select a.music_id,a.music_name,a.album_id,b.title,b.img,c.artist_name,c.artist_img,a.url,d.kuwo_music_id from musics a, albums b, artists c left outer join kuwo_musics d on a.music_id = d.music_id where a.album_id = b.album_id and b.artist_id = c.artist_id and b.album_id in ("+ids+")";
-    // console.log(sqlstring);
+    var sqlstring = "select * from vMusic where album_id in ("+ids+") order by album_id,seq";
+    console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';
-
     xhr.onload = e => {
         const uInt8Array = new Uint8Array(xhr.response);
         const db = new SQL.Database(uInt8Array);
@@ -1010,25 +946,25 @@ function myAlbumsMusicList(callback) {
                 tempList = {
                     id: data[i][2],    // 列表的网易云 id
                     name: data[i][3],   // 列表名字
-                    cover: data[i][4],   // 列表封面
+                    cover: data[i][7],   // 列表封面
                     creatorName: data[i][2],   // 列表创建者名字
                     creatorAvatar: data[i][2],   // 列表创建者头像
                     item: []
                 };
             } else {
-            var kuwo_id = data[i][8];
+            var kuwo_id = data[i][10];
             if (kuwo_id == null) {kuwo_id = 0}
             tempList.item[item_no] =  {
-                id: data[i][0],  // 音乐ID
-                name: data[i][1],  // 音乐名字
-                artist: data[i][5], // 艺术家名字
+                id: data[i][4],  // 音乐ID
+                name: data[i][5],  // 音乐名字
+                artist: data[i][1], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
-                pic_id: data[i][4],  // 封面ID
-                lyric_id: data[i][0],  // 歌词ID
-                pic: data[i][4] + "?param=300y300",    // 专辑图片
-                url: "https://link.hhtjim.com/163/" + data[i][0] + ".mp3"   // mp3链接
+                pic_id: data[i][7],  // 封面ID
+                lyric_id: data[i][4],  // 歌词ID
+                pic: data[i][7] + "?param=300y300",    // 专辑图片
+                url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3链接
             };
             item_no+=1;
             }
@@ -1036,21 +972,11 @@ function myAlbumsMusicList(callback) {
         // 存储列表信息
         jsonData = jsonData.concat(tempList);
 
-        // console.log(jsonData);
+        console.log(jsonData);
         musicList = DefaultMusicList;
         musicList = musicList.concat(jsonData);
-        // console.log(musicList);
-
-        // // 首页显示默认列表
-        // // if(id == mkPlayer.defaultlist) loadList(id);
-
-        // loadList(3);
 
         if(callback) callback(musicList);    // 调用回调函数
-        
-        // // 改变前端列表
-        // $(".sheet-item[data-no='" + id + "'] .sheet-cover").attr('src', tempList.cover);    // 专辑封面
-        // $(".sheet-item[data-no='" + id + "'] .sheet-name").html(tempList.name);     // 专辑名字
         
         // 调试信息输出
         if(mkPlayer.debug) {
@@ -1059,4 +985,5 @@ function myAlbumsMusicList(callback) {
     };
     xhr.send();
 }
+
 

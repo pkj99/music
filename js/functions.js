@@ -444,9 +444,8 @@ $(function(){
     initList();
     dataBox("sheet");
 
+
     // switchPl('playlist');
-
-
     //clearSheet();
     //playerSavedata('playing', '');
     //playerSavedata('his', '');

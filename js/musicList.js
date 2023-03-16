@@ -182,21 +182,21 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     },
-    // {
-    //     id: 'kuwo',
-    //     name: "酷我專輯",
-    //     cover: "https://p3.music.126.net/UbjonnoZfxIta89hT-e8cQ==/109951168262199535.jpg?param=200y200",
-    //     creatorID: -1,
-    //     creatorName: "酷我專輯",
-    //     creatorAvatar: 0,
-    //     item: []
-    // },        
     {
         id: 'search',
         name: "搜索",
         cover: "https://p3.music.126.net/0-deIQ8ckyaCh9Sof2CvjQ==/109951168094729294.jpg?param=200y200",
         creatorID: -1,
         creatorName: "搜索",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
+        id: 'kuwo',
+        name: "酷我專輯",
+        cover: "https://p3.music.126.net/UbjonnoZfxIta89hT-e8cQ==/109951168262199535.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "酷我專輯",
         creatorAvatar: 0,
         item: []
     }

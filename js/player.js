@@ -345,7 +345,7 @@ function KuwoUrl(id,callback)
 {
     var x = new XMLHttpRequest();
     x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid='+id);
-    x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    // x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     // x.addEventListener('error', KuwoError());
     x.onload = () => {
         // console.log(x.status,x.readyState);
@@ -356,6 +356,9 @@ function KuwoUrl(id,callback)
             mp3Url = j.data.url;
             if(callback) callback(mp3Url);
         }
+    }
+    x.onreadystatechange = () => {
+        if (x.status == 0)   {  KuwoError();  }
     }
     x.send();
 }

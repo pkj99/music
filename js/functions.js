@@ -1149,6 +1149,10 @@ function switchPl(id){
             dataBox("sheet");
         break;
         case 'kuwo':
+            // var eJS=document.createElement("script");  
+            // document.body.insertAdjacentElement('beforeEnd',eJS);
+            // eJS.language="JavaScript";
+            // eJS.src="js/myMusicKuwo.js";
             musicList = DefaultMusicList;
             myMusic = myMusicKuwo;
             musicList = musicList.concat(myMusic);

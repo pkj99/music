@@ -206,7 +206,8 @@ if (urlParams["wd"] != null) {
     // layer.closeAll('page');     // 关闭搜索框
     rem.loadPage = 1;   // 已加载页数复位
     // rem.wd = wd;    // 搜索词
-    ajaxSearch();   // 加载搜索结果
+    // ajaxSearch();   // 加载搜索结果
+    SearchMusicList(rem.wd, function(List){clearSheet(); musicList=List; initList(); loadList(3);});
     // ajaxSearch();
     // dataBox("player");
 }

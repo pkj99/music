@@ -845,7 +845,9 @@ function RecentMusicList(callback) {
 // 關鍵字搜尋200首
 function SearchMusicList(keyword,callback) {
     
-    var sqlstring = "select * from vMusic where artist_name like '%"+keyword+"%' or album_name like '%"+keyword+"%' or music_name like '%"+keyword+"%' order by release_date desc limit 200"
+    var kw = Simplized(keyword);    // 繁轉簡
+
+    var sqlstring = "select * from vMusic where artist_name like '%"+kw+"%' or album_name like '%"+kw+"%' or music_name like '%"+kw+"%' order by release_date desc limit 200"
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);

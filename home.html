@@ -45,7 +45,11 @@
     <!-- layer弹窗插件样式文件 -->
     <link rel="stylesheet" href="plugins/layer/skin/default/layer.css?v=3.0.2302" id="layuicss-skinlayercss">
 </head>
-<body>
+<body onload="if (sessionStorage.getItem('loginStatus') != 'success') { window.location = 'index.html'}">
+<!-- <script>
+    var loginStatus = sessionStorage.getItem('loginStatus');
+    if (loginStatus != 'success') { window.location = 'index.html'}
+</script> -->
 
 <div id="blur-img"></div>
 
@@ -176,12 +180,6 @@
 
 
 <script>
-
-// var loginStatus = Session.get("loginStatus");
-var loginStatus = sessionStorage.getItem('loginStatus');
-console.log(loginStatus);
-if (loginStatus != 'success') { window.location = 'index.html'}
-
 // get params
 (window.onpopstate = function () {
     var match,

@@ -179,7 +179,8 @@
 
 // var loginStatus = Session.get("loginStatus");
 var loginStatus = sessionStorage.getItem('loginStatus');
-if (loginStatus != 'success') { window.location = 'login.html'}
+console.log(loginStatus);
+if (loginStatus != 'success') { window.location = 'index.html'}
 
 // get params
 (window.onpopstate = function () {

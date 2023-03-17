@@ -176,6 +176,10 @@
 
 
 <script>
+
+var loginStatus = '@Session["loginStatus"]';
+if (loginStatus != 'success') { window.location = 'login.html'}
+
 // get params
 (window.onpopstate = function () {
     var match,

@@ -44,13 +44,12 @@
     
     <!-- layer弹窗插件样式文件 -->
     <link rel="stylesheet" href="plugins/layer/skin/default/layer.css?v=3.0.2302" id="layuicss-skinlayercss">
+    <script>
+        var loginStatus = sessionStorage.getItem('loginStatus');
+        if (loginStatus != 'success') { window.location = 'index.html'}
+    </script>
 </head>
-<body onload="if (sessionStorage.getItem('loginStatus') != 'success') { window.location = 'index.html'}">
-<!-- <script>
-    var loginStatus = sessionStorage.getItem('loginStatus');
-    if (loginStatus != 'success') { window.location = 'index.html'}
-</script> -->
-
+<body>
 <div id="blur-img"></div>
 
 <!-- 头部logo -->

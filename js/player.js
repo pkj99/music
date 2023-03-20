@@ -27,6 +27,10 @@ var rem = [];
 var myMusic = [];
 var db_url = 'https://pkj99.github.io/music/db/music.db';
 
+if (mkPlayer.debug == false) {
+    var loginStatus = sessionStorage.getItem('loginStatus');
+    if (loginStatus != 'success') { window.location = 'index.html'}
+}
 
 
 function JTPYStr() 

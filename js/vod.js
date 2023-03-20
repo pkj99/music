@@ -83,7 +83,7 @@
 
                 htmlString += '<li class="col-lg-10 col-md-8 col-sm-5 col-xs-3">';
                 htmlString += '<div class="myui-vodlist__box">';
-                htmlString += '<a class="myui-vodlist__thumb lazyload" href="index.html?album_id='+album_id+'" ';
+                htmlString += '<a class="myui-vodlist__thumb lazyload" href="home.html?album_id='+album_id+'" ';
                 htmlString += 'title="' + title +'" ';
                 htmlString += 'data-original="' + album_img + '" ';
                 htmlString += 'style="background-image: url(' + album_img +')"';
@@ -95,7 +95,7 @@
                 htmlString += '</a>';
                 htmlString += '</div>';
                 htmlString += '<div class="myui-vodlist__detail">';
-                htmlString += '<h4 class="title text-overflow"><a href="index.html?album_id='+album_id+'">'+title+'</a></h4>';
+                htmlString += '<h4 class="title text-overflow"><a href="home.html?album_id='+album_id+'">'+title+'</a></h4>';
                 htmlString += '</div>';
                 htmlString += '</li>';
             }

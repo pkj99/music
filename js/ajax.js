@@ -907,7 +907,7 @@ function myAlbumsMusicList(callback) {
     // ids = '88730427,159400159,159967997';
 
     var sqlstring = "select * from vMusic where album_id in ("+ids+") order by album_id,seq";
-    console.log(sqlstring);
+    // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';
@@ -957,7 +957,8 @@ function myAlbumsMusicList(callback) {
         // 存储列表信息
         jsonData = jsonData.concat(tempList);
 
-        console.log(jsonData);
+        // console.log(jsonData);
+        
         musicList = DefaultMusicList;
         musicList = musicList.concat(jsonData);
 

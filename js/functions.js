@@ -898,7 +898,7 @@ function sheetBar() {
         barHtml = '我的歌单 <span class="login-btn login-in">[点击同步]</span>';
     }
 
-    barHtml = '<span><a href="https://cors-anywhere.herokuapp.com/corsdemo"> Enable CORS </a></span>';
+    barHtml = '<span><a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank"> Enable CORS </a></span>';
 
     // barHtml = '<span><a href="artist.html"> Artists List </a></span>';
 

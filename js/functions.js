@@ -898,9 +898,9 @@ function sheetBar() {
         barHtml = '我的歌单 <span class="login-btn login-in">[点击同步]</span>';
     }
 
-    barHtml += '<span><a href="https://cors-anywhere.herokuapp.com/corsdemo"> [corsdemo] </a></span>';
+    barHtml = '<span><a href="https://cors-anywhere.herokuapp.com/corsdemo"> Enable CORS </a></span>';
 
-    barHtml = '<span><a href="artist.html"> Artists List </a></span>';
+    // barHtml = '<span><a href="artist.html"> Artists List </a></span>';
 
     barHtml = '<span id="sheet-bar"><div class="clear-fix"></div>' +
     '<div id="user-login" class="sheet-title-bar">' + barHtml + 

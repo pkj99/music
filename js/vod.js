@@ -203,6 +203,15 @@
                 if (t != "0") {
                     // submenuByTypeId(); // 動態產生子選單
                     var sqlstring = "select * from artists where group_id="+t;
+                    if (t=="6001"){
+                        sqlstring = "select * from artists where group_id in (6001,7001)";
+                    } 
+                    if (t=="6002"){
+                        sqlstring = "select * from artists where group_id in (6002,7002)";
+                    }
+                    if (t=="6003"){
+                        sqlstring = "select * from artists where group_id in (6003,7003)";
+                    }
                     artistlists(sqlstring);
                 } else {
                     var sqlstring = "select * from artists";
@@ -230,6 +239,9 @@
     if (t==2001){ document.getElementById('menu-2001').classList.add("active"); } 
     if (t==2002){ document.getElementById('menu-2002').classList.add("active"); } 
     if (t==2003){ document.getElementById('menu-2003').classList.add("active"); } 
+    if (t==6001){ document.getElementById('menu-6001').classList.add("active"); } 
+    if (t==6002){ document.getElementById('menu-6002').classList.add("active"); } 
+    if (t==6003){ document.getElementById('menu-6003').classList.add("active"); } 
 
 
  

@@ -45,8 +45,10 @@
     <!-- layer弹窗插件样式文件 -->
     <link rel="stylesheet" href="plugins/layer/skin/default/layer.css?v=3.0.2302" id="layuicss-skinlayercss">
     <script>
-        var loginStatus = sessionStorage.getItem('loginStatus');
-        if (loginStatus != 'success') { window.location = 'index.html'}
+        if (mkPlayer.debug == false) {
+            var loginStatus = sessionStorage.getItem('loginStatus');
+            if (loginStatus != 'success') { window.location = 'index.html'}
+        }
     </script>
 </head>
 <body>
@@ -150,7 +152,7 @@
 <script src="js/myMusic163.js"></script>
 <script src="js/myLive163.js"></script>
 <script src="js/myOst163.js"></script>
-<script src="js/myMusicKuwo.js"></script>
+<!-- <script src="js/myMusicKuwo.js"></script> -->
 <script src="js/myList.js"></script>
 <script src="js/plList.js"></script>
 

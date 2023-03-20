@@ -710,7 +710,7 @@ function CookieMusicList(callback) {
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
                 pic_id: data[i][7],  // 封面ID
-                lyric_id: data[i][5],  // 歌词ID
+                lyric_id: data[i][4],  // 歌词ID
                 pic: data[i][7] + "?param=300y300",    // 专辑图片
                 url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3链接
             };
@@ -766,7 +766,7 @@ function RandomMusicList(callback) {
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
                 pic_id: data[i][7],  // 封面ID
-                lyric_id: data[i][5],  // 歌词ID
+                lyric_id: data[i][4],  // 歌词ID
                 pic: data[i][7] + "?param=300y300",    // 专辑图片
                 url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3链接
             };
@@ -822,7 +822,7 @@ function RecentMusicList(callback) {
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
                 pic_id: data[i][7],  // 封面ID
-                lyric_id: data[i][5],  // 歌词ID
+                lyric_id: data[i][4],  // 歌词ID
                 pic: data[i][7] + "?param=300y300",    // 专辑图片
                 url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3链接
             };
@@ -881,7 +881,7 @@ function SearchMusicList(keyword,callback) {
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
                 pic_id: data[i][7],  // 封面ID
-                lyric_id: data[i][5],  // 歌词ID
+                lyric_id: data[i][4],  // 歌词ID
                 pic: data[i][7] + "?param=300y300",    // 专辑图片
                 url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3链接
             };

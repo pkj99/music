@@ -7,7 +7,7 @@
 
     // create artist list 
     function artistlists(sqlstring){
-        console.log(sqlstring);
+        // console.log(sqlstring);
         const xhr = new XMLHttpRequest();
         xhr.open('GET', db_url, true);
         xhr.responseType = 'arraybuffer';
@@ -57,7 +57,7 @@
 
     // create album list 
     function albumlists(sqlstring){
-        console.log(sqlstring);
+        // console.log(sqlstring);
         const xhr = new XMLHttpRequest();
         xhr.open('GET', db_url, true);
         xhr.responseType = 'arraybuffer';
@@ -110,7 +110,7 @@
 
     // create music list 
     function musiclists(sqlstring){
-        console.log(sqlstring);
+        // console.log(sqlstring);
         const xhr = new XMLHttpRequest();
         xhr.open('GET', db_url, true);
         xhr.responseType = 'arraybuffer';
@@ -186,7 +186,7 @@
     if (urlParams["t"] == null){ var t = "0"; } else { var t = urlParams["t"];}
     if (urlParams["artist_id"] != null){
         var artist_id = urlParams["artist_id"];
-        var sqlstring = "select * from albums where qty>3 and qty-free<3 and artist_id="+artist_id;
+        var sqlstring = "select * from albums where qty>4 and qty-free<4 and artist_id="+artist_id;
         albumlists(sqlstring);
         bypass = true;
     }

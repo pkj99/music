@@ -194,8 +194,8 @@ if (urlParams["album_id"] != null) {
     album_id = urlParams["album_id"];
 
     // ajaxAlbumList(album_id);
-    dbMusicList(album_id);
-    dataBox("player");
+    dbMusicList(album_id,function(List){clearSheet(); musicList=List; initList(); loadList(3);});
+    // dataBox("player");
 
 }
 

@@ -165,6 +165,15 @@ var HomeMusicList = [
         item: []
     },
     {
+        id: 'rockgolden10',
+        name: "滚石香港黄金十年",
+        cover: "https://p3.music.126.net/9O1BgXFwR78UK0qopuQIoQ==/109951163756892840.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "滚石香港黄金十年",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
         id: 'cookie',
         name: "我的收藏",
         cover: "https://p4.music.126.net/JSWQbHmxI7Cz5UdpLX377g==/109951168179150903.jpg?param=200y200",

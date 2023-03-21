@@ -973,3 +973,72 @@ function myAlbumsMusicList(callback) {
 }
 
 
+// 滚石香港黄金十年
+function RockGolden10MusicList(callback) {
+
+    var sqlstring = "select * from vMusic where album_name like '%滚石香港黄金十年%' order by album_id,seq";
+    // console.log(sqlstring);
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', db_url, true);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = e => {
+        const uInt8Array = new Uint8Array(xhr.response);
+        const db = new SQL.Database(uInt8Array);
+        const contents = db.exec(sqlstring);
+        var data = JSON.parse(JSON.stringify(contents));
+        if (typeof data[0] == "undefined" ) { data = [];} else { data = data[0].values; }        
+        
+        var jsonData = [];
+        var lastAlbum_id = 0;
+        var item_no =0;
+        var tempList = {};
+        for (var i = 0; i < data.length; i++) {
+            // 存储歌单信息
+            if (data[i][2] != lastAlbum_id){
+                if(i>0){jsonData = jsonData.concat(tempList);}
+                lastAlbum_id = data[i][2];
+                item_no = 0;
+                tempList = {
+                    id: data[i][2],    // 列表的网易云 id
+                    name: data[i][1],   // 列表名字
+                    cover: data[i][7],   // 列表封面
+                    creatorName: data[i][2],   // 列表创建者名字
+                    creatorAvatar: data[i][2],   // 列表创建者头像
+                    item: []
+                };
+            } else {
+            var kuwo_id = data[i][10];
+            if (kuwo_id == null) {kuwo_id = 0}
+            tempList.item[item_no] =  {
+                id: data[i][4],  // 音乐ID
+                name: data[i][5],  // 音乐名字
+                artist: data[i][1], // 艺术家名字
+                album: data[i][3],    // 专辑名字
+                source: "netease",     // 音乐来源
+                url_id: kuwo_id,  // 链接ID
+                pic_id: data[i][7],  // 封面ID
+                lyric_id: data[i][4],  // 歌词ID
+                pic: data[i][7] + "?param=300y300",    // 专辑图片
+                url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3链接
+            };
+            item_no+=1;
+            }
+        }
+        // 存储列表信息
+        jsonData = jsonData.concat(tempList);
+
+        // console.log(jsonData);
+        
+        musicList = DefaultMusicList;
+        musicList = musicList.concat(jsonData);
+
+        if(callback) callback(musicList);    // 调用回调函数
+        
+        // 调试信息输出
+        if(mkPlayer.debug) {
+            console.debug("歌单 [" +tempList.name+ "] 中的音乐获取成功");
+        }
+    };
+    xhr.send();
+}
+

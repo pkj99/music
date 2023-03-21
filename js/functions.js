@@ -1181,6 +1181,9 @@ function switchPl(id){
         case 'myalbums':
             myAlbumsMusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});
         break;
+        case 'rockgolden10':
+            RockGolden10MusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});
+        break;
     }
 
     //console.log(rem);

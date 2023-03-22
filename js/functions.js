@@ -166,6 +166,13 @@ $(function(){
                 dataBox("sheet");
             break;
 
+			case 'tiktok':
+				musicList = TikTokMusicList;
+				initList();
+				loadList(3);
+			break;
+
+
         }
     });
         
@@ -1183,6 +1190,11 @@ function switchPl(id){
         break;
         case 'rockgolden10':
             RockGolden10MusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});
+        break;
+        case 'tiktok':
+            musicList = TikTokMusicList;
+            initList();			
+			loadList(3);
         break;
     }
 

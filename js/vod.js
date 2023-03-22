@@ -186,13 +186,13 @@
     if (urlParams["t"] == null){ var t = "0"; } else { var t = urlParams["t"];}
     if (urlParams["artist_id"] != null){
         var artist_id = urlParams["artist_id"];
-        var sqlstring = "select * from albums where qty>4 and qty-free<4 and artist_id="+artist_id;
+        var sqlstring = "select * from albums where qty>4 and artist_id="+artist_id;
         albumlists(sqlstring);
         bypass = true;
     }
     if (urlParams["album_id"] != null){
          var album_id = urlParams["album_id"];
-         var sqlstring = "select * from musics where url=1 and album_id="+album_id;
+         var sqlstring = "select * from musics where album_id="+album_id;
          musiclists(sqlstring);
          bypass = true;
      }

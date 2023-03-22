@@ -625,7 +625,7 @@ function dbMusicList(album_id, callback) {
             tempList.item[i] =  {
                 id: data[i][4],  // 音乐ID
                 name: data[i][5],  // 音乐名字
-                artist: data[i][1], // 艺术家名字
+                artist: data[i][12], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
@@ -688,7 +688,7 @@ function CookieMusicList(callback) {
             tempList.item[i] =  {
                 id: data[i][4],  // 音乐ID
                 name: data[i][5],  // 音乐名字
-                artist: data[i][1], // 艺术家名字
+                artist: data[i][12], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
@@ -744,7 +744,7 @@ function RandomMusicList(callback) {
             tempList.item[i] =  {
                 id: data[i][4],  // 音乐ID
                 name: data[i][5],  // 音乐名字
-                artist: data[i][1], // 艺术家名字
+                artist: data[i][12], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
@@ -800,7 +800,7 @@ function RecentMusicList(callback) {
             tempList.item[i] =  {
                 id: data[i][4],  // 音乐ID
                 name: data[i][5],  // 音乐名字
-                artist: data[i][1], // 艺术家名字
+                artist: data[i][12], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
@@ -859,7 +859,7 @@ function SearchMusicList(keyword,callback) {
             tempList.item[i] =  {
                 id: data[i][4],  // 音乐ID
                 name: data[i][5],  // 音乐名字
-                artist: data[i][1], // 艺术家名字
+                artist: data[i][12], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
@@ -942,7 +942,7 @@ function myAlbumsMusicList(callback) {
             tempList.item[item_no] =  {
                 id: data[i][4],  // 音乐ID
                 name: data[i][5],  // 音乐名字
-                artist: data[i][1], // 艺术家名字
+                artist: data[i][12], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID
@@ -1012,7 +1012,7 @@ function RockGolden10MusicList(callback) {
             tempList.item[item_no] =  {
                 id: data[i][4],  // 音乐ID
                 name: data[i][5],  // 音乐名字
-                artist: data[i][1], // 艺术家名字
+                artist: data[i][12], // 艺术家名字
                 album: data[i][3],    // 专辑名字
                 source: "netease",     // 音乐来源
                 url_id: kuwo_id,  // 链接ID

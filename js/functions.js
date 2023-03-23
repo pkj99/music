@@ -167,11 +167,19 @@ $(function(){
             break;
 
 			case 'tiktok':
+                clearSheet();
 				musicList = TikTokMusicList;
 				initList();
-				loadList(3);
+                dataBox("sheet");
+				// loadList(3);
 			break;
-
+            
+            case 'famous':
+                musicList = DefaultMusicList;
+                musicList = musicList.concat(myFamousKuwo);
+                initList();
+                dataBox("sheet");
+            break;   
 
         }
     });
@@ -1192,10 +1200,18 @@ function switchPl(id){
             RockGolden10MusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});
         break;
         case 'tiktok':
+            clearSheet();
             musicList = TikTokMusicList;
-            initList();			
-			loadList(3);
+            initList();	
+            dataBox("sheet");		
+			// loadList(3);
         break;
+        case 'famous':
+            musicList = DefaultMusicList;
+            musicList = musicList.concat(myFamousKuwo);
+            initList();
+            dataBox("sheet");
+        break;        
     }
 
     //console.log(rem);

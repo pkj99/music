@@ -175,6 +175,14 @@ var HomeMusicList = [
         item: []
     },
     {
+        id: 'famous',
+        name: "懷舊經典",
+        cover: "https://p1.music.126.net/AYojJDyx3lCQf2A5I1Z5dA==/109951168241362084.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "懷舊經典",
+        creatorAvatar: 0,
+        item: []
+    },{
         id: 'cookie',
         name: "我的收藏",
         cover: "https://p4.music.126.net/JSWQbHmxI7Cz5UdpLX377g==/109951168179150903.jpg?param=200y200",

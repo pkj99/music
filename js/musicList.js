@@ -94,6 +94,24 @@ var HomeMusicList = [
         item: []
     },
     {
+        id: 'cookie',
+        name: "我的收藏",
+        cover: "https://p4.music.126.net/JSWQbHmxI7Cz5UdpLX377g==/109951168179150903.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "我的收藏",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
+        id: 'myalbums',
+        name: "專輯收藏",
+        cover: "https://p3.music.126.net/KkK14m6QgFrRjWkrv4Cqqw==/5825212604057949.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "專輯收藏",
+        creatorAvatar: 0,
+        item: []
+    },    
+    {
         id: 'playlist',
         name: "歌單",
         cover: "http://p4.music.126.net/4Y3MZ9YQ0X5lufAmp-eudg==/109951168296692473.jpg?param=200y200",
@@ -175,28 +193,38 @@ var HomeMusicList = [
         item: []
     },
     {
-        id: 'famous',
+        id: 'myOldSongs',
         name: "懷舊經典",
         cover: "https://p1.music.126.net/AYojJDyx3lCQf2A5I1Z5dA==/109951168241362084.jpg?param=200y200",
         creatorID: -1,
         creatorName: "懷舊經典",
         creatorAvatar: 0,
         item: []
-    },{
-        id: 'cookie',
-        name: "我的收藏",
-        cover: "https://p4.music.126.net/JSWQbHmxI7Cz5UdpLX377g==/109951168179150903.jpg?param=200y200",
+    },
+    {
+        id: 'myEndlessMelody',
+        name: "声生不息",
+        cover: "https://p1.music.126.net/rk7d6mL3Y5NKQ-2v-bQPZw==/109951167333213984.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "我的收藏",
+        creatorName: "声生不息",
         creatorAvatar: 0,
         item: []
     },
     {
-        id: 'myalbums',
-        name: "專輯收藏",
-        cover: "https://p3.music.126.net/KkK14m6QgFrRjWkrv4Cqqw==/5825212604057949.jpg?param=200y200",
+        id: 'myChinaGoodSound',
+        name: "中国好声音",
+        cover: "https://p1.music.126.net/pleQjKOI26fSenkUGipDLw==/109951166537300832.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "專輯收藏",
+        creatorName: "中国好声音",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
+        id: 'mySingingWithLegends',
+        name: "中国梦之声",
+        cover: "https://p2.music.126.net/7bg49rmvAZvjitiGiRI5Yw==/109951167917694773.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "中国梦之声",
         creatorAvatar: 0,
         item: []
     },

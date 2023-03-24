@@ -57,131 +57,9 @@ $(function(){
     $(".btn").click(function(){
 		//console.log(musicList);
 		//console.log(rem.playlist);
-        switch($(this).data("action")) {
-            case "player":    // 播放器
-                dataBox("player");
-            break;
-            case "search":  // 搜索
-                searchBox();
-            break;
-            
-            case "playing": // 正在播放
-                loadList(1); // 显示正在播放列表
-            break;
-            
-            case "sheet":   // 播放列表				
-                dataBox("sheet");    // 在主界面显示出音乐专辑
-            break;
 
-            case "home":   // 主選單
-                clearSheet();
-                // musicList = DefaultMusicList;
-                // musicList = musicList.concat(HomeMusicList);
-                musicList = HomeMusicList;
-                initList();
-                dataBox("sheet");
-            break;
+        switchPl($(this).data("action"));
 
-            case "original":   // 排行
-                clearSheet();
-                musicList = OriginalMusicList;
-                initList();
-                dataBox("sheet");
-            break;
-
-            case "collection":   // 精選
-                clearSheet();
-                musicList = DefaultMusicList;
-                musicList = musicList.concat(myList);
-                initList();
-                dataBox("sheet");
-            break;
-
-            case "playlist":   // 歌單
-                clearSheet();
-                musicList = DefaultMusicList;
-                musicList = musicList.concat(plList);            
-                initList();
-                dataBox("sheet");
-            break;
-
-            case "album":   // 專輯
-                clearSheet();
-                musicList = DefaultMusicList;
-                myMusic = myMusic163;
-                musicList = musicList.concat(myMusic);
-                initList();
-                dataBox("sheet");
-            break;
-
-            case "live":   // 專輯
-                clearSheet();
-                musicList = DefaultMusicList;
-                musicList = musicList.concat(myLive163);
-                initList();
-                dataBox("sheet");
-            break;
-
-            case "ost":   // 專輯
-                clearSheet();
-                musicList = DefaultMusicList;
-                musicList = musicList.concat(myOst163);
-                initList();
-                dataBox("sheet");
-            break;
-
-            case "random":   // 隨機列表
-				RandomMusicList(function(List){
-					clearSheet();
-                    musicList=List;
-                    initList();
-                    loadList(3);
-				});    
-            break;
-
-            case "recent":   // 隨機列表
-				RecentMusicList(function(List){
-					clearSheet();
-                    musicList=List;
-                    initList();
-                    loadList(3);
-				});    
-            break;
-
-
-            case "cookie":   // 收藏列表
-                CookieMusicList(function(List){
-                    clearSheet();
-                    musicList=List;
-                    initList();
-                    loadList(3);
-                });
-            break;
-
-            case "kuwo":   // 酷我專輯
-                musicList = DefaultMusicList;
-                myMusic = myMusicKuwo;
-                musicList = musicList.concat(myMusic);
-                initList();
-                dataBox("sheet");
-            break;
-
-			case 'tiktok':
-                clearSheet();
-				musicList = TikTokMusicList;
-				initList();
-                dataBox("sheet");
-				// loadList(3);
-			break;
-            
-            case 'famous':
-                musicList = DefaultMusicList;
-                musicList = musicList.concat(myFamousKuwo);
-                initList();
-                dataBox("sheet");
-            break;   
-
-        }
     });
         
     // 列表项双击播放
@@ -453,7 +331,6 @@ $(function(){
     musicList = HomeMusicList;
     initList();
     dataBox("sheet");
-
 
     // switchPl('playlist');
     //clearSheet();
@@ -1116,7 +993,7 @@ function playerReaddata(key) {
 
 
 function switchPl(id){
-    clearSheet();
+    // clearSheet();
 
     switch(id) {
         case "player":    // 播放器
@@ -1125,33 +1002,40 @@ function switchPl(id){
         case "search":  // 搜索
             searchBox();
         break;
-        
         case "playing": // 正在播放
             loadList(1); // 显示正在播放列表
         break;
-        
-        case "sheet":   // 播放列表				
+        case "sheet":   // 播放列表
             dataBox("sheet");    // 在主界面显示出音乐专辑
         break;
-
+        case "home":   // 主選單
+            clearSheet();
+            musicList = HomeMusicList;
+            initList();
+            dataBox("sheet");
+        break;
         case 'original':
+            clearSheet();
             musicList = OriginalMusicList;
             initList();
             dataBox("sheet");
         break;
         case 'collection':
+            clearSheet();
             musicList = DefaultMusicList;
             musicList = musicList.concat(myList);            
             initList();
             dataBox("sheet");
         break;
         case 'playlist':
+            clearSheet();
             musicList = DefaultMusicList;
             musicList = musicList.concat(plList);            
             initList();
             dataBox("sheet");
         break;
         case 'album':
+            clearSheet();
             musicList = DefaultMusicList;
             myMusic = myMusic163;
             musicList = musicList.concat(myMusic);
@@ -1163,6 +1047,7 @@ function switchPl(id){
             // document.body.insertAdjacentElement('beforeEnd',eJS);
             // eJS.language="JavaScript";
             // eJS.src="js/myMusicKuwo.js";
+            clearSheet();
             musicList = DefaultMusicList;
             myMusic = myMusicKuwo;
             musicList = musicList.concat(myMusic);
@@ -1170,12 +1055,14 @@ function switchPl(id){
             dataBox("sheet");
         break;
         case 'live':
+            clearSheet();
             musicList = DefaultMusicList;
             musicList = musicList.concat(myLive163);
             initList();
             dataBox("sheet");
         break;
         case 'ost':
+            clearSheet();
             musicList = DefaultMusicList;
             musicList = musicList.concat(myOst163);
             initList();
@@ -1199,19 +1086,13 @@ function switchPl(id){
         case 'rockgolden10':
             RockGolden10MusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});
         break;
-        case 'tiktok':
-            clearSheet();
-            musicList = TikTokMusicList;
-            initList();	
-            dataBox("sheet");		
-			// loadList(3);
-        break;
-        case 'famous':
-            musicList = DefaultMusicList;
-            musicList = musicList.concat(myFamousKuwo);
-            initList();
-            dataBox("sheet");
-        break;        
+
+        case 'tiktok':  clearSheet();  musicList = TikTokMusicList; initList();	dataBox("sheet"); break;
+
+        case 'myOldSongs':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myOldSongs); initList();  dataBox("sheet"); break;        
+        case 'myEndlessMelody':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myEndlessMelody); initList();  dataBox("sheet"); break;        
+        case 'myChinaGoodSound':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myChinaGoodSound); initList();  dataBox("sheet"); break;        
+        case 'mySingingWithLegends':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(mySingingWithLegends); initList();  dataBox("sheet"); break;        
     }
 
     //console.log(rem);

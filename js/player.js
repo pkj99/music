@@ -16,12 +16,6 @@ var mkPlayer = {
     debug: false   // 是否开启调试模式(true/false)
 };
 
-/*******************************************************
- * 以下内容是播放器核心文件，不建议进行修改，否则可能导致播放器无法正常使用!
- * 
- * 哈哈，吓唬你的！想改就改呗！不过建议修改之前先【备份】,要不然改坏了弄不好了。
- ******************************************************/
-
 // 存储全局变量
 var rem = [];
 var myMusic = [];
@@ -80,24 +74,6 @@ function Simplized(cc){
 function audioErr() {
     // 没播放过，直接跳过
     if(rem.playlist === undefined) return true;
-   
-
-	// var music = musicList[rem.playlist].item[rem.playid];
-	// if(music.url_id !=0){
-	// 	music.url = 'https://link.hhtjim.com/kw/'+music.url_id+'.mp3';
-	// 	layer.msg('試聽連結, 切換到 KUWO 播放 ...');
-	// 	try {
-	// 		rem.audio[0].pause();
-	// 		rem.audio.attr('src', music.url);
-	// 		rem.audio[0].play();
-    //         rem.errCount++; 
-	// 		return;
-	// 	} catch(e) {
-    //         layer.msg('当前歌曲播放失败，自动播放下一首');
-    //         nextMusic();    // 切换下一首歌
-	// 	}
-	// } 
-	
 
     if(rem.errCount > 10) { // 连续播放失败的歌曲过多
         layer.msg('似乎出了点问题~播放已停止');

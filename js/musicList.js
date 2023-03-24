@@ -229,6 +229,15 @@ var HomeMusicList = [
         item: []
     },
     {
+        id: 'myIAmASinger',
+        name: "我是歌手",
+        cover: "https://p2.music.126.net/_xStDO-yKQkcuVn0bYptKg==/3275445147404351.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "我是歌手",
+        creatorAvatar: 0,
+        item: []
+    },    
+    {
         id: 'search',
         name: "搜索",
         cover: "https://p3.music.126.net/0-deIQ8ckyaCh9Sof2CvjQ==/109951168094729294.jpg?param=200y200",

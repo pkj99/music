@@ -1094,6 +1094,7 @@ function switchPl(id){
         case 'myEndlessMelody':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myEndlessMelody); initList();  dataBox("sheet"); break;        
         case 'myChinaGoodSound':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myChinaGoodSound); initList();  dataBox("sheet"); break;        
         case 'mySingingWithLegends':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(mySingingWithLegends); initList();  dataBox("sheet"); break;        
+        case 'myIAmASinger':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myIAmASinger); initList();  dataBox("sheet"); break;        
     }
 
     //console.log(rem);

@@ -405,7 +405,8 @@ function searchBox() {
     // '       <label><input type="radio" name="source" value="baidu"> 百度</label>' + 
     // '   </div>' + 
     // '</div></form>';
-    '</div><div style="text-align: center;"><a href="https://cors-anywhere.herokuapp.com/corsdemo" target=_blank>Enable CORS</a>' +
+    '</div><div style="text-align: center;">受限於酷我音樂 CORS Policy，<br>聆聽前請先嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank"> 啟用 </a>  暫時釋放功能</a>' +
+    // <a href="https://cors-anywhere.herokuapp.com/corsdemo" target=_blank>Enable CORS</a>' +
     '</div><img src="images/music_qr.png" width="300px"></form>';
 
     layer.open({
@@ -789,8 +790,8 @@ function sheetBar() {
     } else {
         barHtml = '我的歌单 <span class="login-btn login-in">[点击同步]</span>';
     }
-
-    barHtml = '<span><a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank"> Enable CORS </a></span>';
+     
+    barHtml = '<span>受限於酷我音樂 CORS Policy，聆聽前請先嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank"> 啟用 </a>  暫時釋放功能</span>';
 
     // barHtml = '<span><a href="artist.html"> Artists List </a></span>';
 

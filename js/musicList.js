@@ -157,6 +157,15 @@ var HomeMusicList = [
         item: []
     },
     {
+        id: 'myBangs',
+        name: "酷我排行榜",
+        cover: "https://p2.music.126.net/yMuFijIttE4FQsYIEb5gKQ==/109951167482049172.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "酷我排行榜",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
         id: 'live',
         name: "演唱會",
         cover: "https://p3.music.126.net/0fmKlds6iJDqBPwc8WrF8Q==/109951168173611755.jpg?param=200y200",

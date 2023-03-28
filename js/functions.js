@@ -791,7 +791,7 @@ function sheetBar() {
         barHtml = '我的歌单 <span class="login-btn login-in">[点击同步]</span>';
     }
      
-    barHtml = '<span>受限於酷我音樂 CORS Policy，聆聽前請先嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank"> 啟用 </a>  暫時釋放功能</span>';
+    barHtml = '<span>受限於 CORS Policy，聆聽酷我音樂前請先嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank"> 啟用 </a></span>';
 
     // barHtml = '<span><a href="artist.html"> Artists List </a></span>';
 
@@ -1095,6 +1095,7 @@ function switchPl(id){
         case 'myChinaGoodSound':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myChinaGoodSound); initList();  dataBox("sheet"); break;        
         case 'mySingingWithLegends':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(mySingingWithLegends); initList();  dataBox("sheet"); break;        
         case 'myIAmASinger':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myIAmASinger); initList();  dataBox("sheet"); break;        
+        case 'myBangs':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myBangs); initList();  dataBox("sheet"); break;        
     }
 
     //console.log(rem);

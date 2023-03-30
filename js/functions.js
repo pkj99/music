@@ -145,29 +145,51 @@ $(function(){
             break;
             case "cookie":   // 收藏
                 var url= musicList[rem.dislist].item[num].url;
-                var source = 'music';
                 if (url.includes('/kw/')){
-                    source = 'kwmusic';
-                }
-
-                var id = musicList[rem.dislist].item[num].id;
-                var ids = getCookieByName(source);
-                var idNew = ',' + id ;
-                const d = new Date();
-                d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
-                let expires = "expires="+d.toUTCString();
-            
-                if (ids == null) { ids = '';}
-                if (ids.includes(idNew)){
-                    document.getElementById(id).title = '收藏';
-                    document.getElementById(id).className = 'list-icon icon-share';
-                    ids = ids.replace(idNew,'');
-                    document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+                    var source = 'kwmusic';
+                    var kuwoid = music.url.split('/kw/')[1].replace('.mp3','');
+                    var id = musicList[rem.dislist].item[num].id;
+                    var ids = getCookieByName(source);
+                    var idNew = ',' + kuwoid ;
+                    
+                    const d = new Date();
+                    d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+                    let expires = "expires="+d.toUTCString();
+                
+                    if (ids == null) { ids = '';}
+                    if (ids.includes(idNew)){
+                        document.getElementById(id).title = '收藏';
+                        document.getElementById(id).className = 'list-icon icon-share';
+                        ids = ids.replace(idNew,'');
+                        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+                    } else {
+                        document.getElementById(id).title = '已收藏';
+                        document.getElementById(id).className = 'list-icon icon-share-click';
+                        ids += idNew ;
+                        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+                    }
                 } else {
-                    document.getElementById(id).title = '已收藏';
-                    document.getElementById(id).className = 'list-icon icon-share-click';
-                    ids += idNew ;
-                    document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+                    var source = 'music';
+                    var id = musicList[rem.dislist].item[num].id;
+                    var ids = getCookieByName(source);
+                    var idNew = ',' + id ;
+                    
+                    const d = new Date();
+                    d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+                    let expires = "expires="+d.toUTCString();
+                
+                    if (ids == null) { ids = '';}
+                    if (ids.includes(idNew)){
+                        document.getElementById(id).title = '收藏';
+                        document.getElementById(id).className = 'list-icon icon-share';
+                        ids = ids.replace(idNew,'');
+                        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+                    } else {
+                        document.getElementById(id).title = '已收藏';
+                        document.getElementById(id).className = 'list-icon icon-share-click';
+                        ids += idNew ;
+                        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+                    }
                 }
             break;
         }
@@ -380,7 +402,8 @@ function musicInfo(list, index) {
     });
     
     if (music.url.includes('/kw/')){
-        checkCookieBySourceId('kwmusic',music.id);
+        var kuwo_id = music.url.split('/kw/')[1].replace('.mp3','');
+        checkCookieBySourceId('kwmusic',kuwo_id);
     } else {
         checkCookieBySourceId('music',music.id);
     }

@@ -91,17 +91,15 @@ $(function(){
         if(isNaN(num)) return false;
 
         var id = musicList[rem.dislist].item[num].id;
+        var url = musicList[rem.dislist].item[num].url;
         var cookieStr = '';
 
-        var ids = getCookieByName('music');
-        if (ids == null) { ids = '';}
-        if (ids.includes(',' + id)){
-            cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>';
+        if (url.includes('/kw/')){
+            var ids = getCookieByName('kwmusic');
         } else {
-            cookieStr = '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>';
+            var ids = getCookieByName('music');
         }
 
-        var ids = getCookieByName('kmmusic');
         if (ids == null) { ids = '';}
         if (ids.includes(',' + id)){
             cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>';

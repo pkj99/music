@@ -147,7 +147,7 @@ $(function(){
                 var url= musicList[rem.dislist].item[num].url;
                 if (url.includes('/kw/')){
                     var source = 'kwmusic';
-                    var kuwoid = music.url.split('/kw/')[1].replace('.mp3','');
+                    var kuwoid = url.split('/kw/')[1].replace('.mp3','');
                     var id = musicList[rem.dislist].item[num].id;
                     var ids = getCookieByName(source);
                     var idNew = ',' + kuwoid ;
@@ -173,7 +173,7 @@ $(function(){
                     var id = musicList[rem.dislist].item[num].id;
                     var ids = getCookieByName(source);
                     var idNew = ',' + id ;
-                    
+
                     const d = new Date();
                     d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
                     let expires = "expires="+d.toUTCString();

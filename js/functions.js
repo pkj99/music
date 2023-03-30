@@ -381,8 +381,12 @@ function musicInfo(list, index) {
         content: tempStr
     });
     
-    checkCookieBySourceId('music',music.id);
-    checkCookieBySourceId('kwmusic',music.id);
+    if (music.url.includes('/kw/')){
+        checkCookieBySourceId('kwmusic',music.id);
+    } else {
+        checkCookieBySourceId('music',music.id);
+    }
+
     if (album_id !=0){
         checkAlbumBySourceId('album',album_id);
     }
@@ -398,8 +402,8 @@ function musicInfo(list, index) {
         'pic_id: "' + music.pic_id + '",\n' + 
         'lyric_id: "' + music.lyric_id + '",\n' + 
         'pic: "' + music.pic + '",\n' +
-        'url: ""');
-        // 'url: "' + music.url + '"');
+        // 'url: ""');
+        'url: "' + music.url + '"');
     }
 }
 

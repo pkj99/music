@@ -393,8 +393,8 @@ function musicInfo(list, index) {
     });
     
     if (music.url.includes('/kw/')){
-        var kuwo_id = music.url.split('/kw/')[1].replace('.mp3','');
-        checkCookieBySourceId('kwmusic',kuwo_id);
+        var kuwoid = music.url.split('/kw/')[1].replace('.mp3','');
+        checkCookieBySourceId('kwmusic',kuwoid);
     } else {
         checkCookieBySourceId('music',music.id);
     }
@@ -488,8 +488,10 @@ function thisShare(obj) {
 
 // 收藏这首歌
 function thisMusic(obj) {
-    if (musicList[$(obj).data("list")].item[$(obj).data("index")].url.includes('/kw/')){
-        setCookieBySourceId('kwmusic',musicList[$(obj).data("list")].item[$(obj).data("index")].id);
+    var url =musicList[$(obj).data("list")].item[$(obj).data("index")].url
+    if (url.includes('/kw/')){
+        var kuwoid = url.split('/kw/')[1].replace('.mp3','');
+        setCookieBySourceId('kwmusic',kuwoid);
     } else {
         setCookieBySourceId('music',musicList[$(obj).data("list")].item[$(obj).data("index")].id);
     }

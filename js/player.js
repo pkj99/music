@@ -369,22 +369,32 @@ function KuwoUrl(id,callback)
 {
     var x = new XMLHttpRequest();
     x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid='+id);
-    // x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    // x.addEventListener('error', KuwoError());
     x.onload = () => {
-        // console.log(x.status,x.readyState);
-        // console.log(x.responseText);
         var j = JSON.parse(x.responseText);
         if (j.success){
-            // console.log(j.data.url);
             mp3Url = j.data.url;
             if(callback) callback(mp3Url);
         }
     }
-    // x.onreadystatechange = () => {
-    //     if (x.status == 0)   {  KuwoError();  }
-    // }
     x.send();
+}
+
+function KuwoUrl2(id,callback)
+{
+
+    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid='+id)}`)
+    .then(response => {
+        if (response.ok) return response.json()
+        throw new Error('Network response was not ok.')
+    })
+    .then(data => {
+        // console.log(data.contents);
+        var j = JSON.parse(data.contents);
+        if (j.success){
+            mp3Url = j.data.url;
+            if(callback) callback(mp3Url);
+        }
+    });
 }
 
 
@@ -422,8 +432,7 @@ function play(music) {
     }
     
     if (music.url.includes('/kw/')){
-        KuwoUrl(music.url_id,function(mp3Url){
-            // alert(mp3Url);
+        KuwoUrl2(music.url_id,function(mp3Url){
             try {
                 rem.audio[0].pause();
                 rem.audio.attr('src', mp3Url);

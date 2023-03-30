@@ -91,8 +91,17 @@ $(function(){
         if(isNaN(num)) return false;
 
         var id = musicList[rem.dislist].item[num].id;
-        var ids = getCookieByName('music');
         var cookieStr = '';
+
+        var ids = getCookieByName('music');
+        if (ids == null) { ids = '';}
+        if (ids.includes(',' + id)){
+            cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>';
+        } else {
+            cookieStr = '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>';
+        }
+
+        var ids = getCookieByName('kmmusic');
         if (ids == null) { ids = '';}
         if (ids.includes(',' + id)){
             cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>';
@@ -137,8 +146,13 @@ $(function(){
                 ajaxUrl(musicList[rem.dislist].item[num], ajaxShare);
             break;
             case "cookie":   // 收藏
-                
+                var url= musicList[rem.dislist].item[num].url;
+                alert(url);
                 var source = 'music';
+                if (url.includes('/kw/')){
+                    source = 'kwmusic';
+                }
+
                 var id = musicList[rem.dislist].item[num].id;
                 var ids = getCookieByName(source);
                 var idNew = ',' + id ;
@@ -459,6 +473,7 @@ function thisShare(obj) {
 
 // 收藏这首歌
 function thisMusic(obj) {
+    alert(musicList[$(obj).data("list")].item[$(obj).data("index")].url);
     if (musicList[$(obj).data("list")].item[$(obj).data("index")].url.includes('/kw/')){
         setCookieBySourceId('kwmusic',musicList[$(obj).data("list")].item[$(obj).data("index")].id);
     } else {

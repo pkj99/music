@@ -683,12 +683,12 @@ function CookieMusicList(callback) {
         };
 
         for (var i = 0; i < data.length; i++) {
+            var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3";
 			var kuwo_id = data[i][10];
 			if (kuwo_id == null) {
                 kuwo_id = 0;
-                url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3";
             } else {
-                url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";
+                if (data[i][10] == 0) { url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";}
             }
             tempList.item[i] =  {
                 id: data[i][4],  // 音乐ID

@@ -147,7 +147,6 @@ $(function(){
             break;
             case "cookie":   // 收藏
                 var url= musicList[rem.dislist].item[num].url;
-                alert(url);
                 var source = 'music';
                 if (url.includes('/kw/')){
                     source = 'kwmusic';
@@ -473,7 +472,6 @@ function thisShare(obj) {
 
 // 收藏这首歌
 function thisMusic(obj) {
-    alert(musicList[$(obj).data("list")].item[$(obj).data("index")].url);
     if (musicList[$(obj).data("list")].item[$(obj).data("index")].url.includes('/kw/')){
         setCookieBySourceId('kwmusic',musicList[$(obj).data("list")].item[$(obj).data("index")].id);
     } else {

@@ -688,7 +688,7 @@ function CookieMusicList(callback) {
 			if (kuwo_id == null) {
                 kuwo_id = 0;
             } else {
-                if (data[i][10] == 0) { url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";}
+                if (data[i][9] == 0) { url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";}
             }
             tempList.item[i] =  {
                 id: data[i][4],  // 音乐ID

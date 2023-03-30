@@ -96,16 +96,23 @@ $(function(){
 
         if (url.includes('/kw/')){
             var ids = getCookieByName('kwmusic');
+            var kuwoid = url.split('/kw/')[1].replace('.mp3','');
+            if (ids == null) { ids = '';}
+            if (ids.includes(',' + kuwoid)){
+                cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>';
+            } else {
+                cookieStr = '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>';
+            }
         } else {
             var ids = getCookieByName('music');
+            if (ids == null) { ids = '';}
+            if (ids.includes(',' + id)){
+                cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>';
+            } else {
+                cookieStr = '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>';
+            }
         }
 
-        if (ids == null) { ids = '';}
-        if (ids.includes(',' + id)){
-            cookieStr = '<span class="list-icon icon-share-click" data-function="cookie" id="'+ id +'" title="已收藏"></span>';
-        } else {
-            cookieStr = '<span class="list-icon icon-share" data-function="cookie" id="'+ id +'" title="收藏"></span>';
-        }
 
 
         // 还没有追加菜单则加上菜单
@@ -151,45 +158,29 @@ $(function(){
                     var id = musicList[rem.dislist].item[num].id;
                     var ids = getCookieByName(source);
                     var idNew = ',' + kuwoid ;
-                    
-                    const d = new Date();
-                    d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
-                    let expires = "expires="+d.toUTCString();
-                
-                    if (ids == null) { ids = '';}
-                    if (ids.includes(idNew)){
-                        document.getElementById(id).title = '收藏';
-                        document.getElementById(id).className = 'list-icon icon-share';
-                        ids = ids.replace(idNew,'');
-                        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
-                    } else {
-                        document.getElementById(id).title = '已收藏';
-                        document.getElementById(id).className = 'list-icon icon-share-click';
-                        ids += idNew ;
-                        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
-                    }
+
                 } else {
                     var source = 'music';
                     var id = musicList[rem.dislist].item[num].id;
                     var ids = getCookieByName(source);
                     var idNew = ',' + id ;
+                }
 
-                    const d = new Date();
-                    d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
-                    let expires = "expires="+d.toUTCString();
-                
-                    if (ids == null) { ids = '';}
-                    if (ids.includes(idNew)){
-                        document.getElementById(id).title = '收藏';
-                        document.getElementById(id).className = 'list-icon icon-share';
-                        ids = ids.replace(idNew,'');
-                        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
-                    } else {
-                        document.getElementById(id).title = '已收藏';
-                        document.getElementById(id).className = 'list-icon icon-share-click';
-                        ids += idNew ;
-                        document.cookie = source + '=' + ids + ";" + expires + ";path=/";
-                    }
+                const d = new Date();
+                d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+                let expires = "expires="+d.toUTCString();
+            
+                if (ids == null) { ids = '';}
+                if (ids.includes(idNew)){
+                    document.getElementById(id).title = '收藏';
+                    document.getElementById(id).className = 'list-icon icon-share';
+                    ids = ids.replace(idNew,'');
+                    document.cookie = source + '=' + ids + ";" + expires + ";path=/";
+                } else {
+                    document.getElementById(id).title = '已收藏';
+                    document.getElementById(id).className = 'list-icon icon-share-click';
+                    ids += idNew ;
+                    document.cookie = source + '=' + ids + ";" + expires + ";path=/";
                 }
             break;
         }

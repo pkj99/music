@@ -684,7 +684,12 @@ function CookieMusicList(callback) {
 
         for (var i = 0; i < data.length; i++) {
 			var kuwo_id = data[i][10];
-			if (kuwo_id == null) {kuwo_id = 0}
+			if (kuwo_id == null) {
+                kuwo_id = 0;
+                url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3";
+            } else {
+                url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";
+            }
             tempList.item[i] =  {
                 id: data[i][4],  // 音乐ID
                 name: data[i][5],  // 音乐名字
@@ -695,7 +700,7 @@ function CookieMusicList(callback) {
                 pic_id: data[i][7],  // 封面ID
                 lyric_id: data[i][4],  // 歌词ID
                 pic: data[i][7] + "?param=300y300",    // 专辑图片
-                url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3链接
+                url: url   // mp3链接
             };
         }
 		

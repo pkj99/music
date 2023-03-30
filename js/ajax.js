@@ -661,7 +661,7 @@ function CookieMusicList(callback) {
     }
     ids = '0' + ids;
 
-    var sqlstring = "select * from vMusic where music_id in ("+ids+")";
+    var sqlstring = "select * from vMusic where music_id in ("+ids+") or kuwo_music_id in ("+ids+")";
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';

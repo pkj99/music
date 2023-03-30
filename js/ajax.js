@@ -654,14 +654,16 @@ function dbMusicList(album_id, callback) {
 function CookieMusicList(callback) {
 
     var ids = getCookieByName('music');
-    if (ids == ''){
+    var kwids = getCookieByName('kwmusic');
+    if (ids == '' && kwids == ''){
         layer.msg('找不到收藏清單');
         if(callback) { callback(HomeMusicList); }
         return;
     }
     ids = '0' + ids;
+    kwids='0' + kwids;
 
-    var sqlstring = "select * from vMusic where music_id in ("+ids+") or kuwo_music_id in ("+ids+")";
+    var sqlstring = "select * from vMusic where music_id in ("+ids+") or kuwo_music_id in ("+kwids+")";
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';

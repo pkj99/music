@@ -112,6 +112,15 @@ var HomeMusicList = [
         item: []
     },    
     {
+        id: 'myRadios',
+        name: "廣播",
+        cover: "https://img.freepik.com/premium-vector/online-radio-station-vintage-icon-symbol_8071-25787.jpg?w=200",
+        creatorID: -1,
+        creatorName: "廣播",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
         id: 'playlist',
         name: "歌單",
         cover: "http://p4.music.126.net/4Y3MZ9YQ0X5lufAmp-eudg==/109951168296692473.jpg?param=200y200",
@@ -119,7 +128,7 @@ var HomeMusicList = [
         creatorName: "歌單",
         creatorAvatar: 0,
         item: []
-    },
+    },    
     {
         id: 'album',
         name: "專輯",

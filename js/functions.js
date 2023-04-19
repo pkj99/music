@@ -363,6 +363,9 @@ $(function(){
     // musicList = DefaultMusicList;
     // musicList = musicList.concat(plList);
     //initList(); 
+    if (urlParams["play"] == "myRadios") { 
+        switchPl("myRadios");
+    }
 
 });
 

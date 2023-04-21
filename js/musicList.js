@@ -86,13 +86,31 @@ var HomeMusicList = [
     }, 
     {
         id: 'original',
-        name: "排行榜",
+        name: "網易排行榜",
         cover: "https://p3.music.126.net/lL5KpMsL3mxWkm6_bM1d1g==/109951168165612314.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "排行榜",
+        creatorName: "網易排行榜",
         creatorAvatar: 0,
         item: []
     },
+    {
+        id: 'myBangs',
+        name: "酷我排行榜",
+        cover: "https://p2.music.126.net/yMuFijIttE4FQsYIEb5gKQ==/109951167482049172.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "酷我排行榜",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
+        id: 'myRadios',
+        name: "廣播",
+        cover: "https://img.freepik.com/premium-vector/online-radio-station-vintage-icon-symbol_8071-25787.jpg?w=200",
+        creatorID: -1,
+        creatorName: "廣播",
+        creatorAvatar: 0,
+        item: []
+    },        
     {
         id: 'cookie',
         name: "我的收藏",
@@ -111,15 +129,6 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     },    
-    {
-        id: 'myRadios',
-        name: "廣播",
-        cover: "https://img.freepik.com/premium-vector/online-radio-station-vintage-icon-symbol_8071-25787.jpg?w=200",
-        creatorID: -1,
-        creatorName: "廣播",
-        creatorAvatar: 0,
-        item: []
-    },
     {
         id: 'playlist',
         name: "歌單",
@@ -162,15 +171,6 @@ var HomeMusicList = [
         cover: "https://p3.music.126.net/NwySj1tvMPmr3W9vJ4ChEQ==/109951168205089190.jpg?param=200y200",
         creatorID: -1,
         creatorName: "新歌200首",
-        creatorAvatar: 0,
-        item: []
-    },
-    {
-        id: 'myBangs',
-        name: "酷我排行榜",
-        cover: "https://p2.music.126.net/yMuFijIttE4FQsYIEb5gKQ==/109951167482049172.jpg?param=200y200",
-        creatorID: -1,
-        creatorName: "酷我排行榜",
         creatorAvatar: 0,
         item: []
     },

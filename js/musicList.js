@@ -176,10 +176,19 @@ var HomeMusicList = [
     },
     {
         id: 'live',
-        name: "演唱會",
-        cover: "https://p3.music.126.net/0fmKlds6iJDqBPwc8WrF8Q==/109951168173611755.jpg?param=200y200",
+        name: "網易演唱會",
+        cover: "http://p1.music.126.net/IAHRobXhEykx5Tw9zUDBSQ==/109951168162652115.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "演唱會",
+        creatorName: "網易演唱會",
+        creatorAvatar: 0,
+        item: []
+    },    
+    {
+        id: 'myLives',
+        name: "酷我演唱會",
+        cover: "http://p1.music.126.net/mFEX1ITr2AYNugquNB-KTQ==/109951163611178132.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "酷我演唱會",
         creatorAvatar: 0,
         item: []
     },    
@@ -201,15 +210,15 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     },
-    {
-        id: 'tiktok',
-        name: "抖音",
-        cover: "https://p1.music.126.net/8sRm2fQNh_KZeWmJ1sRhQQ==/109951165611408950.jpg?param=200y200",
-        creatorID: -1,
-        creatorName: "抖音",
-        creatorAvatar: 0,
-        item: []
-    },
+    // {
+    //     id: 'tiktok',
+    //     name: "抖音",
+    //     cover: "https://p1.music.126.net/8sRm2fQNh_KZeWmJ1sRhQQ==/109951165611408950.jpg?param=200y200",
+    //     creatorID: -1,
+    //     creatorName: "抖音",
+    //     creatorAvatar: 0,
+    //     item: []
+    // },
     {
         id: 'myOldSongs',
         name: "懷舊經典",

@@ -438,8 +438,9 @@ function searchBox() {
     // '       <label><input type="radio" name="source" value="baidu"> 百度</label>' + 
     // '   </div>' + 
     // '</div></form>';
-    '</div><div style="text-align: center;">受限於酷我音樂 CORS Policy，<br>聆聽前請先嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank"> 啟用 </a>  暫時釋放功能</a>' +
-    // <a href="https://cors-anywhere.herokuapp.com/corsdemo" target=_blank>Enable CORS</a>' +
+
+
+    // '</div><div style="text-align: center;">受限於酷我音樂 CORS Policy，<br>聆聽前請先嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank"> 啟用 </a>  暫時釋放功能</a>' +
     '</div><img src="images/music_qr.png" width="300px"></form>';
 
     layer.open({
@@ -831,14 +832,14 @@ function sheetBar() {
     }
      
     barHtml = '<span>受限於 CORS Policy，聆聽酷我音樂前請先嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank"> 啟用 </a></span>';
-
     // barHtml = '<span><a href="artist.html"> Artists List </a></span>';
 
     barHtml = '<span id="sheet-bar"><div class="clear-fix"></div>' +
     '<div id="user-login" class="sheet-title-bar">' + barHtml + 
     '</div></span>';
     
- 
+    barHtml = '' // 暫時不呈現訊息
+   
     rem.sheetList.append(barHtml);
 }
 
@@ -1135,6 +1136,7 @@ function switchPl(id){
         case 'mySingingWithLegends':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(mySingingWithLegends); initList();  dataBox("sheet"); break;        
         case 'myIAmASinger':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myIAmASinger); initList();  dataBox("sheet"); break;        
         case 'myBangs':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myBangs); initList();  dataBox("sheet"); break;        
+        case 'myLives':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myLives); initList();  dataBox("sheet"); break;        
         case 'myRadios':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myRadios); initList();  loadList(3); break;        
     }
 

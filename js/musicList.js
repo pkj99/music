@@ -84,15 +84,15 @@ var HomeMusicList = [
         creatorAvatar: "",      // 列表创建者头像
         item: []
     }, 
-    {
-        id: 'original',
-        name: "網易排行榜",
-        cover: "https://p3.music.126.net/lL5KpMsL3mxWkm6_bM1d1g==/109951168165612314.jpg?param=200y200",
-        creatorID: -1,
-        creatorName: "網易排行榜",
-        creatorAvatar: 0,
-        item: []
-    },
+    // {
+    //     id: 'original',
+    //     name: "網易排行榜",
+    //     cover: "https://p3.music.126.net/lL5KpMsL3mxWkm6_bM1d1g==/109951168165612314.jpg?param=200y200",
+    //     creatorID: -1,
+    //     creatorName: "網易排行榜",
+    //     creatorAvatar: 0,
+    //     item: []
+    // },
     {
         id: 'myBangs',
         name: "酷我排行榜",
@@ -129,15 +129,15 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     },    
-    {
-        id: 'playlist',
-        name: "歌單",
-        cover: "http://p4.music.126.net/4Y3MZ9YQ0X5lufAmp-eudg==/109951168296692473.jpg?param=200y200",
-        creatorID: -1,
-        creatorName: "歌單",
-        creatorAvatar: 0,
-        item: []
-    },    
+    // {
+    //     id: 'playlist',
+    //     name: "歌單",
+    //     cover: "http://p4.music.126.net/4Y3MZ9YQ0X5lufAmp-eudg==/109951168296692473.jpg?param=200y200",
+    //     creatorID: -1,
+    //     creatorName: "歌單",
+    //     creatorAvatar: 0,
+    //     item: []
+    // },    
     {
         id: 'album',
         name: "專輯",
@@ -147,15 +147,24 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     },
+    // {
+    //     id: 'collection',
+    //     name: "網易精選50首",
+    //     cover: "https://p4.music.126.net/BCw6bptJIibZH3kbwBA8FA==/109951163609551095.jpg?param=200y200",
+    //     creatorID: -1,
+    //     creatorName: "網易精選50首",
+    //     creatorAvatar: 0,
+    //     item: []
+    // },
     {
-        id: 'collection',
-        name: "精選50首",
-        cover: "https://p4.music.126.net/BCw6bptJIibZH3kbwBA8FA==/109951163609551095.jpg?param=200y200",
+        id: 'myArtistSongs',
+        name: "酷我精選50首",
+        cover: "https://p3.music.126.net/ACdcatIwH63UUaUKMOpzLQ==/109951168620062161.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "精選50首",
+        creatorName: "酷我精選50首",
         creatorAvatar: 0,
         item: []
-    },
+    },    
     {
         id: 'random',
         name: "隨機100首",
@@ -272,16 +281,17 @@ var HomeMusicList = [
         creatorName: "搜索",
         creatorAvatar: 0,
         item: []
-    },
-    {
-        id: 'artist',
-        name: "歌手(外部連結)",
-        cover: "https://p3.music.126.net/UbjonnoZfxIta89hT-e8cQ==/109951168262199535.jpg?param=200y200",
-        creatorID: -1,
-        creatorName: "歌手(外部連結)",
-        creatorAvatar: 0,
-        item: []
     }
+    // ,
+    // {
+    //     id: 'artist',
+    //     name: "歌手(外部連結)",
+    //     cover: "https://p3.music.126.net/UbjonnoZfxIta89hT-e8cQ==/109951168262199535.jpg?param=200y200",
+    //     creatorID: -1,
+    //     creatorName: "歌手(外部連結)",
+    //     creatorAvatar: 0,
+    //     item: []
+    // }
     // ,
     // {
     //     id: 'kuwo',

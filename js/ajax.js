@@ -295,20 +295,46 @@ function ajaxLyric(music, callback) {
     // console.log('music.lyric_id:',music.lyric_id);
 
     $.ajax({
-        type: mkPlayer.method,
-        url: mkPlayer.api,
-        data: "types=lyric&id=" + music.lyric_id + "&source=" + music.source,
-        dataType : "jsonp",
-        success: function(jsonData){
+
+        // type: mkPlayer.method,
+        // url: mkPlayer.api,
+        // data: "types=lyric&id=" + music.lyric_id + "&source=" + music.source,
+        // dataType : "jsonp",
+        // success: function(jsonData){
+        //     // 调试信息输出
+        //     if (mkPlayer.debug) {
+        //         console.debug("歌词获取成功");
+        //     }
+            
+        //     console.debug(jsonData);
+
+        //     if (jsonData.lyric) {
+        //         callback(jsonData.lyric, music.lyric_id);    // 回调函数
+        //     } else {
+        //         callback('', music.lyric_id);    // 回调函数
+        //     }
+        // },   //success
+        // error: function(XMLHttpRequest, textStatus, errorThrown) {
+        //     layer.msg('歌词读取失败 - ' + XMLHttpRequest.status);
+        //     console.error(XMLHttpRequest + textStatus + errorThrown);
+        //     callback('', music.lyric_id);    // 回调函数
+        // }   // error   
+
+
+        type: "GET",
+        url: "https://api.zcentury.top/163/",
+        data: "type=lrc&id=" + music.lyric_id,
+        dataType : "text",
+        success: function(Data){
             // 调试信息输出
             if (mkPlayer.debug) {
                 console.debug("歌词获取成功");
             }
             
-            console.debug(jsonData);
+            console.debug(Data);
 
-            if (jsonData.lyric) {
-                callback(jsonData.lyric, music.lyric_id);    // 回调函数
+            if (Data) {
+                callback(Data, music.lyric_id);    // 回调函数
             } else {
                 callback('', music.lyric_id);    // 回调函数
             }

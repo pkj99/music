@@ -1078,7 +1078,8 @@ function switchPl(id){
         case 'album':
             clearSheet();
             musicList = DefaultMusicList;
-            myMusic = myMusic163;
+            // myMusic = myMusic163;
+            myMusic = myMusicKuwo;
             musicList = musicList.concat(myMusic);
             initList();
             dataBox("sheet");
@@ -1138,6 +1139,7 @@ function switchPl(id){
         case 'myBangs':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myBangs); initList();  dataBox("sheet"); break;        
         case 'myLives':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myLives); initList();  dataBox("sheet"); break;        
         case 'myRadios':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myRadios); initList();  loadList(3); break;        
+        case 'myArtistSongs':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myArtistSongs); initList();  dataBox("sheet"); break;        
     }
 
     //console.log(rem);

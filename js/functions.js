@@ -1113,24 +1113,13 @@ function switchPl(id){
         case 'artist':
             location.href = 'artist.html';
         break;
-        case 'random':
-            RandomMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});
-        break;
-        case 'recent':
-            RecentMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});
-        break;        
-        case 'cookie':
-            CookieMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});
-        break;
-        case 'myalbums':
-            myAlbumsMusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});
-        break;
-        case 'rockgolden10':
-            RockGolden10MusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});
-        break;
+        case 'random':            RandomMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});        break;
+        case 'recent':            RecentMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});        break;        
+        case 'cookie':            CookieMusicList(function(List){clearSheet(); musicList=List; initList(); loadList(3);});        break;
+        case 'myalbums':          myAlbumsMusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});        break;
+        case 'rockgolden10':      RockGolden10MusicList(function(List){clearSheet(); musicList=List; initList(); dataBox("sheet");});        break;
 
         case 'tiktok':  clearSheet();  musicList = TikTokMusicList; initList();	dataBox("sheet"); break;
-
         case 'myOldSongs':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myOldSongs); initList();  dataBox("sheet"); break;        
         case 'myEndlessMelody':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myEndlessMelody); initList();  dataBox("sheet"); break;        
         case 'myChinaGoodSound':  clearSheet();  musicList = DefaultMusicList;  musicList = musicList.concat(myChinaGoodSound); initList();  dataBox("sheet"); break;        

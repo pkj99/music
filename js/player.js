@@ -399,6 +399,35 @@ function KuwoUrl2(id,callback)
     });
 }
 
+function KuwoUrl3(id,callback)
+{
+    mp3Url = 'https://link.hhtjim.com/kw/'+id+'.mp3';
+    if(callback) callback(mp3Url);
+
+    // var x = new XMLHttpRequest();
+    // x.open('GET', `https://api.allorigins.win/get?url=${encodeURIComponent('https://link.hhtjim.com/kw/'+id+'.mp3')}`);
+    // x.send();
+    // x.onreadystatechange = () => {
+    //     if (x.readyState === x.HEADERS_RECEIVED) {
+    //         console.log(x.getAllResponseHeaders());
+    //         const mp3Url = x.getResponseHeader("Location");
+    //         if(callback) callback(mp3Url);
+    //     }
+    // };
+
+    // fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://link.hhtjim.com/kw/'+id+'`.mp3')}`, { redirect: 'manual' })
+    // .then(response => {
+    //     if (response.ok) {
+    //         console.log(response.headers);
+    //         var mp3Url = response.headers.get('Location');
+    //         console.log(mp3Url);
+    //         if(callback) callback(mp3Url);
+    //         return mp3Url;
+    //     }
+    //     throw new Error('Network response was not ok.')
+    // });
+}
+
 
 // 播放音乐
 // 参数：要播放的音乐数组
@@ -433,28 +462,28 @@ function play(music) {
         refreshList();  // 更新列表显示
     }
     
-    // if (music.url.includes('/kw/')){
-    //     KuwoUrl2(music.url_id,function(mp3Url){
-    //         try {
-    //             rem.audio[0].pause();
-    //             rem.audio.attr('src', mp3Url);
-    //             rem.audio[0].play();
-    //         } catch(e) {
-    //             audioErr(); // 调用错误处理函数
-    //             return;
-    //         }
-    //     })
-    // } else {
-    try {
-        rem.audio[0].pause();
-        rem.audio.attr('src', music.url);
-        rem.audio[0].play();
-    } catch(e) {
-        // window.location.href = music.url;
-        audioErr(); // 调用错误处理函数
-        return;
+    if (music.url.includes('/kw/')){
+        KuwoUrl3(music.url_id,function(mp3Url){
+            try {
+                rem.audio[0].pause();
+                rem.audio.attr('src', mp3Url);
+                rem.audio[0].play();
+            } catch(e) {
+                audioErr(); // 调用错误处理函数
+                return;
+            }
+        })
+    } else {
+        try {
+            rem.audio[0].pause();
+            rem.audio.attr('src', music.url);
+            rem.audio[0].play();
+        } catch(e) {
+            // window.location.href = music.url;
+            audioErr(); // 调用错误处理函数
+            return;
+        }
     }
-    // }
 
 
     

@@ -433,28 +433,28 @@ function play(music) {
         refreshList();  // 更新列表显示
     }
     
-    if (music.url.includes('/kw/')){
-        KuwoUrl2(music.url_id,function(mp3Url){
-            try {
-                rem.audio[0].pause();
-                rem.audio.attr('src', mp3Url);
-                rem.audio[0].play();
-            } catch(e) {
-                audioErr(); // 调用错误处理函数
-                return;
-            }
-        })
-    } else {
-        try {
-            rem.audio[0].pause();
-            rem.audio.attr('src', music.url);
-            rem.audio[0].play();
-        } catch(e) {
-            // window.location.href = music.url;
-            audioErr(); // 调用错误处理函数
-            return;
-        }
+    // if (music.url.includes('/kw/')){
+    //     KuwoUrl2(music.url_id,function(mp3Url){
+    //         try {
+    //             rem.audio[0].pause();
+    //             rem.audio.attr('src', mp3Url);
+    //             rem.audio[0].play();
+    //         } catch(e) {
+    //             audioErr(); // 调用错误处理函数
+    //             return;
+    //         }
+    //     })
+    // } else {
+    try {
+        rem.audio[0].pause();
+        rem.audio.attr('src', music.url);
+        rem.audio[0].play();
+    } catch(e) {
+        // window.location.href = music.url;
+        audioErr(); // 调用错误处理函数
+        return;
     }
+    // }
 
 
     

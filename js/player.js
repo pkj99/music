@@ -404,6 +404,10 @@ function KuwoUrl3(id,callback)
     mp3Url = 'https://link.hhtjim.com/kw/'+id+'.mp3';
     if(callback) callback(mp3Url);
 
+    // fetch( `https://api.allorigins.win/get?url=${encodeURIComponent(mp3Url)}`, { redirect: 'manual' } )
+    // .then( res => alert( res.headers.get('Location') ) );
+
+
     // var x = new XMLHttpRequest();
     // x.open('GET', `https://api.allorigins.win/get?url=${encodeURIComponent('https://link.hhtjim.com/kw/'+id+'.mp3')}`);
     // x.send();
@@ -466,7 +470,8 @@ function play(music) {
         KuwoUrl3(music.url_id,function(mp3Url){
             try {
                 rem.audio[0].pause();
-                rem.audio.attr('src', mp3Url);
+                // rem.audio.attr('src', mp3Url);
+                rem.audio.attr('src', music.url);
                 rem.audio[0].play();
             } catch(e) {
                 audioErr(); // 调用错误处理函数

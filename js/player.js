@@ -375,6 +375,7 @@ function KuwoUrl(id,callback)
         var j = JSON.parse(x.responseText);
         if (j.success){
             mp3Url = j.data.url;
+            console.log(mp3Url);            
             if(callback) callback(mp3Url);
         }
     }
@@ -394,6 +395,7 @@ function KuwoUrl2(id,callback)
         var j = JSON.parse(data.contents);
         if (j.success){
             mp3Url = j.data.url;
+            console.log(mp3Url);
             if(callback) callback(mp3Url);
         }
     });
@@ -403,33 +405,26 @@ function KuwoUrl3(id,callback)
 {
     mp3Url = 'https://link.hhtjim.com/kw/'+id+'.mp3';
     if(callback) callback(mp3Url);
+}
 
-    // fetch( `https://api.allorigins.win/get?url=${encodeURIComponent(mp3Url)}`, { redirect: 'manual' } )
-    // .then( res => alert( res.headers.get('Location') ) );
+function KuwoUrl4(id,callback)
+{
 
-
-    // var x = new XMLHttpRequest();
-    // x.open('GET', `https://api.allorigins.win/get?url=${encodeURIComponent('https://link.hhtjim.com/kw/'+id+'.mp3')}`);
-    // x.send();
-    // x.onreadystatechange = () => {
-    //     if (x.readyState === x.HEADERS_RECEIVED) {
-    //         console.log(x.getAllResponseHeaders());
-    //         const mp3Url = x.getResponseHeader("Location");
-    //         if(callback) callback(mp3Url);
-    //     }
-    // };
-
-    // fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://link.hhtjim.com/kw/'+id+'`.mp3')}`, { redirect: 'manual' })
-    // .then(response => {
-    //     if (response.ok) {
-    //         console.log(response.headers);
-    //         var mp3Url = response.headers.get('Location');
-    //         console.log(mp3Url);
-    //         if(callback) callback(mp3Url);
-    //         return mp3Url;
-    //     }
-    //     throw new Error('Network response was not ok.')
-    // });
+    fetch(`https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=json&id=`+id)
+    .then(response => {
+        if (response.ok) return response.json()
+        throw new Error('Network response was not ok.')
+    })
+    .then(data => {
+        console.log(data);
+        var j = data;
+        console.log(data.code);
+        if (j.code == 200){
+            mp3Url = j.data.url;
+            console.log(mp3Url);
+            if(callback) callback(mp3Url);
+        }
+    });
 }
 
 
@@ -467,11 +462,10 @@ function play(music) {
     }
     
     if (music.url.includes('/kw/')){
-        KuwoUrl3(music.url_id,function(mp3Url){
+        KuwoUrl4(music.url_id,function(mp3Url){
             try {
                 rem.audio[0].pause();
-                // rem.audio.attr('src', mp3Url);
-                rem.audio.attr('src', music.url);
+                rem.audio.attr('src', mp3Url);
                 rem.audio[0].play();
             } catch(e) {
                 audioErr(); // 调用错误处理函数

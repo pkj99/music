@@ -15,7 +15,7 @@ var mkPlayer = {
     mdotshine: false,   // 是否开启[移动端]播放进度条的小点闪动效果[不支持IE](true/false)
     volume: 0.6,        // 默认音量值(0~1之间)
     version: "v2.41",    // 播放器当前版本号(仅供调试)
-    debug: true   // 是否开启调试模式(true/false)
+    debug: false   // 是否开启调试模式(true/false)
 };
 
 // 存储全局变量
@@ -416,12 +416,10 @@ function KuwoUrl4(id,callback)
         throw new Error('Network response was not ok.')
     })
     .then(data => {
-        console.log(data);
         var j = data;
-        console.log(data.code);
         if (j.code == 200){
             mp3Url = j.data.url;
-            console.log(mp3Url);
+            // console.log(mp3Url);
             if(callback) callback(mp3Url);
         }
     });

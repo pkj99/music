@@ -322,7 +322,8 @@ function ajaxLyric(music, callback) {
 
 
         type: "GET",
-        url: "https://api.zcentury.top/163/",
+        // url: "https://api.zcentury.top/163/",
+        url: "https://apis.jxcxin.cn/api/163music",
         data: "type=lrc&id=" + music.lyric_id,
         dataType : "text",
         success: function(Data){

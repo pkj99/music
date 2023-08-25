@@ -425,6 +425,22 @@ function KuwoUrl4(id,callback)
     });
 }
 
+function NeteaseUrl(id,callback)
+{
+
+    var fetchOptions = { redirect: 'manual' };
+    // fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://apis.jxcxin.cn/api/163music?id='+id)}`, fetchOptions)
+    fetch(`https://apis.jxcxin.cn/api/163music?id=`+id, fetchOptions)
+    .then(response => {
+        console.log( response.headers);
+        var mp3Url = response.headers.get('Location');
+        if (callback) callback(mp3Url);
+        if (response.ok) return mp3Url
+        throw new Error('Network response was not ok.')
+    });
+}
+
+
 
 // 播放音乐
 // 参数：要播放的音乐数组
@@ -471,15 +487,37 @@ function play(music) {
             }
         })
     } else {
+        // NeteaseUrl(music.id,function(mp3Url){
+        //     try {
+        //         rem.audio[0].pause();
+        //         rem.audio.attr('src', mp3Url);
+        //         rem.audio[0].play();
+        //     } catch(e) {
+        //         audioErr(); // 调用错误处理函数
+        //         return;
+        //     }
+        // })
+
+        var mp3Url = `https://apis.jxcxin.cn/api/163music?id=`+music.id;
+        // console.log(mp3Url);
         try {
             rem.audio[0].pause();
-            rem.audio.attr('src', music.url);
+            rem.audio.attr('src', mp3Url);
             rem.audio[0].play();
         } catch(e) {
-            // window.location.href = music.url;
             audioErr(); // 调用错误处理函数
             return;
         }
+
+        // try {
+        //     rem.audio[0].pause();
+        //     rem.audio.attr('src', music.url);
+        //     rem.audio[0].play();
+        // } catch(e) {
+        //     // window.location.href = music.url;
+        //     audioErr(); // 调用错误处理函数
+        //     return;
+        // }
     }
 
 

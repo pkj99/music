@@ -138,12 +138,57 @@ var HomeMusicList = [
     //     creatorAvatar: 0,
     //     item: []
     // },    
+    // {
+    //     id: 'album',
+    //     name: "歌手專輯",
+    //     cover: "https://p4.music.126.net/92NWlGo76ha-if-WMK3vCg==/1410673428769729.jpg?param=200y200",
+    //     creatorID: -1,
+    //     creatorName: "歌手專輯",
+    //     creatorAvatar: 0,
+    //     item: []
+    // },
     {
-        id: 'album',
-        name: "專輯",
-        cover: "https://p4.music.126.net/92NWlGo76ha-if-WMK3vCg==/1410673428769729.jpg?param=200y200",
+        id: 'album1',
+        name: "華語男歌手",
+        cover: "https://p1.music.126.net/Esjm32Q05PQoX8pF008u7w==/109951165793871057.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "專輯",
+        creatorName: "華語男歌手",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
+        id: 'album2',
+        name: "華語女歌手",
+        cover: "https://p2.music.126.net/oJorrgJ3IotZUAbZkBMuFw==/109951167771736533.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "華語女歌手",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
+        id: 'album3',
+        name: "華語團體",
+        cover: "https://p1.music.126.net/MbhzNEtk-c3KybdGtq3ueQ==/109951168306621485.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "華語團體",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
+        id: 'album4',
+        name: "日韓歌手",
+        cover: "https://p2.music.126.net/80tmLal14nKSOrEd-ujAfw==/109951165832914024.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "日韓歌手",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
+        id: 'album5',
+        name: "西洋歌手",
+        cover: "https://p1.music.126.net/ERv-Y-_fffIbqW7LsC93pQ==/109951168786880941.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "西洋歌手",
         creatorAvatar: 0,
         item: []
     },

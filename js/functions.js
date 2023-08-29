@@ -1084,6 +1084,11 @@ function switchPl(id){
             initList();
             dataBox("sheet");
         break;
+        case 'album1': clearSheet(); musicList = DefaultMusicList; myMusic = mySingerKuwo1; musicList = musicList.concat(myMusic); initList(); dataBox("sheet"); break;
+        case 'album2': clearSheet(); musicList = DefaultMusicList; myMusic = mySingerKuwo2; musicList = musicList.concat(myMusic); initList(); dataBox("sheet"); break;
+        case 'album3': clearSheet(); musicList = DefaultMusicList; myMusic = mySingerKuwo3; musicList = musicList.concat(myMusic); initList(); dataBox("sheet"); break;
+        case 'album4': clearSheet(); musicList = DefaultMusicList; myMusic = mySingerKuwo4; musicList = musicList.concat(myMusic); initList(); dataBox("sheet"); break;
+        case 'album5': clearSheet(); musicList = DefaultMusicList; myMusic = mySingerKuwo5; musicList = musicList.concat(myMusic); initList(); dataBox("sheet"); break;
         case 'kuwo':
             // var eJS=document.createElement("script");  
             // document.body.insertAdjacentElement('beforeEnd',eJS);

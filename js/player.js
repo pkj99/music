@@ -476,16 +476,28 @@ function play(music) {
     }
     
     if (music.url.includes('/kw/')){
-        KuwoUrl4(music.url_id,function(mp3Url){
-            try {
-                rem.audio[0].pause();
-                rem.audio.attr('src', mp3Url);
-                rem.audio[0].play();
-            } catch(e) {
-                audioErr(); // 调用错误处理函数
-                return;
-            }
-        })
+        // KuwoUrl4(music.url_id,function(mp3Url){
+        //     try {
+        //         rem.audio[0].pause();
+        //         rem.audio.attr('src', mp3Url);
+        //         rem.audio[0].play();
+        //     } catch(e) {
+        //         audioErr(); // 调用错误处理函数
+        //         return;
+        //     }
+        // })
+        var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=`+music.url_id;
+        // console.log(mp3Url);
+        try {
+            rem.audio[0].pause();
+            rem.audio.attr('src', mp3Url);
+            rem.audio[0].play();
+        } catch(e) {
+            audioErr(); // 调用错误处理函数
+            return;
+        }
+
+
     } else {
         // NeteaseUrl(music.id,function(mp3Url){
         //     try {

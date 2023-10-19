@@ -751,7 +751,8 @@ function CookieMusicList(callback) {
 // 隨機100首
 function RandomMusicList(callback) {
 
-    var sqlstring = "select * from vMusic where music_id in (select music_id from musics where url = 1 order by random() limit 100)"
+    // var sqlstring = "select * from vMusic where music_id in (select music_id from musics where url = 1 order by random() limit 100)"
+    var sqlstring = "select * from vMusic where music_id in (select music_id from musics order by random() limit 100)"
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
@@ -807,7 +808,8 @@ function RandomMusicList(callback) {
 // 最近新歌200首
 function RecentMusicList(callback) {
 
-    var sqlstring = "select * from vMusic where url =1 and music_name not like '%伴奏%' and music_name not like '%试听%' order by release_date desc limit 200";
+    // var sqlstring = "select * from vMusic where url =1 and music_name not like '%伴奏%' and music_name not like '%试听%' order by release_date desc limit 200";
+    var sqlstring = "select * from vMusic where music_name not like '%伴奏%' and music_name not like '%试听%' order by release_date desc limit 200";
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);

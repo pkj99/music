@@ -321,13 +321,21 @@ var HomeMusicList = [
     {
         id: 'myTreasuredVoice',
         name: "天赐的声音",
-        cover: "	https://p2.music.126.net/X5AQWcwdJmx7h0D8-gO14w==/109951168575643881.jpg?param=200y200",
+        cover: "https://p2.music.126.net/X5AQWcwdJmx7h0D8-gO14w==/109951168575643881.jpg?param=200y200",
         creatorID: -1,
         creatorName: "天赐的声音",
         creatorAvatar: 0,
         item: []
     },    
     {
+        id: 'myOurSongs5',
+        name: "我们的歌 第五季",
+        cover: "https://p1.music.126.net/G1cL46DKo0MZkh1IeELxyQ==/109951168970253251.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "我们的歌 第五季",
+        creatorAvatar: 0,
+        item: []
+    },      {
         id: 'search',
         name: "搜索",
         cover: "https://p3.music.126.net/0-deIQ8ckyaCh9Sof2CvjQ==/109951168094729294.jpg?param=200y200",

@@ -752,7 +752,7 @@ function CookieMusicList(callback) {
 function RandomMusicList(callback) {
 
     // var sqlstring = "select * from vMusic where music_id in (select music_id from musics where url = 1 order by random() limit 100)"
-    var sqlstring = "select * from vMusic where music_id in (select music_id from musics where url = 1 order by random() limit 100)"
+    var sqlstring = "select * from vMusic where url=1 or kuwo_music_id <> NULL order by random() limit 100"
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);

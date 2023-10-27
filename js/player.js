@@ -498,7 +498,7 @@ function play(music) {
         }
 
 
-    } else {
+    } else if (music.url.includes('/163/')){
         // NeteaseUrl(music.id,function(mp3Url){
         //     try {
         //         rem.audio[0].pause();
@@ -520,16 +520,16 @@ function play(music) {
             audioErr(); // 调用错误处理函数
             return;
         }
-
-        // try {
-        //     rem.audio[0].pause();
-        //     rem.audio.attr('src', music.url);
-        //     rem.audio[0].play();
-        // } catch(e) {
-        //     // window.location.href = music.url;
-        //     audioErr(); // 调用错误处理函数
-        //     return;
-        // }
+    } else {
+        try {
+            rem.audio[0].pause();
+            rem.audio.attr('src', music.url);
+            rem.audio[0].play();
+        } catch(e) {
+            // window.location.href = music.url;
+            audioErr(); // 调用错误处理函数
+            return;
+        }
     }
 
 

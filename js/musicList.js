@@ -231,7 +231,7 @@ var HomeMusicList = [
     {
         id: 'live',
         name: "網易演唱會",
-        cover: "http://p1.music.126.net/IAHRobXhEykx5Tw9zUDBSQ==/109951168162652115.jpg?param=200y200",
+        cover: "https://p1.music.126.net/IAHRobXhEykx5Tw9zUDBSQ==/109951168162652115.jpg?param=200y200",
         creatorID: -1,
         creatorName: "網易演唱會",
         creatorAvatar: 0,
@@ -240,7 +240,7 @@ var HomeMusicList = [
     {
         id: 'myLives',
         name: "酷我演唱會",
-        cover: "http://p1.music.126.net/mFEX1ITr2AYNugquNB-KTQ==/109951163611178132.jpg?param=200y200",
+        cover: "https://p1.music.126.net/mFEX1ITr2AYNugquNB-KTQ==/109951163611178132.jpg?param=200y200",
         creatorID: -1,
         creatorName: "酷我演唱會",
         creatorAvatar: 0,

@@ -428,16 +428,33 @@ function KuwoUrl4(id,callback)
 function NeteaseUrl(id,callback)
 {
 
-    var fetchOptions = { redirect: 'manual' };
-    // fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://apis.jxcxin.cn/api/163music?id='+id)}`, fetchOptions)
-    fetch(`https://apis.jxcxin.cn/api/163music?id=`+id, fetchOptions)
+    // var fetchOptions = { redirect: 'manual' };
+    // // fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://apis.jxcxin.cn/api/163music?id='+id)}`, fetchOptions)
+    // fetch(`https://apis.jxcxin.cn/api/163music?id=`+id, fetchOptions)
+    // .then(response => {
+    //     console.log( response.headers);
+    //     var mp3Url = response.headers.get('Location');
+    //     if (callback) callback(mp3Url);
+    //     if (response.ok) return mp3Url
+    //     throw new Error('Network response was not ok.')
+    // });
+
+    fetch(`https://lzw.me/x/iapi/163music/api.php?type=mp3&id=${id}`)
     .then(response => {
-        console.log( response.headers);
-        var mp3Url = response.headers.get('Location');
-        if (callback) callback(mp3Url);
-        if (response.ok) return mp3Url
+        if (response.ok) return response.json()
         throw new Error('Network response was not ok.')
+    })
+    .then(jsonData => {
+        // var jsonData = data;
+        // var jsonData = JSON.parse(data.contents);
+        if (jsonData.data) {
+            callback(jsonData.data[0].url);    // 回调函数
+        } else {
+            callback('');
+        }        
     });
+
+
 }
 
 
@@ -499,27 +516,27 @@ function play(music) {
 
 
     } else if (music.url.includes('/163/')){
-        // NeteaseUrl(music.id,function(mp3Url){
-        //     try {
-        //         rem.audio[0].pause();
-        //         rem.audio.attr('src', mp3Url);
-        //         rem.audio[0].play();
-        //     } catch(e) {
-        //         audioErr(); // 调用错误处理函数
-        //         return;
-        //     }
-        // })
+        NeteaseUrl(music.id,function(mp3Url){
+            try {
+                rem.audio[0].pause();
+                rem.audio.attr('src', mp3Url);
+                rem.audio[0].play();
+            } catch(e) {
+                audioErr(); // 调用错误处理函数
+                return;
+            }
+        })
 
-        var mp3Url = `https://apis.jxcxin.cn/api/163music?id=`+music.id;
-        // console.log(mp3Url);
-        try {
-            rem.audio[0].pause();
-            rem.audio.attr('src', mp3Url);
-            rem.audio[0].play();
-        } catch(e) {
-            audioErr(); // 调用错误处理函数
-            return;
-        }
+        // var mp3Url = `https://apis.jxcxin.cn/api/163music?id=`+music.id;
+        // // console.log(mp3Url);
+        // try {
+        //     rem.audio[0].pause();
+        //     rem.audio.attr('src', mp3Url);
+        //     rem.audio[0].play();
+        // } catch(e) {
+        //     audioErr(); // 调用错误处理函数
+        //     return;
+        // }
     } else {
         try {
             rem.audio[0].pause();
@@ -537,7 +554,9 @@ function play(music) {
     // rem.errCount = 0;   // 连续播放失败的歌曲数归零
     music_bar.goto(0);  // 进度条强制归零
     changeCover(music);    // 更新封面展示
-    ajaxLyric(music, lyricCallback);     // ajax加载歌词
+    if (music.lyric_id != '0'){
+        ajaxLyric(music, lyricCallback);     // ajax加载歌词
+    }
     music_bar.lock(false);  // 取消进度条锁定
 }
 

@@ -290,21 +290,24 @@ function ajaxPlayList(lid, id, callback) {
 function ajaxLyric(music, callback) {
     lyricTip('歌词加载中...');
 
-    if(!music.lyric_id||music.lyric_id=='0') callback('');  // 没有歌词ID，直接返回
+    if(!music.lyric_id||music.lyric_id=='0') callback('', music.lyric_id);  // 没有歌词ID，直接返回
     
     // console.log('music.lyric_id:',music.lyric_id);
 
-    var url = encodeURIComponent('https://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id='+music.lyric_id);
-    fetch(`https://api.allorigins.win/get?url=${url}`)
+    // var url = encodeURIComponent('https://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id='+music.lyric_id);
+    // var url = encodeURIComponent('https://lzw.me/x/iapi/163music/api.php?type=lyric&id='+music.lyric_id);
+    // fetch(`https://api.allorigins.win/get?url=${url}`)
+
+    fetch(`https://lzw.me/x/iapi/163music/api.php?type=lyric&id=${music.lyric_id}`)
     .then(response => {
         if (response.ok) return response.json()
         throw new Error('Network response was not ok.')
     })
     .then(data => {
-        var jsonData = JSON.parse(data.contents);
-        // console.log(jsonData.lrc);
+        var jsonData = data;
+        // var jsonData = JSON.parse(data.contents);
         if (jsonData.lrc) {
-            callback(jsonData.lrc.lyric, music.lyric_id);    // 回调函数
+            callback(Traditionalized(jsonData.lrc.lyric), music.lyric_id);    // 回调函数
         } else {
             callback('', music.lyric_id);    // 回调函数
         }        

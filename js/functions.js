@@ -1104,8 +1104,7 @@ function switchPl(id){
         case 'live':
             clearSheet();
             musicList = DefaultMusicList;
-            // musicList = musicList.concat(myLive163);
-            musicList = musicList.concat(myLives);
+            musicList = musicList.concat(myLive163);
             initList();
             dataBox("sheet");
         break;

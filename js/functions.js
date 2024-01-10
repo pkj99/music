@@ -1104,14 +1104,16 @@ function switchPl(id){
         case 'live':
             clearSheet();
             musicList = DefaultMusicList;
-            musicList = musicList.concat(myLive163);
+            // musicList = musicList.concat(myLive163);
+            musicList = musicList.concat(myLives);
             initList();
             dataBox("sheet");
         break;
         case 'ost':
             clearSheet();
             musicList = DefaultMusicList;
-            musicList = musicList.concat(myOst163);
+            // musicList = musicList.concat(myOst163);
+            musicList = musicList.concat(myOST);
             initList();
             dataBox("sheet");
         break;

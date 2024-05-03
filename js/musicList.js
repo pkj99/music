@@ -1,89 +1,89 @@
 
 var musicList = [
-    // 以下三个系统预留列表请勿更改，否则可能导致程序无法正常运行！
-    // 预留列表：搜索结果
+    // 以下三個系統預留清單請勿更改，否則可能導致程式無法正常運行！
+    // 預留列表：搜索結果
     {
-        name: "搜索结果",   // 播放列表名字
-        cover: "",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "搜索結果",   // 播放清單名字
+        cover: "",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
     },
-    // 预留列表：正在播放
+    // 預留列表：正在播放
     {
-        name: "正在播放",   // 播放列表名字
-        cover: "",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "正在播放",   // 播放清單名字
+        cover: "",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
     },
-    // 预留列表：播放历史
+    // 預留列表：播放歷史
     {
-        name: "播放历史",   // 播放列表名字
-        cover: "images/history.png",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "播放歷史",   // 播放清單名字
+        cover: "images/history.png",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
-    },  
-    // 以上三个系统预留列表请勿更改，否则可能导致程序无法正常运行！
+    },
+    // 以上三個系統預留清單請勿更改，否則可能導致程式無法正常運行！
     //*********************************************
-    // 自定义列表开始，您可以自由添加您的自定义列表
-    {  id: 3778678         }, // 云音乐热歌榜
-    {  id: 3779629         }, // 云音乐新歌榜
-    {  id: 19723756        }, // 云音乐飙升榜 
-    {  id: 2884035         }, // 网易原创歌曲榜
-    {  id: 2250011882         }, // 抖音排行榜
-    {  id: 60198      }, // "美国Billboard榜"
-    {  id: 180106      }, // "UK排行榜周榜"
-    //{  id: 21845217      }, // "KTV唛榜"
-    {  id:3812895}, // Beatport全球电子舞曲榜
-    {  id:2809513713},
-    {  id:2809577409},
-    {  id:60131},
-    {  id:745956260},
-    {  id: 1978921795         }, // 云音乐电音榜
-    {  id: 71384707        }  // 云音乐古典榜
-    //{	id:4395559} // 华语金曲榜
+    // 自訂列表開始，您可以自由添加您的自訂列表
+    { id: 3778678 }, // 雲音樂熱歌榜
+    { id: 3779629 }, // 雲音樂新歌榜
+    { id: 19723756 }, // 雲音樂飆升榜 
+    { id: 2884035 }, // 網易原創歌曲榜
+    { id: 2250011882 }, // 抖音排行榜
+    { id: 60198 }, // "美國Billboard榜"
+    { id: 180106 }, // "UK排行榜周榜"
+    //{  id: 21845217      }, // "KTV嘜榜"
+    { id: 3812895 }, // Beatport全球電子舞曲榜
+    { id: 2809513713 },
+    { id: 2809577409 },
+    { id: 60131 },
+    { id: 745956260 },
+    { id: 1978921795 }, // 雲音樂電音榜
+    { id: 71384707 }  // 雲音樂古典榜
+    //{ id:4395559} // 華語金曲榜
 ];
 
 var OriginalMusicList = musicList;
 
 var DefaultMusicList = [
-    // 以下三个系统预留列表请勿更改，否则可能导致程序无法正常运行！
-    // 预留列表：搜索结果
+    // 以下三個系統預留清單請勿更改，否則可能導致程式無法正常運行！
+    // 預留列表：搜索結果
     {
-        name: "搜索结果",   // 播放列表名字
-        cover: "",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "搜索結果",   // 播放清單名字
+        cover: "",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
     },
-    // 预留列表：正在播放
+    // 預留列表：正在播放
     {
-        name: "正在播放",   // 播放列表名字
-        cover: "",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "正在播放",   // 播放清單名字
+        cover: "",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
     },
-    // 预留列表：播放历史
+    // 預留列表：播放歷史
     {
-        name: "播放历史",   // 播放列表名字
-        cover: "images/history.png",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "播放歷史",   // 播放清單名字
+        cover: "images/history.png",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
     }
 ];
 
 var HomeMusicList = [
     {
-        name: "搜索结果",   // 播放列表名字
-        cover: "",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "搜索結果",   // 播放清單名字
+        cover: "",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
-    }, 
+    },
     // {
     //     id: 'original',
     //     name: "網易排行榜",
@@ -110,7 +110,7 @@ var HomeMusicList = [
         creatorName: "廣播",
         creatorAvatar: 0,
         item: []
-    },        
+    },
     {
         id: 'cookie',
         name: "我的收藏",
@@ -128,7 +128,7 @@ var HomeMusicList = [
         creatorName: "專輯收藏",
         creatorAvatar: 0,
         item: []
-    },    
+    },
     // {
     //     id: 'playlist',
     //     name: "歌單",
@@ -209,7 +209,7 @@ var HomeMusicList = [
         creatorName: "酷我精選50首",
         creatorAvatar: 0,
         item: []
-    },    
+    },
     {
         id: 'random',
         name: "隨機100首",
@@ -236,7 +236,7 @@ var HomeMusicList = [
         creatorName: "網易演唱會",
         creatorAvatar: 0,
         item: []
-    },    
+    },
     {
         id: 'myLives',
         name: "酷我演唱會",
@@ -245,7 +245,7 @@ var HomeMusicList = [
         creatorName: "酷我演唱會",
         creatorAvatar: 0,
         item: []
-    },    
+    },
     {
         id: 'ost',
         name: "原聲帶",
@@ -257,10 +257,10 @@ var HomeMusicList = [
     },
     {
         id: 'rockgolden10',
-        name: "滚石香港黄金十年",
+        name: "滾石香港黃金十年",
         cover: "https://p3.music.126.net/9O1BgXFwR78UK0qopuQIoQ==/109951163756892840.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "滚石香港黄金十年",
+        creatorName: "滾石香港黃金十年",
         creatorAvatar: 0,
         item: []
     },
@@ -284,28 +284,28 @@ var HomeMusicList = [
     },
     {
         id: 'myEndlessMelody',
-        name: "声生不息",
+        name: "聲生不息",
         cover: "https://p1.music.126.net/rk7d6mL3Y5NKQ-2v-bQPZw==/109951167333213984.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "声生不息",
+        creatorName: "聲生不息",
         creatorAvatar: 0,
         item: []
     },
     {
         id: 'myChinaGoodSound',
-        name: "中国好声音",
+        name: "中國好聲音",
         cover: "https://p1.music.126.net/pleQjKOI26fSenkUGipDLw==/109951166537300832.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "中国好声音",
+        creatorName: "中國好聲音",
         creatorAvatar: 0,
         item: []
     },
     {
         id: 'mySingingWithLegends',
-        name: "中国梦之声",
+        name: "中國夢之聲",
         cover: "https://p2.music.126.net/7bg49rmvAZvjitiGiRI5Yw==/109951167917694773.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "中国梦之声",
+        creatorName: "中國夢之聲",
         creatorAvatar: 0,
         item: []
     },
@@ -317,25 +317,25 @@ var HomeMusicList = [
         creatorName: "我是歌手",
         creatorAvatar: 0,
         item: []
-    },    
+    },
     {
         id: 'myTreasuredVoice',
-        name: "天赐的声音",
+        name: "天賜的聲音",
         cover: "https://p2.music.126.net/X5AQWcwdJmx7h0D8-gO14w==/109951168575643881.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "天赐的声音",
+        creatorName: "天賜的聲音",
         creatorAvatar: 0,
         item: []
-    },    
+    },
     {
         id: 'myOurSongs5',
-        name: "我们的歌 第五季",
+        name: "我們的歌 第五季",
         cover: "https://p1.music.126.net/G1cL46DKo0MZkh1IeELxyQ==/109951168970253251.jpg?param=200y200",
         creatorID: -1,
-        creatorName: "我们的歌 第五季",
+        creatorName: "我們的歌 第五季",
         creatorAvatar: 0,
         item: []
-    },      {
+    }, {
         id: 'search',
         name: "搜索",
         cover: "https://p3.music.126.net/0-deIQ8ckyaCh9Sof2CvjQ==/109951168094729294.jpg?param=200y200",
@@ -367,35 +367,36 @@ var HomeMusicList = [
 ]
 
 var TikTokMusicList = [
-    // 以下三个系统预留列表请勿更改，否则可能导致程序无法正常运行！
-    // 预留列表：搜索结果
+    // 以下三個系統預留清單請勿更改，否則可能導致程式無法正常運行！
+    // 預留列表：搜索結果
     {
-        name: "搜索结果",   // 播放列表名字
-        cover: "",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "搜索結果",   // 播放清單名字
+        cover: "",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
     },
-    // 预留列表：正在播放
+    // 預留列表：正在播放
     {
-        name: "正在播放",   // 播放列表名字
-        cover: "",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "正在播放",   // 播放清單名字
+        cover: "",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
     },
-    // 预留列表：播放历史
+    // 預留列表：播放歷史
     {
-        name: "播放历史",   // 播放列表名字
-        cover: "images/history.png",          // 播放列表封面
-        creatorName: "",        // 列表创建者名字
-        creatorAvatar: "",      // 列表创建者头像
+        name: "播放歷史",   // 播放清單名字
+        cover: "images/history.png",          // 播放清單封面
+        creatorName: "",        // 列表創建者名字
+        creatorAvatar: "",      // 列表創建者頭像
         item: []
-    },  
-    // 以上三个系统预留列表请勿更改，否则可能导致程序无法正常运行！
+    },
+    // 以上三個系統預留清單請勿更改，否則可能導致程式無法正常運行！
     //*********************************************
-    // 自定义列表开始，您可以自由添加您的自定义列表
-    {  id: 2250011882         } // 抖音排行榜
+    // 自訂列表開始，您可以自由添加您的自訂列表
+    { id: 2250011882 } // 抖音排行榜
 ];
+
 
 

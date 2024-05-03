@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,219 +12,196 @@
 
     <meta name="bookmark-image" content="images/favicon.ico" />
     <link rel="apple-touch-icon" href="images/icons8-airpods-pro-max-96.png" />
-    
-    <!-- 强制移动设备以app模式打开页面(即在移动设备下全屏，仅支持部分浏览器) -->
+
+    <!-- 強制移動設備以app模式打開頁面(即在移動設備下全屏，僅支援部分流覽器) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="full-screen" content="yes"><!--UC强制全屏-->
-    <meta name="browsermode" content="application"><!--UC应用模式-->
-    <meta name="x5-fullscreen" content="true"><!--QQ强制全屏-->
-    <meta name="x5-page-mode" content="app"><!--QQ应用模式-->
+    <meta name="full-screen" content="yes"><!--UC強制全屏-->
+    <meta name="browsermode" content="application"><!--UC應用模式-->
+    <meta name="x5-fullscreen" content="true"><!--QQ強制全屏-->
+    <meta name="x5-page-mode" content="app"><!--QQ應用模式-->
 
-    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">    
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
 
     <title>Music</title>
 
-    <!-- 不支持IE8及以下版本浏览器 -->
+    <!-- 不支援IE8及以下版本流覽器 -->
     <!--[if lte IE 8]>
         <script>window.location.href="plugins/killie/"</script>
-    <![endif]--> 
-    
-    <!-- favicon图标 -->
+    <![endif]-->
+
+    <!-- favicon圖示 -->
     <link rel="shortcut icon" href="favicon.ico">
-    
+
     <!-- jQuery文件 -->
     <script src="js/jquery.min.js"></script>
-    
-    <!-- 播放器样式表文件 -->
+
+    <!-- 播放機樣式表檔 -->
     <link rel="stylesheet" type="text/css" href="css/player.css">
-    
-    <!-- 小屏幕样式修复 -->
+
+    <!-- 小螢幕樣式修復 -->
     <link rel="stylesheet" type="text/css" href="css/small.css">
-    
-    <!-- 滚动条美化样式文件 -->
+
+    <!-- 捲軸美化樣式檔 -->
     <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
-    
-    <!-- layer弹窗插件样式文件 -->
+
+    <!-- layer彈窗外掛程式樣式檔 -->
     <link rel="stylesheet" href="plugins/layer/skin/default/layer.css?v=3.0.2302" id="layuicss-skinlayercss">
 </head>
+
 <body>
-<div id="blur-img"></div>
+    <div id="blur-img"></div>
 
-<!-- 头部logo -->
-<div class="header">
-    <div class="logo" title="">
-        ♫ Music
-    </div>
-</div>  <!--class="header"-->
-
-<!-- 中间主体区域 -->
-<div class="center">
-    <div class="container">
-        <div class="btn-bar">
-            <!-- tab按钮区 -->
-            <div class="btn-box" id="btn-area">
-                <span class="btn" data-action="player" hidden>歌詞</span>
-                <span class="btn" data-action="playing" title="正在播放列表">播放</span>
-                <span class="btn" data-action="sheet" title="音乐播放列表">列表</span>
-                <span class="btn" data-action="home" title="主選單">♫</span>
-                <!-- <span class="btn" data-action="original" title="音乐排行榜">排行</span> -->
-                <span class="btn" data-action="myBangs" title="音乐排行榜">排行</span>
-                <span class="btn" data-action="myArtistSongs" title="音乐精選輯">精選</span>
-                <!-- <span class="btn" data-action="collection" title="音乐精選輯">精選</span> -->
-                <!-- <span class="btn" data-action="playlist" title="音乐流行歌單">歌單</span> -->
-                <!-- <span class="btn" data-action="album" title="音乐流行專輯">專輯</span> -->
-                <span class="btn" data-action="random" title="隨機音乐流行歌單">隨機</span>
-                <span class="btn" data-action="recent" title="最近新歌單">新歌</span>
-                <span class="btn" data-action="cookie" title="音乐流行收藏">收藏</span>
-                <span class="btn" data-action="search" title="点击搜索音乐">搜索</span>
-
-                <!-- <span class="btn" data-action="artist" title="歌手"><p href=# onclick="location.href = 'artist.html';">歌手</p></span> -->
-                <!-- <span class="btn" data-action="kuwo" title="KUWO音乐流行專輯"><p href=# onclick="switchPl('kuwo');">K</p></span> -->
-            </div>
-        </div>  <!--class="btn-bar"-->
-        
-        <div class="data-area">
-            <!--歌曲歌单-->
-            <div id="sheet" class="data-box" hidden></div>
-
-            <div id="myui-panel" class="data-box" hidden></div>
-            
-            <!--音乐播放列表-->
-            <div id="main-list" class="music-list data-box"></div>
-        </div>  <!--class="data-area"-->
-        
-        <!-- 右侧封面及歌词展示 -->
-        <div class="player" id="player">
-            <!--歌曲封面-->
-            <div class="cover">
-                <img src="images/player_cover.png" class="music-cover" id="music-cover">
-            </div>
-            <!--滚动歌词-->
-            <div class="lyric">
-                <ul id="lyric"></ul>
-            </div>
-            <div id="music-info" title="点击查看歌曲信息"></div>
+    <!-- 頭部logo -->
+    <div class="header">
+        <div class="logo" title="">
+            ♫ Music
         </div>
-    </div>  <!--class="container"-->
-</div>  <!--class="center"-->
+    </div> <!--class="header"-->
 
-<!-- 播放器底部区域 -->
-<div class="footer">
-    <div class="container">
-        <div class="con-btn">
-            <a href="javascript:;" class="player-btn btn-prev" title="上一首"></a>
-            <a href="javascript:;" class="player-btn btn-play" title="暂停/继续"></a>
-            <a href="javascript:;" class="player-btn btn-next" title="下一首"></a>
-			<a href="javascript:;" class="player-btn btn-order" title="循环控制"></a>
-        </div>  <!--class="con-btn"-->
-        
-        <div class="vol">
-            <div class="quiet">
-                <a href="javascript:;" class="player-btn btn-quiet" title="静音"></a>
-            </div>
-            <div class="volume">
-                <div class="volume-box">  
-                    <div id="volume-progress" class="mkpgb-area"></div>
+    <!-- 中間主體區域 -->
+    <div class="center">
+        <div class="container">
+            <div class="btn-bar">
+                <!-- tab按鈕區 -->
+                <div class="btn-box" id="btn-area">
+                    <span class="btn" data-action="player" hidden>歌詞</span>
+                    <span class="btn" data-action="playing" title="正在播放清單">播放</span>
+                    <span class="btn" data-action="sheet" title="音樂播放清單">清單</span>
+                    <span class="btn" data-action="home" title="主選單">♫</span>
+                    <span class="btn" data-action="myBangs" title="音樂排行榜">排行</span>
+                    <span class="btn" data-action="myArtistSongs" title="音樂精選輯">精選</span>
+                    <span class="btn" data-action="random" title="隨機音樂流行歌單">隨機</span>
+                    <span class="btn" data-action="recent" title="最近新歌單">新歌</span>
+                    <span class="btn" data-action="cookie" title="音樂流行收藏">收藏</span>
+                    <span class="btn" data-action="search" title="點擊搜索音樂">搜索</span>
                 </div>
+            </div> <!--class="btn-bar"-->
+
+            <div class="data-area">
+                <!--歌曲歌單-->
+                <div id="sheet" class="data-box" hidden></div>
+
+                <div id="myui-panel" class="data-box" hidden></div>
+
+                <!--音樂播放清單-->
+                <div id="main-list" class="music-list data-box"></div>
+            </div> <!--class="data-area"-->
+
+            <!-- 右側封面及歌詞展示 -->
+            <div class="player" id="player">
+                <!--歌曲封面-->
+                <div class="cover">
+                    <img src="images/player_cover.png" class="music-cover" id="music-cover">
+                </div>
+                <!--滾動歌詞-->
+                <div class="lyric">
+                    <ul id="lyric"></ul>
+                </div>
+                <div id="music-info" title="點擊查看歌曲信息"></div>
             </div>
-        </div>  <!--class="footer"-->
-        
-        <div class="progress">
-            <div class="progress-box">  
-                <div id="music-progress" class="mkpgb-area"></div>
-            </div>
-        </div>  <!--class="progress"-->
-    </div>  <!--class="container"-->
-</div>  <!--class="footer"-->
+        </div> <!--class="container"-->
+    </div> <!--class="center"-->
 
-<!-- layer弹窗插件 -->
-<script src="plugins/layer/layer.js"></script>
+    <!-- 播放機底部區域 -->
+    <div class="footer">
+        <div class="container">
+            <div class="con-btn">
+                <a href="javascript:;" class="player-btn btn-prev" title="上一首"></a>
+                <a href="javascript:;" class="player-btn btn-play" title="暫停/繼續"></a>
+                <a href="javascript:;" class="player-btn btn-next" title="下一首"></a>
+                <a href="javascript:;" class="player-btn btn-order" title="迴圈控制"></a>
+            </div> <!--class="con-btn"-->
 
-<!-- 播放器数据加载模块 -->
-<script src="js/ajax.js"></script>
+            <div class="vol">
+                <div class="quiet">
+                    <a href="javascript:;" class="player-btn btn-quiet" title="靜音"></a>
+                </div>
+                <div class="volume">
+                    <div class="volume-box">
+                        <div id="volume-progress" class="mkpgb-area"></div>
+                    </div>
+                </div>
+            </div> <!--class="footer"-->
 
-<!-- 播放器歌词解析模块 -->
-<script src="js/lyric.js"></script>
+            <div class="progress">
+                <div class="progress-box">
+                    <div id="music-progress" class="mkpgb-area"></div>
+                </div>
+            </div> <!--class="progress"-->
+        </div> <!--class="container"-->
+    </div> <!--class="footer"-->
 
-<!-- 音乐列表配置 -->
+    <!-- layer彈窗外掛程式 -->
+    <script src="plugins/layer/layer.js"></script>
 
-<!-- <script src="js/myMusic163.js"></script> -->
-<!-- <script src="js/myMusicKuwo.js"></script> -->
-<script src="js/mySingersKuwo.js"></script>
+    <!-- 播放機資料載入模組 -->
+    <script src="js/ajax.js"></script>
 
-<script src="js/myLive163.js"></script>
-<script src="js/myOst163.js"></script>
-<script src="js/myCollections.js"></script>
-<script src="js/myList.js"></script>
-<script src="js/plList.js"></script>
-<script src="js/myRadios.js"></script>
+    <!-- 播放機歌詞解析模組 -->
+    <script src="js/lyric.js"></script>
 
+    <!-- 音樂清單配置 -->
 
-<script src="js/musicList.js"></script>
+    <!-- <script src="js/myMusic163.js"></script> -->
+    <!-- <script src="js/myMusicKuwo.js"></script> -->
+    <script src="js/mySingersKuwo.js"></script>
 
-<!-- 封装函数及ui交互模块 -->
-<script src="js/functions.js"></script>
+    <script src="js/myLive163.js"></script>
+    <script src="js/myOst163.js"></script>
+    <script src="js/myCollections.js"></script>
+    <!-- <script src="js/myList.js"></script> -->
+    <!-- <script src="js/plList.js"></script> -->
+    <script src="js/myRadios.js"></script>
 
-<!-- 播放器主体功能模块 -->
-<script src="js/player.js"></script>
+    <script src="js/musicList.js"></script>
 
-<!-- 滚动条美化插件 -->
-<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- 封裝函數及ui交互模組 -->
+    <script src="js/functions.js"></script>
 
-<!-- 背景模糊化插件 -->
-<script src="js/background-blur.min.js"></script>
+    <!-- 播放機主體功能模組 -->
+    <script src="js/player.js"></script>
 
-<!-- 站长统计代码 -->
-<span style="display: none">
-    <!-- 各类统计代码都放在这里…… -->
-    
-</span>
+    <!-- 捲軸美化外掛程式 -->
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
 
-<script type="text/javascript" src='js/sql.js'></script>
-<!-- <script type="text/javascript" src="js/vod.js"></script> -->
-
-
-<script>
-// get params
-(window.onpopstate = function () {
-    var match,
-        pl     = /\+/g,  // Regex for replacing addition symbol with a space
-        search = /([^&=]+)=?([^&]*)/g,
-        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-        query  = window.location.search.substring(1);
-
-    urlParams = {};
-    while (match = search.exec(query))
-        urlParams[decode(match[1])] = decode(match[2]);
-})();
+    <!-- 背景模糊化外掛程式 -->
+    <script src="js/background-blur.min.js"></script>
 
 
+    <script type="text/javascript" src='js/sql.js'></script>
 
-if (urlParams["album_id"] != null) { 
-    album_id = urlParams["album_id"];
+    <script>
+        (window.onpopstate = function () {
+            var match,
+                pl = /\+/g,  // Regex for replacing addition symbol with a space
+                search = /([^&=]+)=?([^&]*)/g,
+                decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+                query = window.location.search.substring(1);
 
-    // ajaxAlbumList(album_id);
-    dbMusicList(album_id,function(List){clearSheet(); musicList=List; initList(); loadList(3);});
-    // dataBox("player");
+            urlParams = {};
+            while (match = search.exec(query))
+                urlParams[decode(match[1])] = decode(match[2]);
+        })();
 
-}
+        if (urlParams["album_id"] != null) {
+            album_id = urlParams["album_id"];
+            dbMusicList(album_id, function (List) { clearSheet(); musicList = List; initList(); loadList(3); });
+            // dataBox("player");
+        }
 
-if (urlParams["wd"] != null) { 
-    rem.wd = urlParams["wd"];
-    rem.source = $("#music-source input[name='source']:checked").val();
-    // layer.closeAll('page');     // 关闭搜索框
-    rem.loadPage = 1;   // 已加载页数复位
-    // rem.wd = wd;    // 搜索词
-    // ajaxSearch();   // 加载搜索结果
-    SearchMusicList(rem.wd, function(List){clearSheet(); musicList=List; initList(); loadList(3);});
-    // ajaxSearch();
-    // dataBox("player");
-}
+        if (urlParams["wd"] != null) {
+            rem.wd = urlParams["wd"];
+            rem.source = $("#music-source input[name='source']:checked").val();
+            // layer.closeAll('page');     // 關閉搜索框
+            rem.loadPage = 1;   // 已載入頁數復位
+            SearchMusicList(rem.wd, function (List) { clearSheet(); musicList = List; initList(); loadList(3); });
+            // dataBox("player");
+        }
 
-
-</script>
+    </script>
 
 </body>
+
 </html>

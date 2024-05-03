@@ -310,36 +310,6 @@ function ajaxLyric(music, callback) {
             }
         });
 
-    // $.ajax({
-
-    //     // url: "https://api.zcentury.top/163/",
-    //     // url: "https://apis.jxcxin.cn/api/163music",
-
-    //     // type: mkPlayer.method,
-    //     // url: mkPlayer.api,
-    //     // data: "types=lyric&id=" + music.lyric_id + "&source=" + music.source,
-    //     // dataType : "jsonp",
-    //     // success: function(jsonData){
-    //     //     // 調試資訊輸出
-    //     //     if (mkPlayer.debug) {
-    //     //         console.debug("歌詞獲取成功");
-    //     //     }
-
-    //     //     console.debug(jsonData);
-
-    //     //     if (jsonData.lyric) {
-    //     //         callback(jsonData.lyric, music.lyric_id);    // 回呼函數
-    //     //     } else {
-    //     //         callback('', music.lyric_id);    // 回呼函數
-    //     //     }
-    //     // },   //success
-    //     // error: function(XMLHttpRequest, textStatus, errorThrown) {
-    //     //     layer.msg('歌詞讀取失敗 - ' + XMLHttpRequest.status);
-    //     //     console.error(XMLHttpRequest + textStatus + errorThrown);
-    //     //     callback('', music.lyric_id);    // 回呼函數
-    //     // }   // error   
-
-    // });//ajax
 }
 
 // ajax載入用戶的播放清單
@@ -604,6 +574,10 @@ function ajaxArtistList(lid, callback) {
 
 }
 
+
+
+
+
 // 專輯DB
 function dbMusicList(album_id, callback) {
 
@@ -792,7 +766,6 @@ function RandomMusicList(callback) {
 // 最近新歌200首
 function RecentMusicList(callback) {
 
-    // var sqlstring = "select * from vMusic where url =1 and music_name not like '%伴奏%' and music_name not like '%試聽%' order by release_date desc limit 200";
     var sqlstring = "select * from vMusic where (url=1 or kuwo_music_id is not NULL) and music_name not like '%伴奏%' and music_name not like '%試聽%' order by release_date desc limit 200";
 
     const xhr = new XMLHttpRequest();
@@ -849,7 +822,7 @@ function RecentMusicList(callback) {
 // 關鍵字搜尋200首
 function SearchMusicList(keyword, callback) {
 
-    var kw = Simplized(keyword);    // 繁轉簡
+    var kw = Traditionalized(keyword);    // 簡轉繁
 
     var sqlstring = "select * from vMusic where artist_name like '%" + kw + "%' or album_name like '%" + kw + "%' or music_name like '%" + kw + "%' order by release_date desc limit 200"
 

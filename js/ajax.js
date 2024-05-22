@@ -670,20 +670,21 @@ function CookieMusicList(callback) {
         };
 
         for (var i = 0; i < data.length; i++) {
-            var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3";
             var kuwo_id = data[i][10];
             if (kuwo_id == null) {
                 kuwo_id = 0;
+                source = "netease";
+                var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"
             } else {
-                // if (data[i][9] == 0) { url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";}
-                url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";
+                source = "kuwo";
+                var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
             }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
                 artist: data[i][12], // 藝術家名字
                 album: data[i][3],    // 專輯名字
-                source: "netease",     // 音樂來源
+                source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
                 lyric_id: data[i][4],  // 歌詞ID
@@ -734,18 +735,25 @@ function RandomMusicList(callback) {
 
         for (var i = 0; i < data.length; i++) {
             var kuwo_id = data[i][10];
-            if (kuwo_id == null) { kuwo_id = 0 }
+            if (kuwo_id == null) {
+                kuwo_id = 0;
+                source = "netease";
+                var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"
+            } else {
+                source = "kuwo";
+                var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+            }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
                 artist: data[i][12], // 藝術家名字
                 album: data[i][3],    // 專輯名字
-                source: "netease",     // 音樂來源
+                source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
                 lyric_id: data[i][4],  // 歌詞ID
                 pic: data[i][7] + "?param=300y300",    // 專輯圖片
-                url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3連結
+                url: url   // mp3連結
             };
         }
 
@@ -790,18 +798,25 @@ function RecentMusicList(callback) {
 
         for (var i = 0; i < data.length; i++) {
             var kuwo_id = data[i][10];
-            if (kuwo_id == null) { kuwo_id = 0 }
+            if (kuwo_id == null) {
+                kuwo_id = 0;
+                source = "netease";
+                var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"
+            } else {
+                source = "kuwo";
+                var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+            }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
                 artist: data[i][12], // 藝術家名字
                 album: data[i][3],    // 專輯名字
-                source: "netease",     // 音樂來源
+                source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
                 lyric_id: data[i][4],  // 歌詞ID
                 pic: data[i][7] + "?param=300y300",    // 專輯圖片
-                url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3連結
+                url: url   // mp3連結
             };
         }
 
@@ -849,18 +864,25 @@ function SearchMusicList(keyword, callback) {
 
         for (var i = 0; i < data.length; i++) {
             var kuwo_id = data[i][10];
-            if (kuwo_id == null) { kuwo_id = 0 }
+            if (kuwo_id == null) {
+                kuwo_id = 0;
+                source = "netease";
+                var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"
+            } else {
+                source = "kuwo";
+                var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+            }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
                 artist: data[i][12], // 藝術家名字
                 album: data[i][3],    // 專輯名字
-                source: "netease",     // 音樂來源
+                source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
                 lyric_id: data[i][4],  // 歌詞ID
                 pic: data[i][7] + "?param=300y300",    // 專輯圖片
-                url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3連結
+                url: url   // mp3連結
             };
         }
 
@@ -931,19 +953,21 @@ function myAlbumsMusicList(callback) {
                     item: []
                 };
             } else {
-                var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"
                 var kuwo_id = data[i][10];
                 if (kuwo_id == null) {
-                    kuwo_id = 0
+                    kuwo_id = 0;
+                    source = "netease";
+                    var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"
                 } else {
-                    url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+                    source = "kuwo";
+                    var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
                 }
                 tempList.item[item_no] = {
                     id: data[i][4],  // 音樂ID
                     name: data[i][5],  // 音樂名字
                     artist: data[i][12], // 藝術家名字
                     album: data[i][3],    // 專輯名字
-                    source: "netease",     // 音樂來源
+                    source: source,     // 音樂來源
                     url_id: kuwo_id,  // 連結ID
                     pic_id: data[i][7],  // 封面ID
                     lyric_id: data[i][4],  // 歌詞ID
@@ -1006,18 +1030,25 @@ function RockGolden10MusicList(callback) {
                 };
             } else {
                 var kuwo_id = data[i][10];
-                if (kuwo_id == null) { kuwo_id = 0 }
+                if (kuwo_id == null) {
+                    kuwo_id = 0;
+                    source = "netease";
+                    var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3連結
+                } else {
+                    source = "kuwo";
+                    var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"   // mp3連結
+                }
                 tempList.item[item_no] = {
                     id: data[i][4],  // 音樂ID
                     name: data[i][5],  // 音樂名字
                     artist: data[i][12], // 藝術家名字
                     album: data[i][3],    // 專輯名字
-                    source: "netease",     // 音樂來源
+                    source: source,     // 音樂來源
                     url_id: kuwo_id,  // 連結ID
                     pic_id: data[i][7],  // 封面ID
                     lyric_id: data[i][4],  // 歌詞ID
                     pic: data[i][7] + "?param=300y300",    // 專輯圖片
-                    url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3連結
+                    url: url   // mp3連結
                 };
                 item_no += 1;
             }

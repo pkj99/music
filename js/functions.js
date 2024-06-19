@@ -1171,7 +1171,8 @@ function switchPl(id) {
         case 'myChinaGoodSound': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myChinaGoodSound); initList(); dataBox("sheet"); break;
         case 'mySingingWithLegends': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(mySingingWithLegends); initList(); dataBox("sheet"); break;
         case 'myIAmASinger': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myIAmASinger); initList(); dataBox("sheet"); break;
-        case 'myTreasuredVoice': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myTreasuredVoice); initList(); dataBox("sheet"); break; case 'myBangs': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myBangs); initList(); dataBox("sheet"); break;
+        case 'myTreasuredVoice': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myTreasuredVoice); initList(); dataBox("sheet"); break;
+        case 'myBangs': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myBangs); initList(); dataBox("sheet"); break;
         case 'myLives': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myLives); initList(); dataBox("sheet"); break;
         case 'myRadios': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myRadios); initList(); loadList(3); break;
         case 'myArtistSongs': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myArtistSongs); initList(); dataBox("sheet"); break;

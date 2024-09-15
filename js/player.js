@@ -411,6 +411,36 @@ function KuwoUrl4(id, callback) {
         });
 }
 
+function KuwoUrl5(id, callback) {
+    // console.log(id);
+    fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://pkjstudio.pythonanywhere.com/kuwo/" + id)}`)
+    .then(response => {
+        if (response.ok) return response.text()
+        throw new Error('Network response was not ok.')
+    })
+    .then(data => {
+        var kuwoDES = data;
+        fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("http://mobi.kuwo.cn/mobi.s?f=kuwo&q=" + kuwoDES)}`)
+        .then(response => {
+            if (response.ok) return response.text()
+            throw new Error('Network response was not ok.')
+        })
+        .then(data => {
+            var j = data;
+            // console.log(j);
+            if (j.includes("url=")) {
+                mp3Url = j.split("url=")[1].split("?")[0];
+                // console.log(mp3Url);
+                if (callback) callback(mp3Url);
+            }
+        });    
+        
+
+    });
+}
+
+
+
 function NeteaseUrl(id, callback) {
 
     // var fetchOptions = { redirect: 'manual' };
@@ -476,26 +506,26 @@ function play(music) {
     }
 
     if (music.url.includes('/kw/')) {
-        // KuwoUrl4(music.url_id,function(mp3Url){
-        //     try {
-        //         rem.audio[0].pause();
-        //         rem.audio.attr('src', mp3Url);
-        //         rem.audio[0].play();
-        //     } catch(e) {
-        //         audioErr(); // 調用錯誤處理函數
-        //         return;
-        //     }
-        // })
-        var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=` + music.url_id;
-        // console.log(mp3Url);
-        try {
-            rem.audio[0].pause();
-            rem.audio.attr('src', mp3Url);
-            rem.audio[0].play();
-        } catch (e) {
-            audioErr(); // 調用錯誤處理函數
-            return;
-        }
+        KuwoUrl5(music.url_id,function(mp3Url){
+            try {
+                rem.audio[0].pause();
+                rem.audio.attr('src', mp3Url);
+                rem.audio[0].play();
+            } catch(e) {
+                audioErr(); // 調用錯誤處理函數
+                return;
+            }
+        })
+
+        // var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=` + music.url_id;
+        // try {
+        //     rem.audio[0].pause();
+        //     rem.audio.attr('src', mp3Url);
+        //     rem.audio[0].play();
+        // } catch (e) {
+        //     audioErr(); // 調用錯誤處理函數
+        //     return;
+        // }
 
     } else if (music.url.includes('/163/')) {
         NeteaseUrl(music.id, function (mp3Url) {

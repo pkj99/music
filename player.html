@@ -10,7 +10,8 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     
     <!-- 强制移动设备以app模式打开页面(即在移动设备下全屏，仅支持部分浏览器) -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="full-screen" content="yes"><!--UC强制全屏-->
@@ -35,17 +36,31 @@
     <link rel="stylesheet" type="text/css" href="css/player.css">
     
     <!-- 小屏幕样式修复 -->
-    <link rel="stylesheet" type="text/css" href="css/small.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/small.css"> -->
     
     <!-- 滚动条美化样式文件 -->
-    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css"> -->
     
     <!-- layer弹窗插件样式文件 -->
-    <link rel="stylesheet" href="plugins/layer/skin/default/layer.css?v=3.0.2302" id="layuicss-skinlayercss">
+    <!-- <link rel="stylesheet" href="plugins/layer/skin/default/layer.css?v=3.0.2302" id="layuicss-skinlayercss"> -->
+
+    <style>
+        .audioPlayer {
+            position: relative;
+            top: 50%;  
+            left: 15%;
+            /* transform: translate(-50%, -50%);  */
+        }
+    </style>
 
 </head>
 <body>
-
+    <div class="audioPlayer">
+    <audio id='audio' controls autoplay>
+        <source id='mp3source' src="" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+    </div>
 
 <!-- layer弹窗插件 -->
 <!-- <script src="plugins/layer/layer.js"></script> -->
@@ -75,73 +90,37 @@
 <script>
 
 
-
-function GetUrl(url,callback)
-{
-    var x = new XMLHttpRequest();
-    x.open('GET', 'https://cors-anywhere.herokuapp.com/'+url);
-    x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    x.send();
-    x.onreadystatechange = () => {
-        if (x.readyState === x.HEADERS_RECEIVED) {
-                var mp3Url = x.getResponseHeader('x-final-url');
+function KuwoUrl(id, callback) {
+    // console.log(id);
+    fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://pkjstudio.pythonanywhere.com/kuwo/" + id)}`)
+    .then(response => {
+        if (response.ok) return response.text()
+        throw new Error('Network response was not ok.')
+    })
+    .then(data => {
+        var kuwoDES = data;
+        fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("http://mobi.kuwo.cn/mobi.s?f=kuwo&q=" + kuwoDES)}`)
+        .then(response => {
+            if (response.ok) return response.text()
+            throw new Error('Network response was not ok.')
+        })
+        .then(data => {
+            var j = data;
+            // console.log(j);
+            if (j.includes("url=")) {
+                mp3Url = j.split("url=")[1].split("?")[0];
                 // console.log(mp3Url);
-                if(callback) callback(mp3Url);
+                var audio = document.getElementById('audio');
+                var source = document.getElementById('mp3source');
+                source.src = mp3Url;
+                audio.load(); //call this to just preload the audio without playing
+                audio.play(); //call this to play the song right away                
+                if (callback) callback(mp3Url);
             }
-          }
-}
+        });    
+        
 
-
-function KuwoUrl(id,callback)
-{
-    var x = new XMLHttpRequest();
-    x.overrideMimeType("application/json");
-    x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid='+id, true);
-    // x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    x.onload = function() {
-        // console.log(x.responseText);
-        var j = JSON.parse(x.responseText);
-        if (j.success){
-            console.log(j.data.url);
-            if (callback) callback(j.data.url);
-        }
-    }
-    x.send();
-}
-
-
-function AjaxUrl(id,callback)
-{
-    $.ajax({ 
-        type: 'GET', 
-        url: 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl',
-        data: "mid=" + id + "&type=music",
-        headers : {
-            'Cookie': '_ga=GA1.2.1860244506.1676882100; gid=43c16bbc-b8df-4786-b8d9-05eb37282b82; _gid=GA1.2.1650721029.1678162676; Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1677719169,1677742318,1677825024,1678162676; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1678164476; kw_token=991EHBWNZS',
-            'Host': 'www.kuwo.cn',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
-            'Content-Type':'application/json'
-        },        
-        dataType : "jsonp",
-        // beforeSend: function(request) {
-        //     request.setRequestHeader("Host", 'www.kuwo.cn');
-        // },
-        success: function(jsonData){
-            
-            if(jsonData.code !== "200") {
-                document.write("Not Found!");
-            } else {
-                mp3Url = jsonData.data.url;
-                if(callback) callback(mp3Url);
-                location.href = jsonData.data.url;
-            }
-            return true;
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            console.log(XMLHttpRequest + textStatus + errorThrown);
-        }
-    }); 
-    
+    });
 }
 
 
@@ -174,65 +153,6 @@ function MVUrl(id,callback)
     
 }
 
-
-
-
-//id=10798499
-//MVUrl(id,function(mp3Url){
-//    console.log(mp3Url);
-//});
-
-
-//id=6186418
-//KuwoUrl(id,function(mp3Url){
-//    console.log(mp3Url);
-//});
-
-// var url='https://link.hhtjim.com/kw/263179506.mp3';
-// GetUrl(url,function(mp3Url){
-//     console.log(mp3Url);
-// });
-// console.log(url);
-
-
-// function PlayUrl(music)
-// {
-//     $.ajax({ 
-//         type: mkPlayer.method, 
-//         url: mkPlayer.api,
-//         data: "types=url&id=" + id + "&source=netease",
-//         dataType : "jsonp",
-//         success: function(jsonData){
-//             // 调试信息输出
-//             if(mkPlayer.debug) {
-//                 console.debug("歌曲链接：" + jsonData.url);
-//             }
-            
-//             if(jsonData.url === "") {
-//                 music.url = "err";
-//                 document.write("Not Found!");
-//             } else {
-//                 music.url = jsonData.url;    // 记录结果
-//                 location.href = jsonData.url;
-//             }
-            
-//             // updateMinfo(music); // 更新音乐信息
-            
-//             // callback(music);    // 回调函数
-
-// 			// const responseDataText = JSON.stringify(jsonData)
-// 			// console.log(responseDataText);
-// 			// document.write(jsonData.url);			
-			
-//             return true;
-//         },   //success
-//         error: function(XMLHttpRequest, textStatus, errorThrown) {
-//             // layer.msg('歌曲链接获取失败 - ' + XMLHttpRequest.status);
-//             console.error(XMLHttpRequest + textStatus + errorThrown);
-//         }   // error 
-//     }); //ajax
-    
-// }
 
     // get params
     (window.onpopstate = function () {

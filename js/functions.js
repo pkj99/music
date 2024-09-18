@@ -480,8 +480,11 @@ function thisShare(obj) {
 
     music = musicList[$(obj).data("list")].item[$(obj).data("index")];
     if (music.url.includes('/kw/')) {
-        var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=` + music.url_id;
-        music.url = mp3Url;
+        // var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=` + music.url_id;
+        // music.url = mp3Url;
+        KuwoUrl5(music.id, function (mp3Url) {
+            music.url = mp3Url;
+        })        
     } else if (music.url.includes('/163/')) {
         NeteaseUrl(music.id, function (mp3Url) {
             music.url = mp3Url;
@@ -515,7 +518,7 @@ function download(music) {
     if (music.url.includes('/kw/')) {
         // var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=` + music.url_id;
         // music.url = mp3Url;
-        KuwoUrl4(music.url_id, function (mp3Url) {
+        KuwoUrl5(music.url_id, function (mp3Url) {
             music.url = mp3Url;
             openDownloadDialog(mp3Url, music.name + '_' + music.artist + '.mp3');
         })
@@ -540,7 +543,7 @@ function share(music) {
     if (music.url.includes('/kw/')) {
         // var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=` + music.url_id;
         // music.url = mp3Url;
-        KuwoUrl4(music.url_id, function (mp3Url) {
+        KuwoUrl5(music.url_id, function (mp3Url) {
             music.url = mp3Url;
             ajaxShare(music);
         })

@@ -20,7 +20,7 @@
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    
+
     <title>Music Online Player</title>
     
     <!-- 不支持IE8及以下版本浏览器 -->
@@ -87,7 +87,7 @@
                         // console.log(mp3Url);
                         var audio = document.getElementById('audio');
                         var source = document.getElementById('mp3source');
-                        source.src = mp3Url;
+                        source.src = mp3Url.replace("http://","https://");
                         audio.load(); //call this to just preload the audio without playing
                         audio.play(); //call this to play the song right away                
                         if (callback) callback(mp3Url);

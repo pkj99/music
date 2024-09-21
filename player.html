@@ -83,7 +83,7 @@
                     var j = data;
                     // console.log(j);
                     if (j.includes("url=")) {
-                        mp3Url = j.split("url=")[1].split("?")[0];
+                        var mp3Url = j.split("url=")[1].split("?")[0];
                         // console.log(mp3Url);
                         var audio = document.getElementById('audio');
                         var source = document.getElementById('mp3source');
@@ -93,10 +93,33 @@
                         if (callback) callback(mp3Url);
                     }
                 });    
-                
-
             });
         }
+
+        function NeteaseUrl(id, callback) {
+            fetch(`https://lzw.me/x/iapi/163music/api.php?type=mp3&id=${id}`)
+                .then(response => {
+                    if (response.ok) return response.json()
+                    throw new Error('Network response was not ok.')
+                })
+                .then(jsonData => {
+                    // var jsonData = data;
+                    // var jsonData = JSON.parse(data.contents);
+                    if (jsonData.data) {
+                        var mp3Url = jsonData.data[0].url;
+                        var audio = document.getElementById('audio');
+                        var source = document.getElementById('mp3source');
+                        source.src = mp3Url;
+                        audio.load(); //call this to just preload the audio without playing
+                        // audio.play(); //call this to play the song right away   
+                        callback(mp3Url);    // 回呼函數
+                    } else {
+                        callback('');
+                    }
+                });
+        }
+
+
 
         // get params
         (window.onpopstate = function () {
@@ -115,7 +138,12 @@
             var id = urlParams["id"];
             KuwoUrl(id);
         }
-    </script>
+        if (urlParams["nid"] != null) { 
+            var id = urlParams["nid"];
+            NeteaseUrl(id);
+        }
+
+</script>
 
 </body>
 </html>

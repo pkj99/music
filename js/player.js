@@ -429,7 +429,7 @@ function KuwoUrl5(id, callback) {
             var j = data;
             // console.log(j);
             if (j.includes("url=")) {
-                mp3Url = j.split("url=")[1].split("?")[0];
+                mp3Url = j.split("url=")[1].split("?")[0].replace("http://","https://");
                 // console.log(mp3Url);
                 if (callback) callback(mp3Url);
             }
@@ -506,30 +506,15 @@ function play(music) {
     }
 
     if (music.url.includes('/kw/')) {
-
-        NeteaseUrl(music.id, function (mp3Url) {
+        KuwoUrl5(music.url_id,function(mp3Url){
             try {
                 rem.audio[0].pause();
                 rem.audio.attr('src', mp3Url);
                 rem.audio[0].play();
-            } catch (e) {
+            } catch(e) {
                 audioErr(); // 調用錯誤處理函數
                 return;
             }
-
-
-
-        // KuwoUrl5(music.url_id,function(mp3Url){
-        //     try {
-        //         rem.audio[0].pause();
-        //         rem.audio.attr('src', mp3Url);
-        //         rem.audio[0].play();
-        //     } catch(e) {
-        //         audioErr(); // 調用錯誤處理函數
-        //         return;
-        //     }
-
-
         })
 
         // var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=` + music.url_id;

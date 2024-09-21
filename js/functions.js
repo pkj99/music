@@ -376,7 +376,9 @@ function musicInfo(list, index) {
     var music = musicList[list].item[index];
     var tempStr = '<span class="info-title">歌名：</span>' + music.name +
         '<br><span class="info-title">歌手：</span>' + music.artist +
-        '<br><span class="info-title">專輯：</span>' + music.album;
+        '<br><span class="info-title">專輯：</span>' + music.album +
+        '<br><span class="info-title">播放：</span><a target="_blank" href="player.html?nid=' + music.id + '">Netease</a> | ' +
+        '<a target="_blank" href="player.html?id=' + music.url_id + '">Kuwo</a>';
 
     // if(list == rem.playlist && index == rem.playid) {   // 当前正在播放这首歌，那么还可以顺便获取一下时长。。
     //     tempStr += '<br><span class="info-title">時長：</span>' + formatTime(rem.audio[0].duration);
@@ -482,7 +484,7 @@ function thisShare(obj) {
     if (music.url.includes('/kw/')) {
         // var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=` + music.url_id;
         // music.url = mp3Url;
-        KuwoUrl5(music.id, function (mp3Url) {
+        KuwoUrl5(music.url_id, function (mp3Url) {
             music.url = mp3Url;
         })        
     } else if (music.url.includes('/163/')) {

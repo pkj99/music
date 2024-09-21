@@ -83,13 +83,13 @@
                     var j = data;
                     // console.log(j);
                     if (j.includes("url=")) {
-                        mp3Url = j.split("url=")[1].split("?")[0];
+                        mp3Url = j.split("url=")[1].split("?")[0].replace("http://","https://");
                         // console.log(mp3Url);
                         var audio = document.getElementById('audio');
                         var source = document.getElementById('mp3source');
-                        source.src = mp3Url.replace("http://","https://");
+                        source.src = mp3Url;
                         audio.load(); //call this to just preload the audio without playing
-                        audio.play(); //call this to play the song right away                
+                        // audio.play(); //call this to play the song right away                
                         if (callback) callback(mp3Url);
                     }
                 });    

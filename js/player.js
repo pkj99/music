@@ -429,7 +429,7 @@ function KuwoUrl5(id, callback) {
             var j = data;
             // console.log(j);
             if (j.includes("url=")) {
-                mp3Url = j.split("url=")[1].split("?")[0];
+                mp3Url = j.split("url=")[1].split("?")[0].replace("http://","https://");
                 // console.log(mp3Url);
                 if (callback) callback(mp3Url);
             }

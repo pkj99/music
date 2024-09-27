@@ -596,7 +596,7 @@ function ajaxShare(music) {
         return;
     }
 
-    var tmpHtml = '<p>' + music.artist + ' - ' + music.name + ' 的外鏈位址為：</p>' +
+    var tmpHtml = '<p>' + music.artist + ' - ' + music.name + ' 的'+'<a href="'+ music.url +'" target="_blank">'+'外鏈位址'+'</a>為：</p>' +
         '<input class="share-url" onmouseover="this.focus();this.select()" value="' + music.url + '">' +
         '<p class="share-tips">* 取得到的音樂外鏈有效期較短，請按需求使用。</p>';
 

@@ -448,11 +448,11 @@ function KuwoUrl6(id, callback) {
         throw new Error('Network response was not ok.')
     })
     .then(data => {
-        console.log(data);
+        // console.log(data);
         var j = JSON.parse(data);
         if (j.code == 200) {
             mp3Url = j.data.url.split("?")[0].replace("http://","https://");
-            console.log(mp3Url);
+            // console.log(mp3Url);
             if (callback) callback(mp3Url);
         }
     });

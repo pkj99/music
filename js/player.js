@@ -439,7 +439,23 @@ function KuwoUrl5(id, callback) {
     });
 }
 
-
+function KuwoUrl6(id, callback) {
+    // console.log(id);
+    fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)}`)
+    .then(response => {
+        if (response.ok) return response.text()
+        throw new Error('Network response was not ok.')
+    })
+    .then(data => {
+        console.log(data);
+        var j = JSON.parse(data);
+        if (j.code == 200) {
+            mp3Url = j.data.url.split("?")[0].replace("http://","https://");
+            console.log(mp3Url);
+            if (callback) callback(mp3Url);
+        }
+    });
+}
 
 function NeteaseUrl(id, callback) {
 
@@ -506,7 +522,7 @@ function play(music) {
     }
 
     if (music.url.includes('/kw/')) {
-        KuwoUrl5(music.url_id,function(mp3Url){
+        KuwoUrl6(music.url_id,function(mp3Url){
             try {
                 rem.audio[0].pause();
                 rem.audio.attr('src', mp3Url);

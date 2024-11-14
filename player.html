@@ -66,33 +66,17 @@
 
     <script>
         function KuwoUrl(id, callback) {
-            // console.log(id);
-            fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://pkjstudio.pythonanywhere.com/kuwo/" + id)}`)
+            fetch("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)
             .then(response => {
                 if (response.ok) return response.text()
                 throw new Error('Network response was not ok.')
             })
             .then(data => {
-                var kuwoDES = data;
-                fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("http://mobi.kuwo.cn/mobi.s?f=kuwo&q=" + kuwoDES)}`)
-                .then(response => {
-                    if (response.ok) return response.text()
-                    throw new Error('Network response was not ok.')
-                })
-                .then(data => {
-                    var j = data;
-                    // console.log(j);
-                    if (j.includes("url=")) {
-                        var mp3Url = j.split("url=")[1].split("?")[0];
-                        // console.log(mp3Url);
-                        var audio = document.getElementById('audio');
-                        var source = document.getElementById('mp3source');
-                        source.src = mp3Url;
-                        audio.load(); //call this to just preload the audio without playing
-                        // audio.play(); //call this to play the song right away                
-                        if (callback) callback(mp3Url);
-                    }
-                });    
+                var j = JSON.parse(data);
+                if (j.code == 200) {
+                    mp3Url = j.data.url.split("?")[0].replace("http://","https://");
+                    if (callback) callback(mp3Url);
+                }
             });
         }
 

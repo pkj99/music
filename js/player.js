@@ -441,7 +441,8 @@ function KuwoUrl5(id, callback) {
 
 function KuwoUrl6(id, callback) {
     // console.log(id);
-    fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)}`)
+    fetch("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)
+    // fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)}`,{mode: 'no-cors'})
     .then(response => {
         if (response.ok) return response.text()
         throw new Error('Network response was not ok.')

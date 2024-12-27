@@ -612,6 +612,7 @@ function play(music) {
         lyricArea.html('');     // 清空歌词区域的内容
         lyricArea.scrollTop(0);    // 滚动到顶部
         // rem.lastLyric = -1;        
+        kuwoLyric(music, lyricCallback);     // ajax載入歌詞
     }
     music_bar.lock(false);  // 取消進度條鎖定
 }

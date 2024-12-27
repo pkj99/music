@@ -614,7 +614,6 @@ function play(music) {
 
         kuwoLyric(music, lyricCallback);     // ajax載入歌詞
 
-
     }
     music_bar.lock(false);  // 取消進度條鎖定
 }

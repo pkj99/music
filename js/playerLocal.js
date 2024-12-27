@@ -451,8 +451,8 @@ function KuwoUrl6(id, callback) {
         // console.log(data);
         var j = JSON.parse(data);
         if (j.code == 200) {
-            mp3Url = j.data.url.split("?")[0].replace("http://","https://");
-            // mp3Url = j.data.url.split("?")[0];
+            // mp3Url = j.data.url.split("?")[0].replace("http://","https://");
+            mp3Url = j.data.url.split("?")[0];
             console.log(mp3Url);
             if (callback) callback(mp3Url);
         }

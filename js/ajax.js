@@ -311,6 +311,26 @@ function ajaxLyric(music, callback) {
 
 }
 
+function kuwoLyric(music, callback) {
+    lyricTip('歌詞載入中...');
+    fetch(`https://api.cenguigui.cn/api/kuwo/?rid=${music.id}&type=json&lrc=true`)
+        .then(response => {
+            if (response.ok) return response.json()
+            throw new Error('Network response was not ok.')
+        })
+        .then(data => {
+            var jsonData = data;
+            // var jsonData = JSON.parse(data.contents);
+            if (jsonData.data) {
+                callback(Traditionalized(jsonData.data.lrc), music.id);    // 回呼函數
+            } else {
+                callback('', music.id);    // 回呼函數
+            }
+        });
+}
+
+
+
 // ajax載入用戶的播放清單
 // 參數 用戶的網易雲 id
 function ajaxUserList(uid) {

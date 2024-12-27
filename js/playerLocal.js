@@ -459,6 +459,25 @@ function KuwoUrl6(id, callback) {
     });
 }
 
+function KuwoUrl7(id, callback) {
+    // console.log(id);
+    fetch(`https://api.cenguigui.cn/api/kuwo/?rid=${id}&type=json&lrc=true`)
+    .then(response => {
+        if (response.ok) return response.text()
+        throw new Error('Network response was not ok.')
+    })
+    .then(data => {
+        var jsonData = JSON.parse(data);
+        // var jsonData = data;
+        if (jsonData.data) {
+            mp3Url = jsonData.data.url;
+            // console.log(mp3Url);
+            if (callback) callback(mp3Url);
+        }
+    });
+}
+
+
 function NeteaseUrl(id, callback) {
 
     // var fetchOptions = { redirect: 'manual' };
@@ -524,7 +543,7 @@ function play(music) {
     }
 
     if (music.url.includes('/kw/')) {
-        KuwoUrl6(music.url_id,function(mp3Url){
+        KuwoUrl7(music.url_id,function(mp3Url){
             try {
                 rem.audio[0].pause();
                 rem.audio.attr('src', mp3Url);
@@ -592,6 +611,10 @@ function play(music) {
         var lyricArea = $("#lyric");    // 歌词显示容器
         lyricArea.html('');     // 清空歌词区域的内容
         lyricArea.scrollTop(0);    // 滚动到顶部
+
+        kuwoLyric(music, lyricCallback);     // ajax載入歌詞
+
+
     }
     music_bar.lock(false);  // 取消進度條鎖定
 }

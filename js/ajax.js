@@ -286,10 +286,9 @@ function ajaxPlayList(lid, id, callback) {
 // 參數：音樂ID，回呼函數
 function ajaxLyric(music, callback) {
     lyricTip('歌詞載入中...');
+    // console.log('ajaxLyric music.lyric_id:',music.lyric_id);
 
     if (!music.lyric_id || music.lyric_id == '0') callback('', music.lyric_id);  // 沒有歌詞ID，直接返回
-
-    // console.log('music.lyric_id:',music.lyric_id);
 
     // var url = encodeURIComponent('https://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id='+music.lyric_id);
     // var url = encodeURIComponent('https://lzw.me/x/iapi/163music/api.php?type=lyric&id='+music.lyric_id);

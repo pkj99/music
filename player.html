@@ -54,12 +54,12 @@
             .then(data => {
                 var j = JSON.parse(data);
                 if (j.code == 200) {
-                    mp3Url = j.data.url.split("?")[0].replace("http://","https://");
+                    var mp3Url = j.data.url.split("?")[0].replace("http://","https://");
+                    console.log('mp3Url:',mp3Url);
                     var audio = document.getElementById('audio');
                     var source = document.getElementById('mp3source');
                     source.src = mp3Url;
                     audio.load(); //call this to just preload the audio without playing                    
-                    console.log(mp3Url);
                     if (callback) callback(mp3Url);
                 }
             });

@@ -453,7 +453,7 @@ function KuwoUrl6(id, callback) {
         if (j.code == 200) {
             // mp3Url = j.data.url.split("?")[0].replace("http://","https://");
             mp3Url = j.data.url.split("?")[0];
-            console.log(mp3Url);
+            // console.log(mp3Url);
             if (callback) callback(mp3Url);
         }
     });
@@ -585,6 +585,13 @@ function play(music) {
     changeCover(music);    // 更新封面展示
     if (music.lyric_id != '0') {
         ajaxLyric(music, lyricCallback);     // ajax載入歌詞
+    } else {
+        // console.log('music.lyric_id:',music.lyric_id)
+        lyricTip('沒有歌詞');
+
+        var lyricArea = $("#lyric");    // 歌词显示容器
+        lyricArea.html('');     // 清空歌词区域的内容
+        lyricArea.scrollTop(0);    // 滚动到顶部
     }
     music_bar.lock(false);  // 取消進度條鎖定
 }

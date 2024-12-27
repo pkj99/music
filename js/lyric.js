@@ -16,11 +16,9 @@ function lyricTip(str) {
 // 参数：歌词源文件
 function lyricCallback(str, id) {
     // if(id !== musicList[rem.playlist].item[rem.playid].id) return;  // 返回的歌词不是当前这首歌的，跳过
-    
     rem.lyric = parseLyric(str);    // 解析获取到的歌词
-    
     if(rem.lyric === '') {
-        lyricTip('没有歌词');
+        lyricTip('沒有歌詞');
         return false;
     }
     

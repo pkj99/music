@@ -79,14 +79,18 @@
                     // var jsonData = JSON.parse(data.contents);
                     if (jsonData.data) {
                         var mp3Url = jsonData.data[0].url;
+                        if (mp3Url === null) {
+                            console.log('mp3Url not found !!!')
+                            if (callback) callback('');
+                        }
                         var audio = document.getElementById('audio');
                         var source = document.getElementById('mp3source');
                         source.src = mp3Url;
                         audio.load(); //call this to just preload the audio without playing
                         // audio.play(); //call this to play the song right away   
-                        callback(mp3Url);    // 回呼函數
+                        if (callback) callback(mp3Url);    // 回呼函數
                     } else {
-                        callback('');
+                        if (callback) callback('');
                     }
                 });
         }

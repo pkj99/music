@@ -500,9 +500,14 @@ function NeteaseUrl(id, callback) {
             // var jsonData = data;
             // var jsonData = JSON.parse(data.contents);
             if (jsonData.data) {
-                callback(jsonData.data[0].url);    // 回呼函數
+                var mp3Url = jsonData.data[0].url;
+                if (mp3Url === null) {
+                    console.log('mp3Url not found !!!')
+                    if (callback) callback('');
+                }            
+                if (callback) callback(mp3Url);
             } else {
-                callback('');
+                if (callback) callback('');
             }
         });
 

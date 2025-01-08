@@ -548,7 +548,7 @@ function play(music) {
     }
 
     if (music.url.includes('/kw/')) {
-        KuwoUrl7(music.url_id,function(mp3Url){
+        KuwoUrl6(music.url_id,function(mp3Url){
             try {
                 rem.audio[0].pause();
                 rem.audio.attr('src', mp3Url);

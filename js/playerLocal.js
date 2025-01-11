@@ -608,7 +608,8 @@ function play(music) {
     music_bar.goto(0);  // 進度條強制歸零
     changeCover(music);    // 更新封面展示
     if (music.lyric_id != '0') {
-        ajaxLyric(music, lyricCallback);     // ajax載入歌詞
+        // ajaxLyric(music, lyricCallback);     // ajax載入歌詞
+        kuwoLyric(music, lyricCallback);     // ajax載入歌詞
     } else {
         // console.log('music.lyric_id:',music.lyric_id)
         lyricTip('沒有歌詞');

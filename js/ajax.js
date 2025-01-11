@@ -311,21 +311,47 @@ function ajaxLyric(music, callback) {
 
 }
 
+
 function kuwoLyric(music, callback) {
     lyricTip('歌詞載入中...');
-    fetch(`https://api.cenguigui.cn/api/kuwo/?rid=${music.id}&type=json&lrc=true`)
+    
+    // var url = encodeURIComponent(`https://www.kuwo.cn/openapi/v1/www/lyric/getlyric?musicId=${music.id}httpsStatus=1&plat=web_www&from=lrc`);
+    var url = encodeURIComponent(`http://m.kuwo.cn/newh5/singles/songinfoandlrc?musicId=${music.id}`);
+
+    // fetch(`https://api.cenguigui.cn/api/kuwo/?rid=${music.id}&type=json&lrc=true`)
+    // fetch(`https://api.allorigins.win/raw?url=${url}`)
+    // fetch(url)
+    fetch(`http://m.kuwo.cn/newh5/singles/songinfoandlrc?musicId=${music.id}`)
         .then(response => {
             if (response.ok) return response.json()
             throw new Error('Network response was not ok.')
         })
         .then(data => {
             var jsonData = data;
-            // var jsonData = JSON.parse(data.contents);
             if (jsonData.data) {
-                callback(Traditionalized(jsonData.data.lrc), music.id);    // 回呼函數
+                var lrctxt = '';
+                var t = 0;
+                var lrcJson = jsonData.data.lrclist
+                for (var i = 0; i < lrcJson.length; i++){
+                    lrc = lrcJson[i].lineLyric;
+                    t = parseFloat(lrcJson[i].time);
+                    var m = t / 60;
+                    var s = t % 60;
+                    lrctxt += "["+ m.toFixed(0).toString() +":"+ s.toFixed(2).toString() +"]" + lrc +"\n"
+                    // t += parseFloat(lrcJson[i].time);
+                }
+                // callback(lrctxt, music.id);    // 回呼函數
+                callback(Traditionalized(lrctxt), music.id);    // 回呼函數
             } else {
                 callback('', music.id);    // 回呼函數
             }
+            // var jsonData = JSON.parse(data.contents);
+            // var jsonData = data;
+            // if (jsonData.data) {
+            //     callback(Traditionalized(jsonData.data.lrc), music.id);    // 回呼函數
+            // } else {
+            //     callback('', music.id);    // 回呼函數
+            // }
         });
 }
 

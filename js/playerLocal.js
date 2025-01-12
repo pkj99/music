@@ -493,18 +493,6 @@ function KuwoUrl8(id, callback) {
 
 
 function NeteaseUrl(id, callback) {
-
-    // var fetchOptions = { redirect: 'manual' };
-    // // fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://apis.jxcxin.cn/api/163music?id='+id)}`, fetchOptions)
-    // fetch(`https://apis.jxcxin.cn/api/163music?id=`+id, fetchOptions)
-    // .then(response => {
-    //     console.log( response.headers);
-    //     var mp3Url = response.headers.get('Location');
-    //     if (callback) callback(mp3Url);
-    //     if (response.ok) return mp3Url
-    //     throw new Error('Network response was not ok.')
-    // });
-
     fetch(`https://lzw.me/x/iapi/163music/api.php?type=mp3&id=${id}`)
         .then(response => {
             if (response.ok) return response.json()

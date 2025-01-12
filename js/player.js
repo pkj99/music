@@ -418,7 +418,7 @@ function KuwoUrl3(id, callback) {
             // console.log(mp3Url);
             if (callback) callback(mp3Url);
         }
-    });
+    });    
 }
 
 function KuwoUrl4(id, callback) {

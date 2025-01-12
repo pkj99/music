@@ -311,6 +311,22 @@ function ajaxLyric(music, callback) {
 
 }
 
+function localLyric(music, callback) {
+    lyricTip('歌詞載入中...');
+    fetch(`http://192.168.1.113:5000/kuwo/lrc/${music.id}.lrc`)
+        .then(response => {
+            if (response.ok) return response.text()
+            throw new Error('Network response was not ok.')
+        })
+        .then(data => {
+            if (data) {
+                callback(Traditionalized(data), music.id);    // 回呼函數
+            } else {
+                callback('', music.id);    // 回呼函數
+            }
+        });
+}
+
 
 function kuwoLyric(music, callback) {
     lyricTip('歌詞載入中...');

@@ -1,6 +1,7 @@
 
     let pagename = window.location.pathname.split('/').slice(-1);
-    var db_url = 'https://pkj99.github.io/music/db/music.db';
+    // var db_url = 'https://pkj99.github.io/music/db/music.db';
+    var db_url = '../db/music.db';
     var pagecount;
     var urlParams;
     

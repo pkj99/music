@@ -372,7 +372,6 @@ function KuwoUrl(id, callback) {
 }
 
 function KuwoUrl2(id, callback) {
-
     fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid=' + id)}`)
         .then(response => {
             if (response.ok) return response.json()
@@ -395,7 +394,6 @@ function KuwoUrl3(id, callback) {
 }
 
 function KuwoUrl4(id, callback) {
-
     fetch(`https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=json&id=` + id)
         .then(response => {
             if (response.ok) return response.json()
@@ -440,27 +438,21 @@ function KuwoUrl5(id, callback) {
 }
 
 function KuwoUrl6(id, callback) {
-    // console.log(id);
     fetch("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)
-    // fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)}`,{mode: 'no-cors'})
     .then(response => {
         if (response.ok) return response.text()
         throw new Error('Network response was not ok.')
     })
     .then(data => {
-        // console.log(data);
         var j = JSON.parse(data);
         if (j.code == 200) {
             mp3Url = j.data.url.split("?")[0].replace("http://","https://");
-            // mp3Url = j.data.url.split("?")[0];
-            // console.log(mp3Url);
             if (callback) callback(mp3Url);
         }
     });
 }
 
 function KuwoUrl7(id, callback) {
-    // console.log(id);
     fetch(`https://api.cenguigui.cn/api/kuwo/?rid=${id}&type=json&lrc=true`)
     .then(response => {
         if (response.ok) return response.text()
@@ -468,10 +460,8 @@ function KuwoUrl7(id, callback) {
     })
     .then(data => {
         var jsonData = JSON.parse(data);
-        // var jsonData = data;
         if (jsonData.data) {
             mp3Url = jsonData.data.url;
-            // console.log(mp3Url);
             if (callback) callback(mp3Url);
         }
     });
@@ -479,26 +469,12 @@ function KuwoUrl7(id, callback) {
 
 
 function NeteaseUrl(id, callback) {
-
-    // var fetchOptions = { redirect: 'manual' };
-    // // fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://apis.jxcxin.cn/api/163music?id='+id)}`, fetchOptions)
-    // fetch(`https://apis.jxcxin.cn/api/163music?id=`+id, fetchOptions)
-    // .then(response => {
-    //     console.log( response.headers);
-    //     var mp3Url = response.headers.get('Location');
-    //     if (callback) callback(mp3Url);
-    //     if (response.ok) return mp3Url
-    //     throw new Error('Network response was not ok.')
-    // });
-
     fetch(`https://lzw.me/x/iapi/163music/api.php?type=mp3&id=${id}`)
         .then(response => {
             if (response.ok) return response.json()
             throw new Error('Network response was not ok.')
         })
         .then(jsonData => {
-            // var jsonData = data;
-            // var jsonData = JSON.parse(data.contents);
             if (jsonData.data) {
                 var mp3Url = jsonData.data[0].url;
                 if (mp3Url === null) {
@@ -510,7 +486,6 @@ function NeteaseUrl(id, callback) {
                 if (callback) callback('');
             }
         });
-
 }
 
 

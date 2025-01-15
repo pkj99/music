@@ -377,7 +377,7 @@ function KuwoUrl2(id, callback) {
 }
 
 function KuwoUrl3(id, callback) {
-    var mp3Url = 'http://192.168.1.113:5000/kuwo/' + id;
+    var mp3Url = 'http://192.168.1.113:5000/kuwo/' + id + '.mp3';
     if (callback) callback(mp3Url);
 }
 
@@ -460,38 +460,6 @@ function KuwoUrl7(id, callback) {
     });
 }
 
-function KuwoUrl8(id, callback) {
-    var cookie = "_ga=GA1.2.526731243.1718705002; _gid=GA1.2.1543973888.1718705002; Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1718705002; h5Uuid=08d98230548b48f7a92b7bd084ba45-f7; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1718713693; _ga_ETPBRPM9ML=GS1.2.1718713677.2.1.1718713693.44.0.0; Hm_Iuvt_cdb524f42f23cer9b268564v7y735ewrq2324=JXbannkz4r3pXFRW8YNjxzxmSkdxSPRX";
-    var ReqId = getReqId();
-    // console.log(get_Secret(cookie));
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36");
-    myHeaders.append("Cookie", cookie);
-    myHeaders.append("Secret", get_Secret(cookie));
-    myHeaders.append("Referer", `https://bd.kuwo.cn/playlist_detail/${id}`);
-
-    var api = `https://bd.kuwo.cn/api/v1/www/music/playUrl?mid=${id}&type=music&httpsStatus=1&reqId=${ReqId}&plat=web_www&from=`;
-    var url = encodeURIComponent(api);
-    console.log(api);
-    // fetch(`https://api.allorigins.win/raw?url=${url}`, {headers: myHeaders, mode: 'no-cors'})
-    fetch(api, {headers: myHeaders, mode: 'no-cors'})
-    .then(response => {
-        if (response.ok) return response.text()
-        throw new Error('Network response was not ok.')
-    })
-    .then(data => {
-        var jsonData = JSON.parse(data);
-        // var jsonData = data;
-        if (jsonData.data) {
-            mp3Url = jsonData.data.url;
-            // console.log(mp3Url);
-            if (callback) callback(mp3Url);
-        }
-    });
-}
-
-
 function NeteaseUrl(id, callback) {
     fetch(`https://lzw.me/x/iapi/163music/api.php?type=mp3&id=${id}`)
         .then(response => {
@@ -561,7 +529,7 @@ function play(music) {
         //     }
         // })
 
-        var mp3Url = `http://192.168.1.113:5000/kuwo/${music.id}`;
+        var mp3Url = `http://192.168.1.113:5000/kuwo/${music.id}.mp3`;
         try {
             rem.audio[0].pause();
             rem.audio.attr('src', mp3Url);
@@ -612,7 +580,11 @@ function play(music) {
     if (music.lyric_id != '0') {
         // ajaxLyric(music, lyricCallback);     // ajax載入歌詞
         // kuwoLyric(music, lyricCallback);     // ajax載入歌詞
-        localLyric(music, lyricCallback);     // ajax載入歌詞
+        if (music.source == 'kuwo') {
+            localLyric(music, lyricCallback);     // ajax載入歌詞
+        } else {
+            ajaxLyric(music, lyricCallback);     // ajax載入歌詞
+        }
     } else {
         // console.log('music.lyric_id:',music.lyric_id)
         lyricTip('沒有歌詞');

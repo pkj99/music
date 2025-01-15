@@ -389,8 +389,21 @@ function KuwoUrl2(id, callback) {
 }
 
 function KuwoUrl3(id, callback) {
-    mp3Url = 'https://link.hhtjim.com/kw/' + id + '.mp3';
-    if (callback) callback(mp3Url);
+    // mp3Url = 'https://link.hhtjim.com/kw/' + id + '.mp3';
+    // if (callback) callback(mp3Url);
+
+    fetch("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)
+    .then(response => {
+        if (response.ok) return response.text()
+        throw new Error('Network response was not ok.')
+    })
+    .then(data => {
+        var j = JSON.parse(data);
+        if (j.code == 200) {
+            mp3Url = j.data.url.split("?")[0].replace("http://","https://");
+            if (callback) callback(mp3Url);
+        }
+    });    
 }
 
 function KuwoUrl4(id, callback) {

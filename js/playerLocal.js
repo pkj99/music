@@ -529,7 +529,7 @@ function play(music) {
         //     }
         // })
 
-        var mp3Url = `http://192.168.1.113:5000/kuwo/${music.id}.mp3`;
+        var mp3Url = `http://192.168.1.113:5000/kuwo/${music.url_id}.mp3`;
         try {
             rem.audio[0].pause();
             rem.audio.attr('src', mp3Url);

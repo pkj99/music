@@ -292,9 +292,9 @@ function ajaxLyric(music, callback) {
 
     // var url = encodeURIComponent('https://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id='+music.lyric_id);
     // var url = encodeURIComponent('https://lzw.me/x/iapi/163music/api.php?type=lyric&id='+music.lyric_id);
-    // fetch(`https://api.allorigins.win/get?url=${url}`)
+    // fetch(`https://lzw.me/x/iapi/163music/api.php?type=lyric&id=${music.lyric_id}`)
 
-    fetch(`https://lzw.me/x/iapi/163music/api.php?type=lyric&id=${music.lyric_id}`)
+    fetch(`https://api.cenguigui.cn/api/netease/music_v1.php?type=json&level=standard&id=${music.lyric_id}`)
         .then(response => {
             if (response.ok) return response.json()
             throw new Error('Network response was not ok.')
@@ -302,8 +302,10 @@ function ajaxLyric(music, callback) {
         .then(data => {
             var jsonData = data;
             // var jsonData = JSON.parse(data.contents);
-            if (jsonData.lrc) {
-                callback(Traditionalized(jsonData.lrc.lyric), music.lyric_id);    // 回呼函數
+            // if (jsonData.lrc) {
+            //     callback(Traditionalized(jsonData.lrc.lyric), music.lyric_id);    // 回呼函數
+            if (jsonData.data.lyric) {
+                    callback(Traditionalized(jsonData.data.lyric), music.lyric_id);    // 回呼函數
             } else {
                 callback('', music.lyric_id);    // 回呼函數
             }

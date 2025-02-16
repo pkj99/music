@@ -2,9 +2,6 @@
 // 播放機功能配置
 var mkPlayer = {
     api: "https://dnvods.com/music/api.php", // api地址
-    // api: "https://duonaovod.com/music/api.php", // api地址
-    // api: "https://music.163.com/api", // api地址
-    // api: "https://api.zcentury.top/163/", // api地址
     loadcount: 20,  // 搜索結果一次載入多少條
     method: "POST",     // 資料傳輸方式(POST/GET)
     defaultlist: 3,    // 預設要顯示的播放清單編號
@@ -150,6 +147,7 @@ function audioPlay() {
     // 標題滾動
     titleFlash(msg);
 }
+
 // 標題滾動
 function titleFlash(msg) {
 
@@ -161,6 +159,7 @@ function titleFlash(msg) {
     // 設置定時間 300ms滾動
     rem.titflash = setInterval(function () { tit() }, 300);
 }
+
 // 暫停
 function audioPause() {
     rem.paused = true;      // 更新狀態（已暫停）
@@ -200,6 +199,7 @@ function nextMusic() {
             break;
     }
 }
+
 // 自動播放時的下一首歌
 function autoNextMusic() {
     if (rem.order && rem.order === 1) {
@@ -358,41 +358,7 @@ function KuwoError() {
 }
 
 function KuwoUrl(id, callback) {
-    var x = new XMLHttpRequest();
-    x.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid=' + id);
-    x.onload = () => {
-        var j = JSON.parse(x.responseText);
-        if (j.success) {
-            mp3Url = j.data.url;
-            console.log(mp3Url);
-            if (callback) callback(mp3Url);
-        }
-    }
-    x.send();
-}
-
-function KuwoUrl2(id, callback) {
-    fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.kuwo.cn/api/v1/www/music/playUrl?type=convert_url&mid=' + id)}`)
-        .then(response => {
-            if (response.ok) return response.json()
-            throw new Error('Network response was not ok.')
-        })
-        .then(data => {
-            // console.log(data.contents);
-            var j = JSON.parse(data.contents);
-            if (j.success) {
-                mp3Url = j.data.url;
-                console.log(mp3Url);
-                if (callback) callback(mp3Url);
-            }
-        });
-}
-
-function KuwoUrl3(id, callback) {
-    // mp3Url = 'https://link.hhtjim.com/kw/' + id + '.mp3';
-    // if (callback) callback(mp3Url);
-
-    fetch("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)
+    fetch(`https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`)
     .then(response => {
         if (response.ok) return response.text()
         throw new Error('Network response was not ok.')
@@ -400,96 +366,21 @@ function KuwoUrl3(id, callback) {
     .then(data => {
         var j = JSON.parse(data);
         if (j.code == 200) {
-            mp3Url = j.data.url.split("?")[0].replace("http://","https://");
-            if (callback) callback(mp3Url);
-        }
-    });    
-}
-
-function KuwoUrl4(id, callback) {
-    fetch(`https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=json&id=` + id)
-        .then(response => {
-            if (response.ok) return response.json()
-            throw new Error('Network response was not ok.')
-        })
-        .then(data => {
-            var j = data;
-            if (j.code == 200) {
-                mp3Url = j.data.url;
-                // console.log(mp3Url);
-                if (callback) callback(mp3Url);
-            }
-        });
-}
-
-function KuwoUrl5(id, callback) {
-    // console.log(id);
-    fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://pkjstudio.pythonanywhere.com/kuwo/" + id)}`)
-    .then(response => {
-        if (response.ok) return response.text()
-        throw new Error('Network response was not ok.')
-    })
-    .then(data => {
-        var kuwoDES = data;
-        fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("http://mobi.kuwo.cn/mobi.s?f=kuwo&q=" + kuwoDES)}`)
-        .then(response => {
-            if (response.ok) return response.text()
-            throw new Error('Network response was not ok.')
-        })
-        .then(data => {
-            var j = data;
-            // console.log(j);
-            if (j.includes("url=")) {
-                mp3Url = j.split("url=")[1].split("?")[0].replace("http://","https://");
-                // console.log(mp3Url);
-                if (callback) callback(mp3Url);
-            }
-        });    
-        
-
-    });
-}
-
-function KuwoUrl6(id, callback) {
-    fetch("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)
-    .then(response => {
-        if (response.ok) return response.text()
-        throw new Error('Network response was not ok.')
-    })
-    .then(data => {
-        var j = JSON.parse(data);
-        if (j.code == 200) {
-            mp3Url = j.data.url.split("?")[0].replace("http://","https://");
+            mp3Url = j.data.url.split("?")[0];
             if (callback) callback(mp3Url);
         }
     });
 }
-
-function KuwoUrl7(id, callback) {
-    fetch(`https://api.cenguigui.cn/api/kuwo/?rid=${id}&type=json&lrc=true`)
-    .then(response => {
-        if (response.ok) return response.text()
-        throw new Error('Network response was not ok.')
-    })
-    .then(data => {
-        var jsonData = JSON.parse(data);
-        if (jsonData.data) {
-            mp3Url = jsonData.data.url;
-            if (callback) callback(mp3Url);
-        }
-    });
-}
-
 
 function NeteaseUrl(id, callback) {
-    fetch(`https://lzw.me/x/iapi/163music/api.php?type=mp3&id=${id}`)
+    fetch(`https://api.cenguigui.cn/api/netease/music_v1.php?type=json&level=standard&id=${id}`)
         .then(response => {
             if (response.ok) return response.json()
             throw new Error('Network response was not ok.')
         })
         .then(jsonData => {
             if (jsonData.data) {
-                var mp3Url = jsonData.data[0].url;
+                var mp3Url = jsonData.data.url;
                 if (mp3Url === null) {
                     console.log('mp3Url not found !!!')
                     if (callback) callback('');
@@ -536,7 +427,7 @@ function play(music) {
     }
 
     if (music.url.includes('/kw/')) {
-        KuwoUrl6(music.url_id,function(mp3Url){
+        KuwoUrl(music.url_id,function(mp3Url){
             try {
                 rem.audio[0].pause();
                 rem.audio.attr('src', mp3Url);
@@ -546,17 +437,6 @@ function play(music) {
                 return;
             }
         })
-
-        // var mp3Url = `https://apis.jxcxin.cn/api/kuwo?apiKey=bae6f64104fa4900a5cae8e76ba90ceb&type=mp3&id=` + music.url_id;
-        // try {
-        //     rem.audio[0].pause();
-        //     rem.audio.attr('src', mp3Url);
-        //     rem.audio[0].play();
-        // } catch (e) {
-        //     audioErr(); // 調用錯誤處理函數
-        //     return;
-        // }
-
     } else if (music.url.includes('/163/')) {
         NeteaseUrl(music.id, function (mp3Url) {
             try {
@@ -568,17 +448,6 @@ function play(music) {
                 return;
             }
         })
-
-        // var mp3Url = `https://apis.jxcxin.cn/api/163music?id=`+music.id;
-        // // console.log(mp3Url);
-        // try {
-        //     rem.audio[0].pause();
-        //     rem.audio.attr('src', mp3Url);
-        //     rem.audio[0].play();
-        // } catch(e) {
-        //     audioErr(); // 調用錯誤處理函數
-        //     return;
-        // }
     } else {
         try {
             rem.audio[0].pause();
@@ -596,8 +465,8 @@ function play(music) {
     music_bar.goto(0);  // 進度條強制歸零
     changeCover(music);    // 更新封面展示
     if (music.lyric_id != '0') {
-        // ajaxLyric(music, lyricCallback);     // ajax載入歌詞
-        kuwoLyric(music, lyricCallback);     // ajax載入歌詞
+        ajaxLyric(music, lyricCallback);     // ajax載入歌詞
+        // kuwoLyric(music, lyricCallback);     // ajax載入歌詞
     } else {
         // console.log('music.lyric_id:',music.lyric_id)
         lyricTip('沒有歌詞');

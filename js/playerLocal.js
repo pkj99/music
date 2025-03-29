@@ -355,24 +355,23 @@ function KuwoError() {
 }
 
 function KuwoUrl(id, callback) {
-    // var mp3Url = 'http://192.168.1.113:5000/kuwo/' + id + '.mp3';
-    // if (callback) callback(mp3Url);
+    var mp3Url = 'http://192.168.1.113:5000/kuwo/' + id + '.mp3';
+    if (callback) callback(mp3Url);
 
-    var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
-    var encodeURI = encodeURIComponent(url);
-    fetch(`https://corsproxy.io/?url=${encodeURI}`)
-    .then(response => {
-        if (response.ok) return response.text()
-        throw new Error('Network response was not ok.')
-    })
-    .then(data => {
-        var j = JSON.parse(data);
-        if (j.code == 200) {
-            mp3Url = j.data.url.split("?")[0];
-            if (callback) callback(mp3Url);
-        }
-    });    // fetch(`https://corsproxy.io/?url=${encodeURI}`)
-
+    // var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
+    // var encodeURI = encodeURIComponent(url);
+    // fetch(`https://corsproxy.io/?url=${encodeURI}`)
+    // .then(response => {
+    //     if (response.ok) return response.text()
+    //     throw new Error('Network response was not ok.')
+    // })
+    // .then(data => {
+    //     var j = JSON.parse(data);
+    //     if (j.code == 200) {
+    //         mp3Url = j.data.url.split("?")[0];
+    //         if (callback) callback(mp3Url);
+    //     }
+    // });   
 
 }
 
@@ -431,26 +430,26 @@ function play(music) {
     }
 
     if (music.url.includes('/kw/')) {
-        KuwoUrl(music.url_id,function(mp3Url){
-            try {
-                rem.audio[0].pause();
-                rem.audio.attr('src', mp3Url);
-                rem.audio[0].play();
-            } catch(e) {
-                audioErr(); // 調用錯誤處理函數
-                return;
-            }
-        })
+        // KuwoUrl(music.url_id,function(mp3Url){
+        //     try {
+        //         rem.audio[0].pause();
+        //         rem.audio.attr('src', mp3Url);
+        //         rem.audio[0].play();
+        //     } catch(e) {
+        //         audioErr(); // 調用錯誤處理函數
+        //         return;
+        //     }
+        // })
 
-        // var mp3Url = `http://192.168.1.113:5000/kuwo/${music.url_id}.mp3`;
-        // try {
-        //     rem.audio[0].pause();
-        //     rem.audio.attr('src', mp3Url);
-        //     rem.audio[0].play();
-        // } catch (e) {
-        //     audioErr(); // 調用錯誤處理函數
-        //     return;
-        // }
+        var mp3Url = `http://192.168.1.113:5000/kuwo/${music.url_id}.mp3`;
+        try {
+            rem.audio[0].pause();
+            rem.audio.attr('src', mp3Url);
+            rem.audio[0].play();
+        } catch (e) {
+            audioErr(); // 調用錯誤處理函數
+            return;
+        }
 
     } else if (music.url.includes('/163/')) {
         NeteaseUrl(music.id, function (mp3Url) {
@@ -483,8 +482,8 @@ function play(music) {
         // ajaxLyric(music, lyricCallback);     // ajax載入歌詞
         // kuwoLyric(music, lyricCallback);     // ajax載入歌詞
         if (music.source == 'kuwo') {
-            kuwoLyric(music, lyricCallback);     // ajax載入歌詞
-            // localLyric(music, lyricCallback);     // ajax載入歌詞
+            // kuwoLyric(music, lyricCallback);     // ajax載入歌詞
+            localLyric(music, lyricCallback);     // ajax載入歌詞
         } else {
             ajaxLyric(music, lyricCallback);     // ajax載入歌詞
         }
@@ -496,8 +495,8 @@ function play(music) {
         lyricArea.html('');     // 清空歌词区域的内容
         lyricArea.scrollTop(0);    // 滚动到顶部
 
-        kuwoLyric(music, lyricCallback);     // ajax載入歌詞
-        // localLyric(music, lyricCallback);     // ajax載入歌詞
+        // kuwoLyric(music, lyricCallback);     // ajax載入歌詞
+        localLyric(music, lyricCallback);     // ajax載入歌詞
     }
     music_bar.lock(false);  // 取消進度條鎖定
 }

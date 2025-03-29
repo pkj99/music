@@ -673,8 +673,10 @@ function dbMusicList(album_id, callback) {
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
-                artist: data[i][12], // 藝術家名字
-                album: data[i][3],    // 專輯名字
+                // artist: data[i][12], // 藝術家名字
+                // album: data[i][3],    // 專輯名字
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
+                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字                
                 source: "netease",     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
@@ -745,8 +747,10 @@ function CookieMusicList(callback) {
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
-                artist: data[i][12], // 藝術家名字
-                album: data[i][3],    // 專輯名字
+                // artist: data[i][12], // 藝術家名字
+                // album: data[i][3],    // 專輯名字
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
+                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字                
                 source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
@@ -801,16 +805,18 @@ function RandomMusicList(callback) {
             if (kuwo_id == null) {
                 kuwo_id = 0;
                 source = "netease";
-                var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"
+                var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3";
             } else {
                 source = "kuwo";
-                var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+                var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";
             }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
-                artist: data[i][12], // 藝術家名字
-                album: data[i][3],    // 專輯名字
+                // artist: data[i][12], // 藝術家名字
+                // album: data[i][3],    // 專輯名字
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
+                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
                 source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
@@ -872,8 +878,11 @@ function RecentMusicList(callback) {
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
-                artist: data[i][12], // 藝術家名字
-                album: data[i][3],    // 專輯名字
+                // artist: data[i][12], // 藝術家名字
+                // album: data[i][3],    // 專輯名字
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
+                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
+
                 source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
@@ -938,8 +947,10 @@ function SearchMusicList(keyword, callback) {
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
-                artist: data[i][12], // 藝術家名字
-                album: data[i][3],    // 專輯名字
+                // artist: data[i][12], // 藝術家名字
+                // album: data[i][3],    // 專輯名字
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
+                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
                 source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
@@ -1028,8 +1039,10 @@ function myAlbumsMusicList(callback) {
                 tempList.item[item_no] = {
                     id: data[i][4],  // 音樂ID
                     name: data[i][5],  // 音樂名字
-                    artist: data[i][12], // 藝術家名字
-                    album: data[i][3],    // 專輯名字
+                    // artist: data[i][12], // 藝術家名字
+                    // album: data[i][3],    // 專輯名字
+                    artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
+                    album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
                     source: source,     // 音樂來源
                     url_id: kuwo_id,  // 連結ID
                     pic_id: data[i][7],  // 封面ID
@@ -1104,8 +1117,10 @@ function RockGolden10MusicList(callback) {
                 tempList.item[item_no] = {
                     id: data[i][4],  // 音樂ID
                     name: data[i][5],  // 音樂名字
-                    artist: data[i][12], // 藝術家名字
-                    album: data[i][3],    // 專輯名字
+                    // artist: data[i][12], // 藝術家名字
+                    // album: data[i][3],    // 專輯名字
+                    artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
+                    album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
                     source: source,     // 音樂來源
                     url_id: kuwo_id,  // 連結ID
                     pic_id: data[i][7],  // 封面ID

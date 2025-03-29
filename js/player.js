@@ -436,6 +436,7 @@ function play(music) {
     if (music.url.includes('/kw/')) {
         KuwoUrl(music.url_id,function(mp3Url){
             try {
+                alert(mp3Url);
                 rem.audio[0].pause();
                 rem.audio.attr('src', mp3Url);
                 rem.audio[0].play();

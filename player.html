@@ -61,9 +61,9 @@
                 // if (j.code == 200) {
                 //     var mp3Url = j.data.url.split("?")[0].replace("http://","https://");
                 if (j.data) {
-                    var mp3Url = j.data.url;
+                    var mp3Url = j.data.url.split("?")[0];
                     console.log('mp3Url:',mp3Url);
-					location.href = mp3Url;
+					// location.href = mp3Url;
                     var audio = document.getElementById('audio');
                     var source = document.getElementById('mp3source');
                     source.src = mp3Url;

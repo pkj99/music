@@ -46,8 +46,12 @@
 
     <script>
         function KuwoUrl(id, callback) {
-            fetch("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)
+            var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
+            var encodeURI = encodeURIComponent(url);
+            // fetch(`https://proxy.cors.sh/${url}`)
+            // fetch("https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=" + id)
             // fetch(`https://api.cenguigui.cn/api/kuwo/?rid=${id}&type=json&lrc=true`)            
+            fetch(`https://corsproxy.io/?url=${encodeURI}`)
             .then(response => {
                 if (response.ok) return response.text()
                 throw new Error('Network response was not ok.')
@@ -70,7 +74,8 @@
         }
 
         function NeteaseUrl(id, callback) {
-            fetch(`https://lzw.me/x/iapi/163music/api.php?type=mp3&id=${id}`)
+            // fetch(`https://lzw.me/x/iapi/163music/api.php?type=mp3&id=${id}`)
+            fetch(`https://api.cenguigui.cn/api/netease/music_v1.php?type=json&level=standard&id=${id}`)
                 .then(response => {
                     if (response.ok) return response.json()
                     throw new Error('Network response was not ok.')

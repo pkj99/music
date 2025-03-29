@@ -357,8 +357,15 @@ function KuwoError() {
     layer.msg('受限於CORS Policy，嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo">啟用</a> 暫時釋放功能');
 }
 
+
 function KuwoUrl(id, callback) {
-    fetch(`https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`)
+
+    var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
+    var encodeURI = encodeURIComponent(url);
+    fetch(`https://proxy.cors.sh/${url}`)
+    // fetch(`https://corsproxy.io/?url=${encodeURI}`)
+    // fetch(`https://api.allorigins.win/raw?url=${encodeURI}`)
+    // fetch(url)
     .then(response => {
         if (response.ok) return response.text()
         throw new Error('Network response was not ok.')

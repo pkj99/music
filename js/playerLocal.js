@@ -452,16 +452,26 @@ function play(music) {
         }
 
     } else if (music.url.includes('/163/')) {
-        NeteaseUrl(music.id, function (mp3Url) {
-            try {
-                rem.audio[0].pause();
-                rem.audio.attr('src', mp3Url);
-                rem.audio[0].play();
-            } catch (e) {
-                audioErr(); // 調用錯誤處理函數
-                return;
-            }
-        })
+        // NeteaseUrl(music.id, function (mp3Url) {
+        //     try {
+        //         rem.audio[0].pause();
+        //         rem.audio.attr('src', mp3Url);
+        //         rem.audio[0].play();
+        //     } catch (e) {
+        //         audioErr(); // 調用錯誤處理函數
+        //         return;
+        //     }
+        // })
+        var mp3Url = `http://192.168.1.113:5000/netease/${music.id}.mp3`;
+        try {
+            rem.audio[0].pause();
+            rem.audio.attr('src', mp3Url);
+            rem.audio[0].play();
+        } catch (e) {
+            audioErr(); // 調用錯誤處理函數
+            return;
+        }
+
     } else {
         try {
             rem.audio[0].pause();
@@ -483,9 +493,10 @@ function play(music) {
         // kuwoLyric(music, lyricCallback);     // ajax載入歌詞
         if (music.source == 'kuwo') {
             // kuwoLyric(music, lyricCallback);     // ajax載入歌詞
-            localLyric(music, lyricCallback);     // ajax載入歌詞
+            localkuwoLyric(music, lyricCallback);     // ajax載入歌詞
         } else {
-            ajaxLyric(music, lyricCallback);     // ajax載入歌詞
+            // ajaxLyric(music, lyricCallback);     // ajax載入歌詞
+            localneteaseLyric(music, lyricCallback);     // ajax載入歌詞
         }
     } else {
         // console.log('music.lyric_id:',music.lyric_id)
@@ -496,7 +507,7 @@ function play(music) {
         lyricArea.scrollTop(0);    // 滚动到顶部
 
         // kuwoLyric(music, lyricCallback);     // ajax載入歌詞
-        localLyric(music, lyricCallback);     // ajax載入歌詞
+        localkuwoLyric(music, lyricCallback);     // ajax載入歌詞
     }
     music_bar.lock(false);  // 取消進度條鎖定
 }

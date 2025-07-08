@@ -359,24 +359,26 @@ function KuwoError() {
 
 
 function KuwoUrl(id, callback) {
+    var mp3Url = `https://api2.52jan.com/kuwo/${id}`;
+    if (callback) callback(mp3Url);
 
-    var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
-    var encodeURI = encodeURIComponent(url);
-    // fetch(`https://proxy.cors.sh/${url}`)
-    fetch(`https://corsproxy.io/?url=${encodeURI}`)
-    // fetch(`https://api.allorigins.win/raw?url=${encodeURI}`)
-    // fetch(url)
-    .then(response => {
-        if (response.ok) return response.text()
-        throw new Error('Network response was not ok.')
-    })
-    .then(data => {
-        var j = JSON.parse(data);
-        if (j.code == 200) {
-            mp3Url = j.data.url.split("?")[0];
-            if (callback) callback(mp3Url);
-        }
-    });
+    // var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
+    // var encodeURI = encodeURIComponent(url);
+    // // fetch(`https://proxy.cors.sh/${url}`)
+    // fetch(`https://corsproxy.io/?url=${encodeURI}`)
+    // // fetch(`https://api.allorigins.win/raw?url=${encodeURI}`)
+    // // fetch(url)
+    // .then(response => {
+    //     if (response.ok) return response.text()
+    //     throw new Error('Network response was not ok.')
+    // })
+    // .then(data => {
+    //     var j = JSON.parse(data);
+    //     if (j.code == 200) {
+    //         mp3Url = j.data.url.split("?")[0];
+    //         if (callback) callback(mp3Url);
+    //     }
+    // });
 }
 
 function NeteaseUrl(id, callback) {

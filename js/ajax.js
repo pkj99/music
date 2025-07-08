@@ -357,7 +357,14 @@ function kuwoLyric(music, callback) {
         })
         .then(data => {
             if (data) {
-                callback(Traditionalized(data), music.url_id);    // 回呼函數
+                // var lrctxt = data.replace('[','\n[');
+                var lyricData = data.split('[');
+                var lrctxt = '';
+                for (var i = 0; i < lyricData.length; i++){
+                    lrc = lyricData[i];
+                    lrctxt += "["+ lrc +"\n";
+                }
+                callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
             } else {
                 callback('', music.id);    // 回呼函數
             }
@@ -813,7 +820,7 @@ function CookieMusicList(callback) {
 function RandomMusicList(callback) {
 
     // var sqlstring = "select * from vMusic where music_id in (select music_id from musics where url = 1 order by random() limit 100)"
-    var sqlstring = "select * from vMusic where url=1 or kuwo_music_id is not NULL order by random() limit 100"
+    var sqlstring = "select * from vMusic where url=1 and kuwo_music_id is not NULL order by random() limit 100"
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
@@ -878,7 +885,7 @@ function RandomMusicList(callback) {
 // 最近新歌200首
 function RecentMusicList(callback) {
 
-    var sqlstring = "select * from vMusic where (url=1 or kuwo_music_id is not NULL) and music_name not like '%伴奏%' and music_name not like '%試聽%' order by release_date desc limit 200";
+    var sqlstring = "select * from vMusic where (url=1 and kuwo_music_id is not NULL) and music_name not like '%伴奏%' and music_name not like '%試聽%' order by release_date desc limit 200";
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);

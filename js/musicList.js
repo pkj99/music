@@ -301,6 +301,24 @@ var HomeMusicList = [
         item: []
     },
     {
+        id: 'myTimeMusicConcert',
+        name: "時光音樂會",
+        cover: "https://p1.music.126.net/zSIAHUX5q1MjJPzP-m3LwA==/109951168946810175.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "時光音樂會",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
+        id: 'myDreamVoice',
+        name: "夢想的聲音",
+        cover: "https://p1.music.126.net/ro1Blkdo9FvPgddmqLbivA==/109951163794412442.jpg?param=200y200",
+        creatorID: -1,
+        creatorName: "夢想的聲音",
+        creatorAvatar: 0,
+        item: []
+    },
+    {
         id: 'search',
         name: "搜索",
         cover: "https://p3.music.126.net/0-deIQ8ckyaCh9Sof2CvjQ==/109951168094729294.jpg?param=200y200",

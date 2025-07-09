@@ -1177,6 +1177,8 @@ function switchPl(id) {
         case 'mySingingWithLegends': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(mySingingWithLegends); initList(); dataBox("sheet"); break;
         case 'myIAmASinger': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myIAmASinger); initList(); dataBox("sheet"); break;
         case 'myTreasuredVoice': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myTreasuredVoice); initList(); dataBox("sheet"); break;
+        case 'myTimeMusicConcert': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myTimeMusicConcert); initList(); dataBox("sheet"); break;
+        case 'myDreamVoice': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myDreamVoice); initList(); dataBox("sheet"); break;
         case 'myBangs': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myBangs); initList(); dataBox("sheet"); break;
         case 'myLives': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myLives); initList(); dataBox("sheet"); break;
         case 'myRadios': clearSheet(); musicList = DefaultMusicList; musicList = musicList.concat(myRadios); initList(); loadList(3); break;

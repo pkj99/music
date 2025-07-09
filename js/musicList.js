@@ -129,24 +129,6 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     },
-    // {
-    //     id: 'playlist',
-    //     name: "歌單",
-    //     cover: "http://p4.music.126.net/4Y3MZ9YQ0X5lufAmp-eudg==/109951168296692473.jpg?param=200y200",
-    //     creatorID: -1,
-    //     creatorName: "歌單",
-    //     creatorAvatar: 0,
-    //     item: []
-    // },    
-    // {
-    //     id: 'album',
-    //     name: "歌手專輯",
-    //     cover: "https://p4.music.126.net/92NWlGo76ha-if-WMK3vCg==/1410673428769729.jpg?param=200y200",
-    //     creatorID: -1,
-    //     creatorName: "歌手專輯",
-    //     creatorAvatar: 0,
-    //     item: []
-    // },
     {
         id: 'album1',
         name: "華語男歌手",
@@ -192,15 +174,6 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     },
-    // {
-    //     id: 'collection',
-    //     name: "網易精選50首",
-    //     cover: "https://p4.music.126.net/BCw6bptJIibZH3kbwBA8FA==/109951163609551095.jpg?param=200y200",
-    //     creatorID: -1,
-    //     creatorName: "網易精選50首",
-    //     creatorAvatar: 0,
-    //     item: []
-    // },
     {
         id: 'myArtistSongs',
         name: "酷我精選50首",
@@ -327,15 +300,6 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     },
-    // {
-    //     id: 'myOurSongs5',
-    //     name: "我們的歌 第五季",
-    //     cover: "https://p1.music.126.net/G1cL46DKo0MZkh1IeELxyQ==/109951168970253251.jpg?param=200y200",
-    //     creatorID: -1,
-    //     creatorName: "我們的歌 第五季",
-    //     creatorAvatar: 0,
-    //     item: []
-    // }, 
     {
         id: 'search',
         name: "搜索",
@@ -345,26 +309,6 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     }
-    // ,
-    // {
-    //     id: 'artist',
-    //     name: "歌手(外部連結)",
-    //     cover: "https://p3.music.126.net/UbjonnoZfxIta89hT-e8cQ==/109951168262199535.jpg?param=200y200",
-    //     creatorID: -1,
-    //     creatorName: "歌手(外部連結)",
-    //     creatorAvatar: 0,
-    //     item: []
-    // }
-    // ,
-    // {
-    //     id: 'kuwo',
-    //     name: "酷我專輯",
-    //     cover: "https://p3.music.126.net/UbjonnoZfxIta89hT-e8cQ==/109951168262199535.jpg?param=200y200",
-    //     creatorID: -1,
-    //     creatorName: "酷我專輯",
-    //     creatorAvatar: 0,
-    //     item: []
-    // }
 ]
 
 var TikTokMusicList = [

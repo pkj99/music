@@ -201,15 +201,15 @@ var HomeMusicList = [
         creatorAvatar: 0,
         item: []
     },
-    {
-        id: 'live',
-        name: "網易演唱會",
-        cover: "https://p1.music.126.net/IAHRobXhEykx5Tw9zUDBSQ==/109951168162652115.jpg?param=200y200",
-        creatorID: -1,
-        creatorName: "網易演唱會",
-        creatorAvatar: 0,
-        item: []
-    },
+    // {
+    //     id: 'live',
+    //     name: "網易演唱會",
+    //     cover: "https://p1.music.126.net/IAHRobXhEykx5Tw9zUDBSQ==/109951168162652115.jpg?param=200y200",
+    //     creatorID: -1,
+    //     creatorName: "網易演唱會",
+    //     creatorAvatar: 0,
+    //     item: []
+    // },
     {
         id: 'myLives',
         name: "酷我演唱會",

@@ -83,7 +83,7 @@
 
                 htmlString += '<li class="col-lg-10 col-md-8 col-sm-5 col-xs-3">';
                 htmlString += '<div class="myui-vodlist__box">';
-                htmlString += '<a class="myui-vodlist__thumb lazyload" href="home.html?album_id='+album_id+'" ';
+                htmlString += '<a class="myui-vodlist__thumb lazyload" href="index.html?album_id='+album_id+'" ';
                 htmlString += 'title="' + title +'" ';
                 htmlString += 'data-original="' + album_img + '" ';
                 htmlString += 'style="background-image: url(' + album_img +')"';
@@ -95,7 +95,7 @@
                 htmlString += '</a>';
                 htmlString += '</div>';
                 htmlString += '<div class="myui-vodlist__detail">';
-                htmlString += '<h4 class="title text-overflow"><a href="home.html?album_id='+album_id+'">'+title+'</a></h4>';
+                htmlString += '<h4 class="title text-overflow"><a href="index.html?album_id='+album_id+'">'+title+'</a></h4>';
                 htmlString += '</div>';
                 htmlString += '</li>';
             }
@@ -203,15 +203,15 @@
                 if (t != "0") {
                     // submenuByTypeId(); // 動態產生子選單
                     var sqlstring = "select * from artists where group_id="+t;
-                    if (t=="6001"){
-                        sqlstring = "select * from artists where group_id in (6001,7001)";
-                    } 
-                    if (t=="6002"){
-                        sqlstring = "select * from artists where group_id in (6002,7002)";
-                    }
-                    if (t=="6003"){
-                        sqlstring = "select * from artists where group_id in (6003,7003)";
-                    }
+                    // if (t=="1"){
+                        // sqlstring = "select * from artists where group_id in (6001,7001)";
+                    // } 
+                    // if (t=="2"){
+                        // sqlstring = "select * from artists where group_id in (6002,7002)";
+                    // }
+                    // if (t=="3"){
+                        // sqlstring = "select * from artists where group_id in (6003,7003)";
+                    // }
                     artistlists(sqlstring);
                 } else {
                     var sqlstring = "select * from artists";
@@ -233,15 +233,15 @@
             // movieById(sqlstring);
         }
     }
-    if (t==1001){ document.getElementById('menu-1001').classList.add("active"); } 
-    if (t==1002){ document.getElementById('menu-1002').classList.add("active"); } 
-    if (t==1003){ document.getElementById('menu-1003').classList.add("active"); } 
-    if (t==2001){ document.getElementById('menu-2001').classList.add("active"); } 
-    if (t==2002){ document.getElementById('menu-2002').classList.add("active"); } 
-    if (t==2003){ document.getElementById('menu-2003').classList.add("active"); } 
-    if (t==6001){ document.getElementById('menu-6001').classList.add("active"); } 
-    if (t==6002){ document.getElementById('menu-6002').classList.add("active"); } 
-    if (t==6003){ document.getElementById('menu-6003').classList.add("active"); } 
+    if (t==1){ document.getElementById('menu-1').classList.add("active"); } 
+    if (t==2){ document.getElementById('menu-2').classList.add("active"); } 
+    if (t==3){ document.getElementById('menu-3').classList.add("active"); } 
+    if (t==4){ document.getElementById('menu-4').classList.add("active"); } 
+    if (t==5){ document.getElementById('menu-5').classList.add("active"); } 
+    if (t==6){ document.getElementById('menu-6').classList.add("active"); } 
+    if (t==7){ document.getElementById('menu-7').classList.add("active"); } 
+    if (t==8){ document.getElementById('menu-8').classList.add("active"); } 
+    if (t==9){ document.getElementById('menu-9').classList.add("active"); } 
 
 
  

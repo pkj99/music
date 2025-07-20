@@ -231,12 +231,12 @@ function ajaxPlayList(lid, id, callback) {
                         name: jsonData.playlist.tracks[i].name,  // 音樂名字
                         artist: jsonData.playlist.tracks[i].ar[0].name, // 藝術家名字
                         album: jsonData.playlist.tracks[i].al.name,    // 專輯名字
-                        source: "netease",     // 音樂來源
+                        source: "kuwo",     // 音樂來源
                         url_id: jsonData.playlist.tracks[i].id,  // 連結ID
                         pic_id: null,  // 封面ID
                         lyric_id: jsonData.playlist.tracks[i].id,  // 歌詞ID
                         pic: jsonData.playlist.tracks[i].al.picUrl + "?param=300y300",    // 專輯圖片
-                        url: "https://link.hhtjim.com/163/" + jsonData.playlist.tracks[i].id + ".mp3"   // mp3連結
+                        url: "https://link.hhtjim.com/kw/" + jsonData.playlist.tracks[i].id + ".mp3"   // mp3連結
                     };
                 }
             }
@@ -346,11 +346,10 @@ function localneteaseLyric(music, callback) {
         });
 }
 
-
 function kuwoLyric(music, callback) {
 
     lyricTip('歌詞載入中...');
-    fetch(`https://api2.52jan.com/kuwo/lrc/${music.url_id}.lrc`)
+    fetch(`https://api2.52jan.com/kuwo/lrc/${music.id}.lrc`)
         .then(response => {
             if (response.ok) return response.text()
             throw new Error('Network response was not ok.')
@@ -364,11 +363,35 @@ function kuwoLyric(music, callback) {
                     lrc = lyricData[i];
                     lrctxt += "["+ lrc +"\n";
                 }
-                callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
+                callback(Traditionalized(lrctxt), music.id);    // 回呼函數
             } else {
                 callback('', music.id);    // 回呼函數
             }
         });
+
+
+// function kuwoLyric(music, callback) {
+
+    // lyricTip('歌詞載入中...');
+    // fetch(`https://api2.52jan.com/kuwo/lrc/${music.url_id}.lrc`)
+        // .then(response => {
+            // if (response.ok) return response.text()
+            // throw new Error('Network response was not ok.')
+        // })
+        // .then(data => {
+            // if (data) {
+                // // var lrctxt = data.replace('[','\n[');
+                // var lyricData = data.split('[');
+                // var lrctxt = '';
+                // for (var i = 0; i < lyricData.length; i++){
+                    // lrc = lyricData[i];
+                    // lrctxt += "["+ lrc +"\n";
+                // }
+                // callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
+            // } else {
+                // callback('', music.id);    // 回呼函數
+            // }
+        // });
 
 
 
@@ -480,7 +503,6 @@ function ajaxUserList(uid) {
     return true;
 }
 
-
 function ajaxAlbumList(lid, callback) {
 
     if (!lid) return false;
@@ -533,7 +555,7 @@ function ajaxAlbumList(lid, callback) {
                     name: x[i]["name"],  // 音樂名字
                     artist: artist, // 藝術家名字
                     album: x[i]["album"]["name"],    // 專輯名字
-                    source: "netease",     // 音樂來源
+                    source: "kuwo",     // 音樂來源
                     url_id: x[i]["id"],  // 連結ID
                     pic_id: null,  // 封面ID
                     lyric_id: x[i]["id"],  // 歌詞ID
@@ -622,7 +644,7 @@ function ajaxArtistList(lid, callback) {
                     name: x[i]["name"],  // 音樂名字
                     artist: artist, // 藝術家名字
                     album: x[i]["album"]["name"],    // 專輯名字
-                    source: "netease",     // 音樂來源
+                    source: "kuwo",     // 音樂來源
                     url_id: x[i]["id"],  // 連結ID
                     pic_id: null,  // 封面ID
                     lyric_id: x[i]["id"],  // 歌詞ID
@@ -688,7 +710,7 @@ function dbMusicList(album_id, callback) {
 
     if (!album_id) return false;
 
-    var sqlstring = "select * from vMusic where album_id = " + album_id;
+    var sqlstring = "select * from vMusic where album_id = " + album_id + " order by music_id";
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';
@@ -710,21 +732,30 @@ function dbMusicList(album_id, callback) {
         };
 
         for (var i = 0; i < data.length; i++) {
-            var kuwo_id = data[i][10];
-            if (kuwo_id == null) { kuwo_id = 0 }
+            var kuwo_id = data[i][4];
+            if (kuwo_id == null) {
+                kuwo_id = 0;
+                source = "netease";
+                var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"
+            } else {
+                source = "kuwo";
+                var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+				// var url = `https://api2.52jan.com/kuwo/${kuwo_id}`
+            }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
                 // artist: data[i][12], // 藝術家名字
                 // album: data[i][3],    // 專輯名字
-                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
-                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字                
-                source: "netease",     // 音樂來源
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][11]+'</a>', // 藝術家名字
+                album: '<a href="index.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字                
+                source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
                 lyric_id: data[i][4],  // 歌詞ID
                 pic: data[i][7] + "?param=300y300",    // 專輯圖片
-                url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3連結
+                // url: "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3連結
+				url: url
             };
         }
 
@@ -755,7 +786,7 @@ function CookieMusicList(callback) {
     ids = '0' + ids;
     kwids = '0' + kwids;
 
-    var sqlstring = "select * from vMusic where music_id in (" + ids + ") or kuwo_music_id in (" + kwids + ")";
+    var sqlstring = "select * from vMusic where music_id in (" + ids + ")";
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
     xhr.responseType = 'arraybuffer';
@@ -777,7 +808,7 @@ function CookieMusicList(callback) {
         };
 
         for (var i = 0; i < data.length; i++) {
-            var kuwo_id = data[i][10];
+            var kuwo_id = data[i][4];
             if (kuwo_id == null) {
                 kuwo_id = 0;
                 source = "netease";
@@ -785,14 +816,15 @@ function CookieMusicList(callback) {
             } else {
                 source = "kuwo";
                 var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+				// var url = `https://api2.52jan.com/kuwo/${kuwo_id}`
             }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
                 // artist: data[i][12], // 藝術家名字
                 // album: data[i][3],    // 專輯名字
-                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
-                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字                
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][11]+'</a>', // 藝術家名字
+                album: '<a href="index.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字                
                 source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
@@ -820,7 +852,8 @@ function CookieMusicList(callback) {
 function RandomMusicList(callback) {
 
     // var sqlstring = "select * from vMusic where music_id in (select music_id from musics where url = 1 order by random() limit 100)"
-    var sqlstring = "select * from vMusic where url=1 and kuwo_music_id is not NULL order by random() limit 100"
+    // var sqlstring = "select * from vMusic where url=1 and kuwo_music_id is not NULL order by random() limit 100"
+    var sqlstring = "select * from vMusic where music_name not like '%伴奏%' and music_name not like '%試聽%' order by random() limit 100"
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
@@ -843,22 +876,23 @@ function RandomMusicList(callback) {
         };
 
         for (var i = 0; i < data.length; i++) {
-            var kuwo_id = data[i][10];
+            var kuwo_id = data[i][4];
             if (kuwo_id == null) {
                 kuwo_id = 0;
                 source = "netease";
                 var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3";
             } else {
                 source = "kuwo";
-                var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3";
+                var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+				// var url = `https://api2.52jan.com/kuwo/${kuwo_id}`
             }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
                 // artist: data[i][12], // 藝術家名字
                 // album: data[i][3],    // 專輯名字
-                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
-                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][11]+'</a>', // 藝術家名字
+                album: '<a href="index.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
                 source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
@@ -885,7 +919,7 @@ function RandomMusicList(callback) {
 // 最近新歌200首
 function RecentMusicList(callback) {
 
-    var sqlstring = "select * from vMusic where (url=1 and kuwo_music_id is not NULL) and music_name not like '%伴奏%' and music_name not like '%試聽%' order by release_date desc limit 200";
+    var sqlstring = "select * from vMusic where music_name not like '%伴奏%' and music_name not like '%試聽%' order by release_date desc limit 200";
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
@@ -908,7 +942,7 @@ function RecentMusicList(callback) {
         };
 
         for (var i = 0; i < data.length; i++) {
-            var kuwo_id = data[i][10];
+            var kuwo_id = data[i][4];
             if (kuwo_id == null) {
                 kuwo_id = 0;
                 source = "netease";
@@ -916,14 +950,15 @@ function RecentMusicList(callback) {
             } else {
                 source = "kuwo";
                 var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+				// var url = `https://api2.52jan.com/kuwo/${kuwo_id}`
             }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
                 // artist: data[i][12], // 藝術家名字
                 // album: data[i][3],    // 專輯名字
-                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
-                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][11]+'</a>', // 藝術家名字
+                album: '<a href="index.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
 
                 source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
@@ -977,7 +1012,7 @@ function SearchMusicList(keyword, callback) {
         };
 
         for (var i = 0; i < data.length; i++) {
-            var kuwo_id = data[i][10];
+            var kuwo_id = data[i][4];
             if (kuwo_id == null) {
                 kuwo_id = 0;
                 source = "netease";
@@ -985,14 +1020,15 @@ function SearchMusicList(keyword, callback) {
             } else {
                 source = "kuwo";
                 var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+				// var url = `https://api2.52jan.com/kuwo/${kuwo_id}`
             }
             tempList.item[i] = {
                 id: data[i][4],  // 音樂ID
                 name: data[i][5],  // 音樂名字
                 // artist: data[i][12], // 藝術家名字
                 // album: data[i][3],    // 專輯名字
-                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
-                album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
+                artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][11]+'</a>', // 藝術家名字
+                album: '<a href="index.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
                 source: source,     // 音樂來源
                 url_id: kuwo_id,  // 連結ID
                 pic_id: data[i][7],  // 封面ID
@@ -1069,22 +1105,23 @@ function myAlbumsMusicList(callback) {
                     item: []
                 };
             } else {
-                var kuwo_id = data[i][10];
+                var kuwo_id = data[i][4];
                 if (kuwo_id == null) {
                     kuwo_id = 0;
                     source = "netease";
                     var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"
                 } else {
                     source = "kuwo";
-                    var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+					var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+					// var url = `https://api2.52jan.com/kuwo/${kuwo_id}`
                 }
                 tempList.item[item_no] = {
                     id: data[i][4],  // 音樂ID
                     name: data[i][5],  // 音樂名字
                     // artist: data[i][12], // 藝術家名字
                     // album: data[i][3],    // 專輯名字
-                    artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
-                    album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
+                    artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][11]+'</a>', // 藝術家名字
+                    album: '<a href="index.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
                     source: source,     // 音樂來源
                     url_id: kuwo_id,  // 連結ID
                     pic_id: data[i][7],  // 封面ID
@@ -1116,7 +1153,7 @@ function myAlbumsMusicList(callback) {
 // 滾石香港黃金十年
 function RockGolden10MusicList(callback) {
 
-    var sqlstring = "select * from vMusic where album_name like '%滾石香港黃金十年%' order by album_id,seq";
+    var sqlstring = "select * from vMusic where album_name like '%滾石香港黃金十年%' order by album_id,music_id";
     // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);
@@ -1147,22 +1184,23 @@ function RockGolden10MusicList(callback) {
                     item: []
                 };
             } else {
-                var kuwo_id = data[i][10];
+                var kuwo_id = data[i][4];
                 if (kuwo_id == null) {
                     kuwo_id = 0;
                     source = "netease";
                     var url = "https://link.hhtjim.com/163/" + data[i][4] + ".mp3"   // mp3連結
                 } else {
                     source = "kuwo";
-                    var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"   // mp3連結
+					var url = "https://link.hhtjim.com/kw/" + kuwo_id + ".mp3"
+					// var url = `https://api2.52jan.com/kuwo/${kuwo_id}`
                 }
                 tempList.item[item_no] = {
                     id: data[i][4],  // 音樂ID
                     name: data[i][5],  // 音樂名字
                     // artist: data[i][12], // 藝術家名字
                     // album: data[i][3],    // 專輯名字
-                    artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][12]+'</a>', // 藝術家名字
-                    album: '<a href="home.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
+                    artist: '<a href="artist.html?artist_id='+data[i][0]+'">'+data[i][11]+'</a>', // 藝術家名字
+                    album: '<a href="index.html?album_id='+data[i][2]+'">'+data[i][3]+'</a>',    // 專輯名字
                     source: source,     // 音樂來源
                     url_id: kuwo_id,  // 連結ID
                     pic_id: data[i][7],  // 封面ID

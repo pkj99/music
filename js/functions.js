@@ -377,8 +377,11 @@ function musicInfo(list, index) {
     var tempStr = '<span class="info-title">歌名：</span>' + music.name +
         '<br><span class="info-title">歌手：</span>' + music.artist +
         '<br><span class="info-title">專輯：</span>' + music.album +
-        '<br><span class="info-title">播放：</span><a target="_blank" href="player.html?nid=' + music.id + '">Netease</a> | ' +
-        '<a target="_blank" href="player.html?id=' + music.url_id + '">Kuwo</a>';
+        '<br><span class="info-title">播放：</span>' +
+        '<a target="_blank" href="player.html?id=' + music.id + '">Kuwo</a>';
+
+	//      '<br><span class="info-title">播放：</span><a target="_blank" href="player.html?nid=' + music.id + '">Netease</a> | ' +
+	//		'<a target="_blank" href="player.html?id=' + music.url_id + '">Kuwo</a>';
 
     // if(list == rem.playlist && index == rem.playid) {   // 当前正在播放这首歌，那么还可以顺便获取一下时长。。
     //     tempStr += '<br><span class="info-title">時長：</span>' + formatTime(rem.audio[0].duration);

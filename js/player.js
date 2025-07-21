@@ -353,9 +353,9 @@ function initAudio() {
     rem.audio[0].addEventListener('error', audioErr);   // 播放機錯誤處理
 }
 
-function KuwoError() {
-    layer.msg('受限於CORS Policy，嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo">啟用</a> 暫時釋放功能');
-}
+// function KuwoError() {
+//     layer.msg('受限於CORS Policy，嘗試 <a style="background-color:green;color:white" href="https://cors-anywhere.herokuapp.com/corsdemo">啟用</a> 暫時釋放功能');
+// }
 
 
 function KuwoUrl(id, callback) {

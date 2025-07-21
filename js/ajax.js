@@ -286,30 +286,29 @@ function ajaxPlayList(lid, id, callback) {
 // 參數：音樂ID，回呼函數
 function ajaxLyric(music, callback) {
     lyricTip('歌詞載入中...');
-    // console.log('ajaxLyric music.lyric_id:',music.lyric_id);
-
     if (!music.lyric_id || music.lyric_id == '0') callback('', music.lyric_id);  // 沒有歌詞ID，直接返回
+    kuwoLyric(music, callback);
 
     // var url = encodeURIComponent('https://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1&id='+music.lyric_id);
     // var url = encodeURIComponent('https://lzw.me/x/iapi/163music/api.php?type=lyric&id='+music.lyric_id);
     // fetch(`https://lzw.me/x/iapi/163music/api.php?type=lyric&id=${music.lyric_id}`)
 
-    fetch(`https://api.cenguigui.cn/api/netease/music_v1.php?type=json&level=standard&id=${music.lyric_id}`)
-        .then(response => {
-            if (response.ok) return response.json()
-            throw new Error('Network response was not ok.')
-        })
-        .then(data => {
-            var jsonData = data;
-            // var jsonData = JSON.parse(data.contents);
-            // if (jsonData.lrc) {
-            //     callback(Traditionalized(jsonData.lrc.lyric), music.lyric_id);    // 回呼函數
-            if (jsonData.data.lyric) {
-                    callback(Traditionalized(jsonData.data.lyric), music.lyric_id);    // 回呼函數
-            } else {
-                callback('', music.lyric_id);    // 回呼函數
-            }
-        });
+    // fetch(`https://api.cenguigui.cn/api/netease/music_v1.php?type=json&level=standard&id=${music.lyric_id}`)
+    //     .then(response => {
+    //         if (response.ok) return response.json()
+    //         throw new Error('Network response was not ok.')
+    //     })
+    //     .then(data => {
+    //         var jsonData = data;
+    //         // var jsonData = JSON.parse(data.contents);
+    //         // if (jsonData.lrc) {
+    //         //     callback(Traditionalized(jsonData.lrc.lyric), music.lyric_id);    // 回呼函數
+    //         if (jsonData.data.lyric) {
+    //                 callback(Traditionalized(jsonData.data.lyric), music.lyric_id);    // 回呼函數
+    //         } else {
+    //             callback('', music.lyric_id);    // 回呼函數
+    //         }
+    //     });
 
 }
 
@@ -349,7 +348,7 @@ function localneteaseLyric(music, callback) {
 function kuwoLyric(music, callback) {
 
     lyricTip('歌詞載入中...');
-    fetch(`https://api2.52jan.com/kuwo/lrc/${music.id}.lrc`)
+    fetch(`https://api2.52jan.com/kuwo/lrc/${music.url_id}.lrc`)
         .then(response => {
             if (response.ok) return response.text()
             throw new Error('Network response was not ok.')
@@ -363,79 +362,12 @@ function kuwoLyric(music, callback) {
                     lrc = lyricData[i];
                     lrctxt += "["+ lrc +"\n";
                 }
-                callback(Traditionalized(lrctxt), music.id);    // 回呼函數
+                callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
             } else {
                 callback('', music.id);    // 回呼函數
             }
         });
 
-
-// function kuwoLyric(music, callback) {
-
-    // lyricTip('歌詞載入中...');
-    // fetch(`https://api2.52jan.com/kuwo/lrc/${music.url_id}.lrc`)
-        // .then(response => {
-            // if (response.ok) return response.text()
-            // throw new Error('Network response was not ok.')
-        // })
-        // .then(data => {
-            // if (data) {
-                // // var lrctxt = data.replace('[','\n[');
-                // var lyricData = data.split('[');
-                // var lrctxt = '';
-                // for (var i = 0; i < lyricData.length; i++){
-                    // lrc = lyricData[i];
-                    // lrctxt += "["+ lrc +"\n";
-                // }
-                // callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
-            // } else {
-                // callback('', music.id);    // 回呼函數
-            // }
-        // });
-
-
-
-
-    // lyricTip('歌詞載入中...');
-    
-    // // var url = encodeURIComponent(`https://www.kuwo.cn/openapi/v1/www/lyric/getlyric?musicId=${music.id}httpsStatus=1&plat=web_www&from=lrc`);
-    // var url = encodeURIComponent(`http://m.kuwo.cn/newh5/singles/songinfoandlrc?musicId=${music.id}`);
-
-    // // fetch(`https://api.cenguigui.cn/api/kuwo/?rid=${music.id}&type=json&lrc=true`)
-    // // fetch(`https://api.allorigins.win/raw?url=${url}`)
-    // // fetch(url)
-    // fetch(`http://m.kuwo.cn/newh5/singles/songinfoandlrc?musicId=${music.id}`)
-    //     .then(response => {
-    //         if (response.ok) return response.json()
-    //         throw new Error('Network response was not ok.')
-    //     })
-    //     .then(data => {
-    //         var jsonData = data;
-    //         if (jsonData.data) {
-    //             var lrctxt = '';
-    //             var t = 0;
-    //             var lrcJson = jsonData.data.lrclist
-    //             for (var i = 0; i < lrcJson.length; i++){
-    //                 lrc = lrcJson[i].lineLyric;
-    //                 t = parseFloat(lrcJson[i].time);
-    //                 var m = t / 60;
-    //                 var s = t % 60;
-    //                 lrctxt += "["+ m.toFixed(0).toString() +":"+ s.toFixed(2).toString() +"]" + lrc +"\n"
-    //                 // t += parseFloat(lrcJson[i].time);
-    //             }
-    //             // callback(lrctxt, music.id);    // 回呼函數
-    //             callback(Traditionalized(lrctxt), music.id);    // 回呼函數
-    //         } else {
-    //             callback('', music.id);    // 回呼函數
-    //         }
-    //         // var jsonData = JSON.parse(data.contents);
-    //         // var jsonData = data;
-    //         // if (jsonData.data) {
-    //         //     callback(Traditionalized(jsonData.data.lrc), music.id);    // 回呼函數
-    //         // } else {
-    //         //     callback('', music.id);    // 回呼函數
-    //         // }
-    //     });
 }
 
 
@@ -1074,7 +1006,7 @@ function myAlbumsMusicList(callback) {
     ids = '0' + ids;
     // ids = '88730427,159400159,159967997';
 
-    var sqlstring = "select * from vMusic where album_id in (" + ids + ") order by album_id,seq";
+    var sqlstring = "select * from vMusic where album_id in (" + ids + ") order by album_id";
     // console.log(sqlstring);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', db_url, true);

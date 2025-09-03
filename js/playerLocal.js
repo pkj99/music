@@ -18,7 +18,7 @@ var mkPlayer = {
 // 存儲全域變數
 var rem = [];
 var myMusic = [];
-var db_url = 'https://pkj99.github.io/music/db/music.db';
+var db_url = 'db/music.db';
 
 if (mkPlayer.debug == false) {
     var loginStatus = sessionStorage.getItem('loginStatus');

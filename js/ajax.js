@@ -378,7 +378,7 @@ function kuwoLyric(music, callback) {
         })
         .then(jsonData => {
             if (jsonData.data) {
-                console.log(jsonData.data);
+                // console.log(jsonData.data);
                 var lrctxt = jsonData.data.lrc;
                 if (callback) callback(Traditionalized(lrctxt), music.url_id);
             } else {

@@ -345,31 +345,47 @@ function localneteaseLyric(music, callback) {
         });
 }
 
-function kuwoLyric(music, callback) {
+// function kuwoLyricOld(music, callback) {
+//     lyricTip('歌詞載入中...');
+//     fetch(`https://api2.52jan.com/kuwo/lrc/${music.url_id}.lrc`)
+//         .then(response => {
+//             if (response.ok) return response.json()
+//             throw new Error('Network response was not ok.')
+//         })
+//         .then(data => {
+//             if (data) {
+//                 // var lrctxt = data.replace('[','\n[');
+//                 var lyricData = data.split('[');
+//                 var lrctxt = '';
+//                 for (var i = 0; i < lyricData.length; i++){
+//                     lrc = lyricData[i];
+//                     lrctxt += "["+ lrc +"\n";
+//                 }
+//                 callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
+//             } else {
+//                 callback('', music.id);    // 回呼函數
+//             }
+//         });
+// }
 
-    lyricTip('歌詞載入中...');
-    fetch(`https://api2.52jan.com/kuwo/lrc/${music.url_id}.lrc`)
+
+function kuwoLyric(music, callback) {
+    lyricTip('歌詞載入中...');    
+    fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${music.url_id}`)
         .then(response => {
-            if (response.ok) return response.text()
+            if (response.ok) return response.json()
             throw new Error('Network response was not ok.')
         })
-        .then(data => {
-            if (data) {
-                // var lrctxt = data.replace('[','\n[');
-                var lyricData = data.split('[');
-                var lrctxt = '';
-                for (var i = 0; i < lyricData.length; i++){
-                    lrc = lyricData[i];
-                    lrctxt += "["+ lrc +"\n";
-                }
-                callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
+        .then(jsonData => {
+            if (jsonData.data) {
+                console.log(jsonData.data);
+                var lrctxt = jsonData.data.lrc;
+                if (callback) callback(Traditionalized(lrctxt), music.url_id);
             } else {
-                callback('', music.id);    // 回呼函數
+                if (callback) callback('', music.id);
             }
-        });
-
+        });	
 }
-
 
 
 // ajax載入用戶的播放清單

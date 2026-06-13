@@ -359,8 +359,12 @@ function initAudio() {
 
 
 function KuwoUrl(id, callback) {
+    let env = ''
+    let version = 'v1.2.0'
+
     fetch(`https://lxmusicapi.onrender.com/url/kw/${id}/320k`, { method: 'GET', headers: {
       'Content-Type': 'application/json',
+      'User-Agent': `${env ? `lx-music-${env}/${version}` : `lx-usic-request/${version}`}`,
       'X-Request-Key': 'share-v3',
     } })
         .then(response => {

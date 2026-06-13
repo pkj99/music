@@ -358,36 +358,15 @@ function initAudio() {
 // }
 
 
-function KuwoUrl(id, callback) {
-    let env = ''
-    let version = 'v1.2.0'
-
-    fetch(`https://lxmusicapi.onrender.com/url/kw/${id}/320k`, { method: 'GET', headers: {
-      'Content-Type': 'application/json',
-      'User-Agent': `${env ? `lx-music-${env}/${version}` : `lx-usic-request/${version}`}`,
-      'X-Request-Key': 'share-v3',
-    } })
-        .then(response => {
-            if (response.ok) return response.json()
-            throw new Error('Network response was not ok.')
-        })
-        .then(jsonData => {
-            if (jsonData.data) {
-                var mp3Url = jsonData.data.url;
-                if (mp3Url === null) {
-                    console.log('mp3Url not found !!!')
-                    if (callback) callback('');
-                }            
-                if (callback) callback(mp3Url);
-            } else {
-                if (callback) callback('');
-            }
-        });	
-
-        
-
 // function KuwoUrl(id, callback) {
-//     fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${id}`)
+//     let env = ''
+//     let version = 'v1.2.0'
+
+//     fetch(`https://lxmusicapi.onrender.com/url/kw/${id}/320k`, { method: 'GET', headers: {
+//       'Content-Type': 'application/json',
+//       'User-Agent': `${env ? `lx-music-${env}/${version}` : `lx-usic-request/${version}`}`,
+//       'X-Request-Key': 'share-v3',
+//     } })
 //         .then(response => {
 //             if (response.ok) return response.json()
 //             throw new Error('Network response was not ok.')
@@ -404,6 +383,27 @@ function KuwoUrl(id, callback) {
 //                 if (callback) callback('');
 //             }
 //         });	
+
+        
+
+function KuwoUrl(id, callback) {
+    fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${id}`)
+        .then(response => {
+            if (response.ok) return response.json()
+            throw new Error('Network response was not ok.')
+        })
+        .then(jsonData => {
+            if (jsonData.data) {
+                var mp3Url = jsonData.data.url;
+                if (mp3Url === null) {
+                    console.log('mp3Url not found !!!')
+                    if (callback) callback('');
+                }            
+                if (callback) callback(mp3Url);
+            } else {
+                if (callback) callback('');
+            }
+        });	
 
 	
     // var mp3Url = `https://api2.52jan.com/kuwo/${id}`;

@@ -362,11 +362,35 @@ function initAudio() {
 //     let env = ''
 //     let version = 'v1.2.0'
 
-//     fetch(`https://lxmusicapi.onrender.com/url/kw/${id}/320k`, { method: 'GET', headers: {
-//       'Content-Type': 'application/json',
-//       'User-Agent': `${env ? `lx-music-${env}/${version}` : `lx-usic-request/${version}`}`,
-//       'X-Request-Key': 'share-v3',
-//     } })
+//     var url = `https://lxmusicapi.onrender.com/url/kw/${id}/320k`;
+//     var HEADERS = {
+//             'Content-Type': 'application/json',
+//             'User-Agent': `${env ? `lx-music-${env}/${version}` : `lx-usic-request/${version}`}`,
+//             'X-Request-Key': 'share-v3',
+//             }
+
+//     fetch(url, { method: 'GET', headers: HEADERS })
+//         .then(response => {
+//             if (response.ok) return response.json()
+//             throw new Error('Network response was not ok.')
+//         })
+//         .then(jsonData => {
+//             if (jsonData.data) {
+//                 var mp3Url = jsonData.data.url;
+//                 if (mp3Url === null) {
+//                     console.log('mp3Url not found !!!')
+//                     if (callback) callback('');
+//                 }            
+//                 if (callback) callback(mp3Url);
+//             } else {
+//                 if (callback) callback('');
+//             }
+//         });	
+// }
+        
+
+function KuwoUrl(id, callback) {
+//     fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${id}`)
 //         .then(response => {
 //             if (response.ok) return response.json()
 //             throw new Error('Network response was not ok.')
@@ -384,48 +408,27 @@ function initAudio() {
 //             }
 //         });	
 
-        
-
-function KuwoUrl(id, callback) {
-    fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${id}`)
-        .then(response => {
-            if (response.ok) return response.json()
-            throw new Error('Network response was not ok.')
-        })
-        .then(jsonData => {
-            if (jsonData.data) {
-                var mp3Url = jsonData.data.url;
-                if (mp3Url === null) {
-                    console.log('mp3Url not found !!!')
-                    if (callback) callback('');
-                }            
-                if (callback) callback(mp3Url);
-            } else {
-                if (callback) callback('');
-            }
-        });	
-
 	
-    // var mp3Url = `https://api2.52jan.com/kuwo/${id}`;
-    // if (callback) callback(mp3Url);
+    var mp3Url = `https://api2.52jan.com/kuwo/${id}`;
+    if (callback) callback(mp3Url);
 
-    // var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
+    var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
     // var encodeURI = encodeURIComponent(url);
-    // // fetch(`https://proxy.cors.sh/${url}`)
-    // // fetch(`https://corsproxy.io/?url=${encodeURI}`)
-    // // fetch(`https://api.allorigins.win/raw?url=${encodeURI}`)
-    // fetch(url)
-    // .then(response => {
-        // if (response.ok) return response.text()
-        // throw new Error('Network response was not ok.')
-    // })
-    // .then(data => {
-        // var j = JSON.parse(data);
-        // if (j.code == 200) {
-            // mp3Url = j.data.url.split("?")[0];
-            // if (callback) callback(mp3Url);
-        // }
-    // });
+    // fetch(`https://proxy.cors.sh/${url}`)
+    // fetch(`https://corsproxy.io/?url=${encodeURI}`)
+    // fetch(`https://api.allorigins.win/raw?url=${encodeURI}`)
+    fetch(url)
+    .then(response => {
+        if (response.ok) return response.text()
+        throw new Error('Network response was not ok.')
+    })
+    .then(data => {
+        var j = JSON.parse(data);
+        if (j.code == 200) {
+            mp3Url = j.data.url.split("?")[0];
+            if (callback) callback(mp3Url);
+        }
+    });
 }
 
 function NeteaseUrl(id, callback) {

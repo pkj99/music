@@ -46,15 +46,15 @@
 
     <script>
         function KuwoUrl(id, callback) {
-		    <!-- var mp3Url = `https://api2.52jan.com/kuwo/${id}`; -->
-		    var mp3Url = `http://192.168.195.100:5052/kuwo/${id}.mp3`;
-			console.log('mp3Url:',mp3Url);
-			// location.href = mp3Url;
-			var audio = document.getElementById('audio');
-			var source = document.getElementById('mp3source');
-			source.src = mp3Url;
-			audio.load(); //call this to just preload the audio without playing   
-			if (callback) callback(mp3Url);
+		    // var mp3Url = `https://api2.52jan.com/kuwo/${id}`;
+		    // var mp3Url = `http://192.168.195.100:5052/kuwo/${id}.mp3`;
+			// console.log('mp3Url:',mp3Url);
+			// // location.href = mp3Url;
+			// var audio = document.getElementById('audio');
+			// var source = document.getElementById('mp3source');
+			// source.src = mp3Url;
+			// audio.load(); //call this to just preload the audio without playing   
+			// if (callback) callback(mp3Url);
 			
 			
             // var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
@@ -64,25 +64,32 @@
             // fetch(`https://api.cenguigui.cn/api/kuwo/?rid=${id}&type=json&lrc=true`)            
             // fetch(`https://corsproxy.io/?url=${encodeURI}`)
             //fetch(`https://api2.52jan.com/kuwo/${id}`)
-            //.then(response => {
-            //    if (response.ok) return response.text()
-            //    throw new Error('Network response was not ok.')
-            //})
-            //.then(data => {
-            //    var j = JSON.parse(data);
-                // if (j.code == 200) {
-                //     var mp3Url = j.data.url.split("?")[0].replace("http://","https://");
-            //    if (j.data) {
-            //        var mp3Url = j.data.url.split("?")[0];
-            //       console.log('mp3Url:',mp3Url);
-					// location.href = mp3Url;
-            //         var audio = document.getElementById('audio');
-            //        var source = document.getElementById('mp3source');
-            //        source.src = mp3Url;
-            //        audio.load(); //call this to just preload the audio without playing                    
-            //        if (callback) callback(mp3Url);
-            //    }
-            //});
+
+            fetch(`https://kw-api.cenguigui.cn/?type=song&level=standard&format=json&id=${id}`)
+                .then(response => {
+                    if (response.ok) return response.json()
+                    throw new Error('Network response was not ok.')
+                })
+                .then(jsonData => {
+                    if (jsonData.data) {
+                        var mp3Url = jsonData.data.url;
+                        if (mp3Url === null) {
+                            console.log('mp3Url not found !!!')
+                            if (callback) callback('');
+                        }
+                        console.log('mp3Url:',mp3Url);
+                        location.href = mp3Url;
+                        var audio = document.getElementById('audio');
+                        var source = document.getElementById('mp3source');
+                        source.src = mp3Url;
+                        audio.load(); //call this to just preload the audio without playing                           
+                        
+                        if (callback) callback(mp3Url);
+                    } else {
+                        if (callback) callback('');
+                    }
+            });	
+
         }
 
         function NeteaseUrl(id, callback) {

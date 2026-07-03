@@ -359,7 +359,7 @@ function initAudio() {
 
 function KuwoUrl(id, callback) {
 	
-    var mp3Url = `http://192.168.195.100:5052/kuwo/${id}`;
+    var mp3Url = `http://192.168.195.100:5052/kuwo/${id}.mp3`;
     if (callback) callback(mp3Url);
 	
 	

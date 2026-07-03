@@ -359,31 +359,33 @@ function initAudio() {
 
 function KuwoUrl(id, callback) {
 	
-    var mp3Url = `http://192.168.195.100:7878/kuwo/${id}.mp3`;
-    if (callback) callback(mp3Url);
+    // fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${id}`)
+    fetch(`https://kw-api.cenguigui.cn/?type=song&level=standard&format=json&id=${id}`)
+        .then(response => {
+            if (response.ok) return response.json()
+            throw new Error('Network response was not ok.')
+        })
+        .then(jsonData => {
+            if (jsonData.data) {
+                var mp3Url = jsonData.data.url;
+                if (mp3Url === null) {
+                    console.log('mp3Url not found !!!')
+                    if (callback) callback('');
+                }            
+                if (callback) callback(mp3Url);
+            } else {
+                if (callback) callback('');
+            }
+        });	
+
+        
+    // var mp3Url = `http://192.168.195.100:7878/kuwo/${id}.mp3`;
+    // if (callback) callback(mp3Url);
 
     // var mp3Url = `http://192.168.195.100:5052/kuwo/${id}.mp3`;
     // if (callback) callback(mp3Url);
 
-	
-    // fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${id}`)
-    //     .then(response => {
-    //         if (response.ok) return response.json()
-    //         throw new Error('Network response was not ok.')
-    //     })
-    //     .then(jsonData => {
-    //         if (jsonData.data) {
-    //             var mp3Url = jsonData.data.url;
-    //             if (mp3Url === null) {
-    //                 console.log('mp3Url not found !!!')
-    //                 if (callback) callback('');
-    //             }            
-    //             if (callback) callback(mp3Url);
-    //         } else {
-    //             if (callback) callback('');
-    //         }
-    //     });	
-	
+
     // var mp3Url = `https://api2.52jan.com/kuwo/${id}`;
     // if (callback) callback(mp3Url);
 
@@ -407,7 +409,8 @@ function KuwoUrl(id, callback) {
 }
 
 function NeteaseUrl(id, callback) {
-    fetch(`https://api.cenguigui.cn/api/netease/music_v1.php?type=json&level=standard&id=${id}`)
+    // fetch(`https://api.cenguigui.cn/api/netease/music_v1.php?type=json&level=standard&id=${id}`)
+    fetch(`https://api.qijieya.cn/meting/?type=song&id=${id}`)
         .then(response => {
             if (response.ok) return response.json()
             throw new Error('Network response was not ok.')

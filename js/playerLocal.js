@@ -355,7 +355,8 @@ function KuwoError() {
 }
 
 function KuwoUrl(id, callback) {
-    var mp3Url = 'http://192.168.1.249:7878/kuwo/' + id + '.mp3';
+    var mp3Url = 'http://192.168.1.249:5052/kuwo/' + id + '.mp3';
+	console.log(mp3Url);
     if (callback) callback(mp3Url);
 
     // var url = `https://mobi.kuwo.cn/mobi.s?f=web&source=jiakong&type=convert_url_with_sign&br=320kmp3&rid=${id}`;
@@ -441,7 +442,7 @@ function play(music) {
         //     }
         // })
 
-        var mp3Url = `http://192.168.1.249:7878/kuwo/${music.url_id}.mp3`;
+        var mp3Url = `http://192.168.1.249:5052/kuwo/${music.url_id}.mp3`;
         try {
             rem.audio[0].pause();
             rem.audio.attr('src', mp3Url);

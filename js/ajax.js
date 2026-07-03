@@ -370,21 +370,37 @@ function localneteaseLyric(music, callback) {
 
 
 function kuwoLyric(music, callback) {
-    lyricTip('歌詞載入中...');    
-    fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${music.url_id}`)
+
+    lyricTip('歌詞載入中...');
+    fetch(`http://192.168.195.100:7878/kuwo/lrc/${music.url_id}.lrc`)
         .then(response => {
-            if (response.ok) return response.json()
+            if (response.ok) return response.text()
             throw new Error('Network response was not ok.')
         })
-        .then(jsonData => {
-            if (jsonData.data) {
-                // console.log(jsonData.data);
-                var lrctxt = jsonData.data.lrc;
-                if (callback) callback(Traditionalized(lrctxt), music.url_id);
+        .then(data => {
+            if (data) {
+                callback(Traditionalized(data), music.url_id);    // 回呼函數
             } else {
-                if (callback) callback('', music.id);
+                callback('', music.id);    // 回呼函數
             }
-        });	
+        });
+
+
+    // lyricTip('歌詞載入中...');    
+    // fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${music.url_id}`)
+    //     .then(response => {
+    //         if (response.ok) return response.json()
+    //         throw new Error('Network response was not ok.')
+    //     })
+    //     .then(jsonData => {
+    //         if (jsonData.data) {
+    //             // console.log(jsonData.data);
+    //             var lrctxt = jsonData.data.lrc;
+    //             if (callback) callback(Traditionalized(lrctxt), music.url_id);
+    //         } else {
+    //             if (callback) callback('', music.id);
+    //         }
+    //     });	
 }
 
 

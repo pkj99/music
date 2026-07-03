@@ -359,28 +359,30 @@ function initAudio() {
 
 function KuwoUrl(id, callback) {
 	
-    var mp3Url = `http://192.168.195.100:5052/kuwo/${id}.mp3`;
+    var mp3Url = `http://192.168.195.100:7878/kuwo/${id}.mp3`;
     if (callback) callback(mp3Url);
+
+    // var mp3Url = `http://192.168.195.100:5052/kuwo/${id}.mp3`;
+    // if (callback) callback(mp3Url);
+
 	
-	
-	
-//     fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${id}`)
-//         .then(response => {
-//             if (response.ok) return response.json()
-//             throw new Error('Network response was not ok.')
-//         })
-//         .then(jsonData => {
-//             if (jsonData.data) {
-//                 var mp3Url = jsonData.data.url;
-//                 if (mp3Url === null) {
-//                     console.log('mp3Url not found !!!')
-//                     if (callback) callback('');
-//                 }            
-//                 if (callback) callback(mp3Url);
-//             } else {
-//                 if (callback) callback('');
-//             }
-//         });	
+    // fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${id}`)
+    //     .then(response => {
+    //         if (response.ok) return response.json()
+    //         throw new Error('Network response was not ok.')
+    //     })
+    //     .then(jsonData => {
+    //         if (jsonData.data) {
+    //             var mp3Url = jsonData.data.url;
+    //             if (mp3Url === null) {
+    //                 console.log('mp3Url not found !!!')
+    //                 if (callback) callback('');
+    //             }            
+    //             if (callback) callback(mp3Url);
+    //         } else {
+    //             if (callback) callback('');
+    //         }
+    //     });	
 	
     // var mp3Url = `https://api2.52jan.com/kuwo/${id}`;
     // if (callback) callback(mp3Url);
@@ -459,16 +461,27 @@ function play(music) {
     }
 
     if (music.url.includes('/kw/')) {
-        KuwoUrl(music.url_id,function(mp3Url){
-            try {
-                rem.audio[0].pause();
-                rem.audio.attr('src', mp3Url);
-                rem.audio[0].play();
-            } catch(e) {
-                audioErr(); // 調用錯誤處理函數
-                return;
-            }
-        })
+        // KuwoUrl(music.url_id,function(mp3Url){
+        //     try {
+        //         rem.audio[0].pause();
+        //         rem.audio.attr('src', mp3Url);
+        //         rem.audio[0].play();
+        //     } catch(e) {
+        //         audioErr(); // 調用錯誤處理函數
+        //         return;
+        //     }
+        // })
+
+        var mp3Url = `http://192.168.195.100:7878/kuwo/${music.url_id}.mp3`;
+        try {
+            rem.audio[0].pause();
+            rem.audio.attr('src', mp3Url);
+            rem.audio[0].play();
+        } catch (e) {
+            audioErr(); // 調用錯誤處理函數
+            return;
+        }
+
     } else if (music.url.includes('/163/')) {
         NeteaseUrl(music.id, function (mp3Url) {
             try {

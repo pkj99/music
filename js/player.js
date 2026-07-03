@@ -464,26 +464,17 @@ function play(music) {
     }
 
     if (music.url.includes('/kw/')) {
-        // KuwoUrl(music.url_id,function(mp3Url){
-        //     try {
-        //         rem.audio[0].pause();
-        //         rem.audio.attr('src', mp3Url);
-        //         rem.audio[0].play();
-        //     } catch(e) {
-        //         audioErr(); // 調用錯誤處理函數
-        //         return;
-        //     }
-        // })
+        KuwoUrl(music.url_id,function(mp3Url){
+            try {
+                rem.audio[0].pause();
+                rem.audio.attr('src', mp3Url);
+                rem.audio[0].play();
+            } catch(e) {
+                audioErr(); // 調用錯誤處理函數
+                return;
+            }
+        })
 
-        var mp3Url = `http://192.168.195.100:7878/kuwo/${music.url_id}.mp3`;
-        try {
-            rem.audio[0].pause();
-            rem.audio.attr('src', mp3Url);
-            rem.audio[0].play();
-        } catch (e) {
-            audioErr(); // 調用錯誤處理函數
-            return;
-        }
 
     } else if (music.url.includes('/163/')) {
         NeteaseUrl(music.id, function (mp3Url) {

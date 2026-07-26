@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSound OS - 高科技音樂播放系統 (獨立佇列版)</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#0a0d14',
+                            panel: 'rgba(16, 22, 34, 0.75)',
+                            primary: '#00f0ff',
+                            secondary: '#ff007f',
+                            accent: '#7000ff',
+                            border: 'rgba(0, 240, 255, 0.2)',
+                            dim: '#8a99ad'
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s infinite ease-in-out'
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(0, 240, 255, 0.4)' },
+                            '50%': { boxShadow: '0 0 25px rgba(255, 0, 127, 0.6)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome Icons & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+    <!-- SQL.js WebAssembly Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+
+    <!-- OpenCC-JS for Automatic Simplified to Traditional Chinese Lyric Conversion -->
+    <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/cn2t.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0d14;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Glassmorphism Panels & Cards */
+        .glass-panel {
+            background: rgba(16, 22, 34, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.18);
+        }
+
+        .glass-card {
+            background: rgba(22, 30, 46, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 240, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(0, 240, 255, 0.25);
+        }
+
+        .glass-card.active {
+            border-color: #00f0ff;
+            background: rgba(0, 240, 255, 0.12);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 13, 20, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 240, 255, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 240, 255, 0.7);
+        }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #00f0ff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -5px;
+            box-shadow: 0 0 10px #00f0ff;
+        }
+
+        /* KTV Lyrics Glow & Active Line Highlight */
+        .ktv-lyric-line {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.35;
+            transform: scale(0.95);
+        }
+        .ktv-lyric-line.active {
+            opacity: 1;
+            transform: scale(1.1);
+            color: #00f0ff;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.8), 0 0 30px rgba(255, 0, 127, 0.6);
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyber-primary selection:text-black pb-28">
+
+    <header class="sticky top-0 z-40 glass-panel border-b border-cyber-border px-4 lg:px-8 py-3.5 shadow-xl">
+        <div class="w-full flex flex-wrap items-center justify-between gap-4">
+            
+            <!-- Logo & Database Engine Status -->
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="document.getElementById('smartPlaylistsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg animate-pulse-glow">
+                        <span class="text-2xl">🎧</span>
+                    </div>
+                    <div>
+                        <h1 class="font-orbitron font-extrabold text-xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 tracking-wider">
+                            CYBERSOUND OS <span class="text-xs px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-mono hidden">v3.5 TURBO</span>
+                        </h1>
+                        <p class="text-xs text-slate-400 font-mono hidden xl:block">SQLite WebAssembly • Smart Music System</p>
+                    </div>
+                </div>
+
+                <!-- DB Status Badge -->
+                <div id="dbStatusBadge" class="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-mono text-cyan-300">
+                    <i class="fa-solid fa-database text-cyan-400"></i>
+                    <span>初始化中...</span>
+                </div>
+            </div>
+
+            <!-- Header Center: Embedded Search Bar -->
+            <div class="flex-1 max-w-xl mx-2 min-w-[260px]">
+                <div class="relative flex items-center bg-slate-900/90 border border-slate-700/80 focus-within:border-cyan-500 rounded-xl transition shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 text-cyan-400 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="handleSearchDebounce()" placeholder="搜尋歌手、專輯或歌曲標題..." 
+                           class="w-full bg-transparent pl-9 pr-24 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none">
+                    
+                    <div class="absolute right-1 flex items-center gap-1">
+                        <select id="searchTargetSelect" onchange="performSearch()" class="bg-slate-800/80 border-0 text-slate-300 text-xs rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-cyan-500 cursor-pointer">
+                            <option value="all">🔍 全部</option>
+                            <option value="music">🎵 歌曲</option>
+                            <option value="artist">🎤 歌手</option>
+                            <option value="album">💿 專輯</option>
+                        </select>
+                        <button onclick="resetSearch()" id="clearSearchBtn" class="hidden text-slate-400 hover:text-slate-200 px-1.5 py-1 text-xs" title="清空搜尋">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Action Controls -->
+            <!-- <div class="flex items-center space-x-3">
+                <label class="cursor-pointer px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-400 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <span class="hidden md:inline">載入 music.db</span>
+                    <input type="file" id="dbFileInput" accept=".db,.sqlite,.sqlite3" class="hidden" onchange="handleFileSelect(event)">
+                </label>
+
+                <button onclick="toggleQueueModal(true)" class="relative px-3.5 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/40 text-purple-300 text-xs font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-list-ul"></i>
+                    <span>播放歌單</span>
+                    <span id="headerQueueBadge" class="ml-1 bg-purple-500 text-black font-extrabold px-2 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+            </div> -->
+        </div>
+    </header>
+
+    <main class="w-full flex-grow p-4 md:p-6 space-y-6 max-w-[1920px] mx-auto">
+        
+        <!-- 智慧歌單卡片區塊 (Smart Playlists) -->
+        <section id="smartPlaylistsSection" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+            <button onclick="loadSmartPlaylist('top')" class="flex items-center justify-between p-4 glass-panel hover:border-amber-500/50 rounded-2xl transition duration-300 group text-left hover:bg-slate-800/50 shadow-lg">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl text-amber-300 group-hover:scale-110 transition duration-300 shrink-0">
+                        🏆
+                    </div>
+                    <div class="truncate">
+                        <div class="font-bold text-slate-100 text-base truncate">熱門排行榜</div>
+                        <div class="text-[11px] text-amber-300/70 truncate">發燒金曲 TOP 50</div>
+                    </div>
+                </div>
+            </button>
+
+            <button onclick="loadSmartPlaylist('newest')" class="flex items-center justify-between p-4 glass-panel hover:border-cyan-500/50 rounded-2xl transition duration-300 group text-left hover:bg-slate-800/50 shadow-lg">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-xl text-cyan-300 group-hover:scale-110 transition duration-300 shrink-0">
+                        🆕
+                    </div>
+                    <div class="truncate">
+                        <div class="font-bold text-slate-100 text-base truncate">最新發行</div>
+                        <div class="text-[11px] text-cyan-300/70 truncate">依專輯發行排序 50 首</div>
+                    </div>
+                </div>
+            </button>
+
+            <button onclick="loadSmartPlaylist('random')" class="flex items-center justify-between p-4 glass-panel hover:border-purple-500/50 rounded-2xl transition duration-300 group text-left hover:bg-slate-800/50 shadow-lg">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-xl text-purple-300 group-hover:scale-110 transition duration-300 shrink-0">
+                        🎲
+                    </div>
+                    <div class="truncate">
+                        <div class="font-bold text-slate-100 text-base truncate">隨機 50 首</div>
+                        <div class="text-[11px] text-purple-300/70 truncate">智慧隨機聽歌</div>
+                    </div>
+                </div>
+            </button>
+
+            <button onclick="loadSmartPlaylist('concert')" class="flex items-center justify-between p-4 glass-panel hover:border-rose-500/50 rounded-2xl transition duration-300 group text-left hover:bg-slate-800/50 shadow-lg">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-xl text-rose-300 group-hover:scale-110 transition duration-300 shrink-0">
+                        🎤
+                    </div>
+                    <div class="truncate">
+                        <div class="font-bold text-slate-100 text-base truncate">演唱會 Live</div>
+                        <div class="text-[11px] text-rose-300/70 truncate">現場臨場重現</div>
+                    </div>
+                </div>
+            </button>
+
+            <button onclick="loadSmartPlaylist('ost')" class="flex items-center justify-between p-4 glass-panel hover:border-emerald-500/50 rounded-2xl transition duration-300 group text-left hover:bg-slate-800/50 shadow-lg">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xl text-emerald-300 group-hover:scale-110 transition duration-300 shrink-0">
+                        🎬
+                    </div>
+                    <div class="truncate">
+                        <div class="font-bold text-slate-100 text-base truncate">影視原聲帶</div>
+                        <div class="text-[11px] text-emerald-300/70 truncate">電影經典配樂 OST</div>
+                    </div>
+                </div>
+            </button>
+
+            <button onclick="loadSmartPlaylist('best')" class="flex items-center justify-between p-4 glass-panel hover:border-pink-500/50 rounded-2xl transition duration-300 group text-left hover:bg-slate-800/50 shadow-lg">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-xl text-pink-300 group-hover:scale-110 transition duration-300 shrink-0">
+                        💎
+                    </div>
+                    <div class="truncate">
+                        <div class="font-bold text-slate-100 text-base truncate">經典精選輯</div>
+                        <div class="text-[11px] text-pink-300/70 truncate">歷年特別典藏</div>
+                    </div>
+                </div>
+            </button>
+        </section>
+
+        <!-- 3欄位響應式主要工作區 (歌手列表 / 專輯列表 / 歌曲列表) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- Column 1: Artists List (3 Cols) -->
+            <section id="artistsSection" class="lg:col-span-3 glass-panel p-4 rounded-2xl flex flex-col h-[650px] shadow-xl">
+                <div class="flex flex-col space-y-3 pb-3 border-b border-slate-800">
+                    <h2 class="text-xl font-extrabold text-cyan-400 flex items-center justify-between">
+                        <span><i class="fa-solid fa-user-astronaut mr-2"></i>歌手陣容</span>
+                        <span id="artistCountBadge" class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-full font-mono">0</span>
+                    </h2>
+                    <div id="artistGroupTabs" class="flex flex-wrap gap-1.5 pt-1">
+                        <!-- JS Dynamic Group Tabs -->
+                    </div>
+                </div>
+
+                <div id="artistsList" class="flex-grow overflow-y-auto space-y-2 pt-3 pr-1">
+                    <!-- JS Rendered Artists -->
+                </div>
+            </section>
+
+
+
+
+            <!-- Column 2: Albums List (4 Cols) -->
+            <section id="albumsSection" class="lg:col-span-4 glass-panel p-4 rounded-2xl flex flex-col h-[650px] shadow-xl">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                    <h2 class="text-xl font-extrabold text-purple-400 flex items-center space-x-2">
+                        <span><i class="fa-solid fa-compact-disc mr-1"></i>專輯選單</span>
+                        <span id="currentArtistNameLabel" class="text-xs text-slate-400 font-normal truncate max-w-[120px]"></span>
+                    </h2>
+
+                    <select id="albumSortSelect" onchange="renderAlbumsList()" class="bg-slate-900 border border-slate-700 text-slate-300 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-purple-500">
+                        <option value="date_desc">📅 日期 (最新 → 最舊)</option>
+                        <option value="date_asc">📅 日期 (最舊 → 最新)</option>
+                        <option value="name_asc">🔤 名稱 (A → Z)</option>
+                        <option value="name_desc">🔤 名稱 (Z → A)</option>
+                    </select>
+                </div>
+
+                <div id="albumsList" class="flex-grow overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 pr-1 align-content-start">
+                    <!-- JS Rendered Albums -->
+                </div>
+            </section>
+
+            <!-- Column 3: Musics Track Table (5 Cols) -->
+            <section id="musicsSection" class="lg:col-span-5 glass-panel p-4 rounded-2xl flex flex-col h-[650px] shadow-xl">
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800">
+                    <div id="musicSectionTitle" class="text-xl font-extrabold text-slate-100 truncate max-w-[800px]">
+                        🎵 歌曲清單
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="addAllCurrentToQueue()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-500/30 rounded-xl text-xs font-bold transition">
+                            ➕ 全部加到佇列
+                        </button>
+                        <button onclick="playAllCurrentMusics()" class="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 rounded-xl text-xs font-bold transition">
+                            ▶ 播放全部
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tracks Table -->
+                <div class="flex-grow overflow-y-auto pt-2 pr-1">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="sticky top-0 bg-slate-900/90 backdrop-blur text-xs text-slate-400 uppercase border-b border-slate-800 z-10">
+                            <tr>
+                                <th class="p-3 w-10">#</th>
+                                <th class="p-3">歌曲名稱</th>
+                                <th class="p-3 hidden sm:table-cell">歌手 / 專輯</th>
+                                <th class="p-3 text-right">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="musicsTableBody" class="divide-y divide-slate-800/50 text-sm">
+                            <!-- JS Rendered Musics -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Bar -->
+                <div class="flex items-center justify-between pt-3 border-t border-slate-800 text-xs">
+                    <div id="paginationInfo" class="text-slate-400 font-mono">第 1 / 1 頁 (共 0 首)</div>
+                    <div class="flex space-x-2">
+                        <button onclick="changePage(-1)" id="prevPageBtn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-200 rounded-lg transition font-medium">
+                            ◀ 上一頁
+                        </button>
+                        <button onclick="changePage(1)" id="nextPageBtn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-200 rounded-lg transition font-medium">
+                            下一頁 ▶
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 🎤 KTV 雙字幕同步歌詞全螢幕視窗 (KTV Modal) -->
+    <div id="ktvModal" class="fixed inset-0 z-50 hidden bg-slate-950/95 backdrop-blur-2xl flex flex-col justify-between p-6 md:p-10 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 rounded-full text-xs font-bold tracking-widest uppercase animate-pulse">
+                    🎤 KTV MODE
+                </span>
+                <span id="ktvSongTitle" class="text-xl md:text-2xl font-black text-slate-100"></span>
+            </div>
+            <button onclick="toggleKtvModal(false)" class="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xl transition">
+                ✕
+            </button>
+        </div>
+
+        <div id="ktvLyricsContainer" class="my-auto h-[60vh] overflow-y-auto py-20 text-center space-y-8 scroll-smooth px-4">
+            <!-- Dynamic Lyrics -->
+        </div>
+
+        <div class="text-center text-slate-400 text-xs font-mono border-t border-slate-800/80 pt-4 flex flex-col md:flex-row justify-between items-center gap-2">
+            <div>唱詞自動轉換：<span class="text-cyan-400">繁體中文 (OpenCC Engine)</span></div>
+            <div>點選歌詞即可快速跳轉進度 • 點擊右上角 ✕ 離開 KTV 模式</div>
+        </div>
+    </div>
+
+    <!-- 📋 獨立播放佇列視窗 (Playback Queue Drawer Modal) -->
+    <div id="queueModal" onclick="if(event.target===this) toggleQueueModal(false)" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex justify-end transition-all duration-300">
+        <div class="w-full max-w-md bg-slate-900 border-l border-slate-800 p-6 flex flex-col h-full shadow-2xl animate-in slide-in-from-right duration-200">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl">📋</span>
+                    <h3 class="text-lg font-bold text-cyan-400">現正在播放歌單</h3>
+                    <span id="queueCountBadge" class="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-mono">0</span>
+                </div>
+                <button onclick="toggleQueueModal(false)" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Queue Items Scrollable Box -->
+            <div id="queueListContainer" class="flex-grow overflow-y-auto space-y-2 py-4 pr-1">
+                <!-- JS Rendered Queue Items -->
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+                <span>點選歌曲即可跳轉播放</span>
+                <button onclick="clearQueue()" class="text-rose-400 hover:text-rose-300 font-bold px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/20 transition">
+                    🗑️ 清空歌單
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部固定音樂播放器列 (Fixed Player Bar) -->
+    <footer class="fixed bottom-0 inset-x-0 z-40 glass-panel border-t border-slate-800/90 px-4 py-3 shadow-2xl">
+        <div class="w-full max-w-[1920px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+            
+            <!-- Player Left: Track Info -->
+            <div class="flex items-center space-x-4 w-full md:w-1/4">
+                <img id="playerAlbumImg" src="https://placehold.co/120x120/1e293b/06b6d4?text=CYBER" alt="Album Art" class="w-14 h-14 rounded-xl object-cover border border-slate-700 shadow-md">
+                <div class="truncate">
+                    <div id="playerSongTitle" class="font-bold text-slate-100 text-base truncate">尚未選擇歌曲</div>
+                    <div id="playerArtistName" class="text-xs text-slate-400 truncate">請點選歌曲開始播放</div>
+                </div>
+            </div>
+
+            <!-- Player Center: Controls & Audio Progress -->
+            <div class="flex flex-col items-center w-full md:w-2/4 space-y-1.5">
+                <div class="flex items-center space-x-6">
+                    <button onclick="toggleShuffle()" id="shuffleBtn" class="text-slate-500 hover:text-slate-300 text-lg transition" title="隨機播放">
+                        <i class="fa-solid fa-shuffle"></i>
+                    </button>                    
+                    <button onclick="playPrevMusic()" class="text-slate-300 hover:text-cyan-400 text-xl transition">
+                        <i class="fa-solid fa-backward-step"></i>
+                        <!-- ⏮ -->
+                    </button>
+                    <button onclick="togglePlayPause()" id="playPauseBtn" class="w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 text-black font-extrabold flex items-center justify-center text-xl shadow-lg hover:scale-105 transition">
+                        <i class="fa-solid fa-play ml-0.5"></i>
+                        <!-- ▶ -->
+                    </button>
+                    <button onclick="playNextMusic()" class="text-slate-300 hover:text-cyan-400 text-xl transition">
+                        <i class="fa-solid fa-forward-step"></i>
+                        <!-- ⏭ -->
+                    </button>
+                    <button onclick="toggleLoopMode()" id="loopBtn" class="text-slate-500 hover:text-slate-300 text-lg transition" title="循環模式">
+                        <i class="fa-solid fa-repeat"></i>
+                        <!-- 🔁 -->
+                    </button>
+                    <button onclick="toggleKtvModal(true)" class="text-cyan-400 hover:text-cyan-300 text-lg transition flex items-center space-x-2 bg-cyan-500/10 px-1.5 py-0.5 rounded-lg border border-cyan-500/30" title="開啟 KTV 歌詞">
+                        <span>🎤</span>
+                        <span class="text-xs font-bold hidden xl:block">歌詞</span>
+                    </button>
+                    <!-- <button onclick="toggleQueueModal(true)" class="relative text-purple-400 hover:text-purple-300 text-lg transition flex items-center space-x-1 bg-purple-500/10 px-2.5 py-1 rounded-lg border border-purple-500/30" title="查看目前播放歌單">
+                        <span>📋</span>
+                        <span class="text-xs font-bold">歌單</span>
+                        <span id="playerQueueCount" class="text-[10px] bg-purple-500 text-black px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+                    </button> -->
+                    <button onclick="toggleQueueModal(true)" class="relative px-3.5 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/40 text-purple-300 text-xs font-bold transition flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul"></i>
+                        <span class="text-xs hidden xl:block">播放歌單</span>
+                        <span id="playerQueueCount" class="text-[10px] bg-purple-500 text-black px-1.5 py-0.2 rounded-full font-bold ml-1">0</span>
+                        <!-- <span id="headerQueueBadge" class="ml-1 bg-purple-500 text-black font-extrabold px-2 py-0.5 rounded-full text-[10px]">0</span> -->
+                    </button>                    
+                </div>
+
+                <div class="w-full flex items-center space-x-3 text-xs font-mono text-slate-400">
+                    <span id="currentTimeLabel">00:00</span>
+                    <input type="range" id="progressBar" value="0" min="0" max="100" oninput="seekAudio(this.value)" class="flex-grow h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400">
+                    <span id="durationLabel">00:00</span>
+
+                    <span class="text-slate-400 text-sm">🔊</span>
+                    <input type="range" id="volumeBar" value="80" min="0" max="100" oninput="setVolume(this.value)" class="w-20 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-400">
+
+                </div>
+            </div>
+
+            <!-- Player Right: Visualizer & Volume Slider -->
+            <!-- <div class="flex items-center justify-end space-x-4 w-full md:w-1/4">
+                <canvas id="visualizerCanvas" class="w-24 h-10 rounded-lg bg-slate-900 border border-slate-800 hidden sm:block"></canvas>
+                <div class="flex items-center space-x-2">
+                    <span class="text-slate-400 text-sm">🔊</span>
+                    <input type="range" id="volumeBar" value="80" min="0" max="100" oninput="setVolume(this.value)" class="w-20 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-400">
+                </div>
+            </div> -->
+        </div>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="audioPlayer" preload="metadata" crossorigin="anonymous"></audio>
+
+    <script>
+        // System Global State
+        let db = null;
+        let openccConverter = null;
+        
+        let allArtists = [];
+        let filteredArtists = [];
+        let selectedArtistGroup = 'ALL';
+        
+        let currentArtistId = null;
+        let currentAlbums = [];
+        
+        // 畫面瀏覽用的歌曲資料 (Displayed musics - DO NOT touch playing queue)
+        let currentMusics = [];
+        let currentPage = 1;
+        const pageSize = 30;
+        
+        // 獨立播放佇列與狀態 (playbackQueue is isolated from browsing)
+        let playbackQueue = [];
+        let playingIndexInQueue = -1;
+        let playingTrackId = null;
+
+        let currentLyricsList = []; // parsed LRC array [{time: sec, text: string}]
+        let activeLyricIndex = -1;
+        
+        let isLoopEnabled = false;
+        let isShuffle = false;
+        let searchDebounceTimer = null;
+
+        // Visualizer Canvas
+        const audio = document.getElementById('audioPlayer');
+        let visualCanvas, canvasCtx;
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-24 right-6 z-50 bg-cyan-900/90 border border-cyan-400 text-cyan-100 px-4 py-2.5 rounded-xl shadow-2xl text-sm font-bold backdrop-blur transition-all duration-300 transform translate-y-2';
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '00:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        window.onload = async function() {
+            try {
+                if (typeof OpenCC !== 'undefined') {
+                    openccConverter = OpenCC.Converter({ from: 'cn', to: 'hk' });
+                }
+            } catch (err) {
+                console.warn("OpenCC 初始化失敗:", err);
+            }
+
+            setupVisualizer();
+            await initSqlJsDatabase();
+            setupAudioEvents();
+            updateQueueBadges();
+        };
+
+        async function initSqlJsDatabase() {
+            const badge = document.getElementById('dbStatusBadge');
+            try {
+                const SQL = await initSqlJs({
+                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+                });
+
+                const response = await fetch('db/cybermusic.db');
+                if (response.ok) {
+                    const buf = await response.arrayBuffer();
+                    db = new SQL.Database(new Uint8Array(buf));
+                    badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span>連結 music.db';
+                    showToast("已成功載入本地 music.db 資料庫！");
+                } else {
+                    throw new Error("載入模擬測試資料庫");
+                }
+            } catch (err) {
+                badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-cyan-400 mr-1.5"></span>預設模擬資料庫';
+                const SQL = await initSqlJs({
+                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+                });
+                db = new SQL.Database();
+                createMockDatabaseSchema();
+            }
+
+            try {
+                db.exec(`
+                    CREATE INDEX IF NOT EXISTS idx_albums_artist ON albums(artist_id);
+                    CREATE INDEX IF NOT EXISTS idx_musics_album ON musics(album_id);
+                `);
+            } catch (e) {}
+
+            loadArtists();
+        }
+
+        function createMockDatabaseSchema() {
+            db.exec(`
+                CREATE TABLE artists (
+                    artist_id VARCHAR(30) PRIMARY KEY,
+                    artist_name TEXT NOT NULL,
+                    artist_img TEXT,
+                    artist_group TEXT
+                );
+
+                CREATE TABLE albums (
+                    album_id VARCHAR(30) PRIMARY KEY,
+                    artist_id VARCHAR(30) NOT NULL,
+                    album_name TEXT NOT NULL,
+                    album_img TEXT,
+                    release_date TEXT
+                );
+
+                CREATE TABLE musics (
+                    music_id VARCHAR(30) PRIMARY KEY,
+                    album_id VARCHAR(30) NOT NULL,
+                    music_name TEXT NOT NULL,
+                    music_url TEXT NOT NULL,
+                    lyrics TEXT
+                );
+
+                INSERT INTO artists VALUES 
+                ('ART_001', '周杰倫', 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300', '男歌手'),
+                ('ART_002', '鄧紫棋', 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=300', '女歌手'),
+                ('ART_003', '五月天', 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300', '合唱團/樂團');
+
+                INSERT INTO albums VALUES 
+                ('ALB_001', 'ART_001', '范特西 (Fantasy)', 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300', '2001-09-20'),
+                ('ALB_002', 'ART_001', '最偉大的作品', 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300', '2022-07-15'),
+                ('ALB_003', 'ART_002', '摩天動物園', 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=300', '2019-12-27'),
+                ('ALB_004', 'ART_003', '自傳 (History of Tomorrow)', 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=300', '2016-07-21'),
+                ('ALB_005', 'ART_001', '地表最強演唱會 Live', 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=300', '2019-11-01'),
+                ('ALB_006', 'ART_002', '電影電視劇原聲帶 OST', 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300', '2021-05-10'),
+                ('ALB_007', 'ART_003', '五月天 步步自選作品輯 (精選輯)', 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300', '2013-12-30');
+
+                INSERT INTO musics VALUES 
+                ('MUS_001', 'ALB_001', '簡單愛', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', '[00:02.00] 說不上為什麼 我喜歡這樣牽著你的手\n[00:08.50] 簡簡單單的愛 像盪鞦韆一樣的隨風吹\n[00:15.00] 想簡簡單單愛你 帶你騎單車'),
+                ('MUS_002', 'ALB_001', '晴天', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', '[00:01.00] 故事的小黃花 從出生那年就飄著\n[00:06.00] 童年的盪鞦韆 隨記憶一直晃到現在\n[00:12.00] 颳風這天我試過握著妳手'),
+                ('MUS_003', 'ALB_002', '最偉大的作品', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', '[00:03.00] 哥穿著復古西裝 彈著琴鍵響起\n[00:09.00] 漫步在塞納河畔 聆聽巴黎的音符'),
+                ('MUS_004', 'ALB_003', '句號', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', '[00:02.00] 可惜我們終於來到 一個句號\n[00:07.00] 窗外下著大雨 就像我心中的眼淚'),
+                ('MUS_005', 'ALB_004', '派對動物', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', '[00:02.00] Let us go party party all night\n[00:06.00] 歡樂的音樂 響徹每一個角落'),
+                ('MUS_006', 'ALB_005', '雙截棍 (Live Live 現場版)', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', '[00:02.00] 快使用雙截棍 哼哼哈兮\n[00:06.00] 演唱會現場氣氛嗨到最高點'),
+                ('MUS_007', 'ALB_006', '摩天動物園 (電影原聲帶主題曲)', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3', '[00:02.00] 這是影視原聲帶主題曲\n[00:06.00] 震撼的電影配樂聲響起'),
+                ('MUS_008', 'ALB_007', '步步 (精選輯特別收錄)', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', '[00:02.00] 空無一人的大街 闖入一片不真實的世界\n[00:06.00] 精選輯歷年經典作品記錄');
+            `);
+        }
+
+        function handleFileSelect(evt) {
+            const file = evt.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function() {
+                try {
+                    const Uints = new Uint8Array(reader.result);
+                    const SQL = await initSqlJs({
+                        locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+                    });
+                    db = new SQL.Database(Uints);
+                    
+                    const badge = document.getElementById('dbStatusBadge');
+                    badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5"></span>${escapeHtml(file.name)}`;
+                    
+                    showToast("成功載入自訂音樂資料庫！");
+                    loadArtists();
+                } catch (err) {
+                    alert("資料庫讀取失敗，請確認檔案格式是否為標準 SQLite .db 檔");
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function loadArtists() {
+            if (!db) return;
+
+            try {
+                const res = db.exec("SELECT artist_id, artist_name, artist_img, artist_group FROM artists ORDER BY artist_name ASC;");
+                allArtists = [];
+                if (res.length > 0) {
+                    const cols = res[0].columns;
+                    allArtists = res[0].values.map(row => {
+                        let obj = {};
+                        cols.forEach((c, idx) => obj[c] = row[idx]);
+                        return obj;
+                    });
+                }
+
+                const groups = ['ALL', ...new Set(allArtists.map(a => a.artist_group).filter(Boolean))];
+                renderGroupTabs(groups);
+                filterArtistsByGroup(selectedArtistGroup);
+
+                if (filteredArtists.length > 0) {
+                    selectArtist(filteredArtists[0].artist_id);
+                }
+            } catch (err) {
+                console.error("載入歌手失敗:", err);
+            }
+        }
+
+        function renderGroupTabs(groups) {
+            const container = document.getElementById('artistGroupTabs');
+            container.innerHTML = groups.map(g => {
+                const isActive = g === selectedArtistGroup;
+                const label = g === 'ALL' ? '全部' : g;
+                return `
+                    <button onclick="filterArtistsByGroup('${escapeHtml(g)}')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition duration-200 ${
+                        isActive 
+                            ? 'bg-cyan-500 text-black shadow-md' 
+                            : 'bg-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-700'
+                    }">
+                        ${escapeHtml(label)}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function filterArtistsByGroup(group) {
+            selectedArtistGroup = group;
+            if (group === 'ALL') {
+                filteredArtists = [...allArtists];
+            } else {
+                filteredArtists = allArtists.filter(a => a.artist_group === group);
+            }
+            
+            document.getElementById('artistCountBadge').innerText = filteredArtists.length;
+            // renderGroupTabs(['ALL', ...new Set(allArtists.map(a => a.artist_group).filter(Boolean))]);
+
+            const orderString = "ORDER BY CASE artist_group WHEN '華語男' THEN 1 WHEN '華語女' THEN 2 WHEN '華語團體' THEN 3 WHEN '日韓男' THEN 4 WHEN '日韓女' THEN 5 WHEN '日韓團體' THEN 6 WHEN '西洋男' THEN 7 WHEN '西洋女' THEN 8 WHEN '西洋團體' THEN 9 ELSE 10 END"
+            const res = db.exec("SELECT DISTINCT artist_group FROM artists WHERE artist_group IS NOT NULL AND artist_group != '' " + orderString);
+
+            let groups = ['ALL'];
+            if (res.length > 0) {
+                res[0].values.forEach(row => groups.push(row[0]));
+            }
+            renderGroupTabs(groups);
+
+
+            renderArtistsList();
+        }
+
+        function renderArtistsList() {
+            const container = document.getElementById('artistsList');
+            if (filteredArtists.length === 0) {
+                container.innerHTML = `<div class="p-4 text-center text-slate-500 text-sm">無對應歌手</div>`;
+                return;
+            }
+
+            container.innerHTML = filteredArtists.map(artist => {
+                const isSelected = artist.artist_id === currentArtistId;
+                // const img = artist.artist_img || 'https://placehold.co/100x100/1e293b/06b6d4?text=ARTIST';
+               
+                const img = `http://y.gtimg.cn/music/photo_new/T001R150x150M000${artist.artist_id}.webp` || 'https://placehold.co/100x100/1e293b/06b6d4?text=ARTIST';
+
+
+                return `
+                    <button onclick="selectArtist('${escapeHtml(artist.artist_id)}')" class="w-full flex items-center space-x-3 p-2.5 rounded-xl transition duration-200 text-left ${
+                        isSelected 
+                            ? 'bg-cyan-500/20 border border-cyan-500/50 text-cyan-300' 
+                            : 'hover:bg-slate-800/60 border border-transparent text-slate-300'
+                    }">
+                        <img src="${escapeHtml(img)}" onerror="this.src='https://placehold.co/100x100/1e293b/06b6d4?text=ARTIST'" class="w-12 h-12 rounded-full object-cover border border-slate-700 flex-shrink-0">
+                        <div class="truncate">
+                            <div class="font-bold text-base truncate">${escapeHtml(artist.artist_name)}</div>
+                            <div class="text-xs text-slate-400 font-mono">${escapeHtml(artist.artist_group || '未分類')}</div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+        // <img src="${escapeHtml(img)}" onerror="this.src='https://placehold.co/100x100/1e293b/06b6d4?text=ARTIST'" class="w-12 h-12 rounded-xl object-cover shrink-0 border border-slate-700">
+
+
+        /* 關鍵修正：點選歌手/專輯時只更新 currentMusics，不會中斷或覆蓋 playbackQueue */
+        function selectArtist(artistId) {
+            currentArtistId = artistId;
+            renderArtistsList();
+
+            const artist = allArtists.find(a => a.artist_id === artistId);
+            if (artist) {
+                document.getElementById('currentArtistNameLabel').innerText = `(${artist.artist_name})`;
+            }
+
+            loadAlbumsByArtist(artistId);
+
+            if (window.innerWidth < 1024) {
+                const albumsSec = document.getElementById('albumsSection');
+                if (albumsSec) albumsSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function loadAlbumsByArtist(artistId) {
+            if (!db || !artistId) return;
+
+            try {
+                const sql = `
+                    SELECT album_id, artist_id, album_name, album_img, release_date
+                    FROM albums
+                    WHERE artist_id = ?;
+                `;
+                const stmt = db.prepare(sql);
+                stmt.bind([artistId]);
+
+                currentAlbums = [];
+                while (stmt.step()) {
+                    currentAlbums.push(stmt.getAsObject());
+                }
+                stmt.free();
+
+                renderAlbumsList();
+
+                if (currentAlbums.length > 0) {
+                    loadMusicsByAlbum(currentAlbums[0].album_id);
+                } else {
+                    currentMusics = [];
+                    renderMusicsTable();
+                }
+            } catch (err) {
+                console.error("載入專輯失敗:", err);
+            }
+        }
+
+        function renderAlbumsList() {
+            const container = document.getElementById('albumsList');
+            const sortMode = document.getElementById('albumSortSelect').value;
+
+            let sortedAlbums = [...currentAlbums];
+            sortedAlbums.sort((a, b) => {
+                if (sortMode === 'date_desc') return (b.release_date || '').localeCompare(a.release_date || '');
+                if (sortMode === 'date_asc') return (a.release_date || '').localeCompare(b.release_date || '');
+                if (sortMode === 'name_asc') return (a.album_name || '').localeCompare(b.album_name || '');
+                if (sortMode === 'name_desc') return (b.album_name || '').localeCompare(a.album_name || '');
+                return 0;
+            });
+
+            if (sortedAlbums.length === 0) {
+                container.innerHTML = `<div class="col-span-2 p-6 text-center text-slate-500 text-sm">尚無專輯資料</div>`;
+                return;
+            }
+
+            container.innerHTML = sortedAlbums.map(album => {
+
+                // const img = album.album_img || 'https://placehold.co/150x150/1e293b/a855f7?text=ALBUM';
+                const img = `http://y.gtimg.cn/music/photo_new/T002R500x500M000${album.album_id}_1.jpg` || 'https://placehold.co/150x150/1e293b/a855f7?text=ALBUM';
+
+                return `
+                    <div onclick="selectAlbum('${escapeHtml(album.album_id)}')" class="glass-panel p-3 rounded-xl border border-slate-800 hover:border-purple-500/50 cursor-pointer group transition duration-300 flex flex-col items-center text-center">
+                        <div class="relative w-full aspect-square rounded-lg overflow-hidden mb-2 bg-slate-900 border border-slate-800">
+                            <img src="${escapeHtml(img)}" onerror="this.src='https://placehold.co/150x150/1e293b/a855f7?text=ALBUM'" class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="font-bold text-slate-200 text-sm truncate w-full group-hover:text-purple-300">${escapeHtml(album.album_name)}</div>
+                        <div class="text-xs text-slate-400 font-mono mt-1">${escapeHtml(album.release_date || '未知發行日')}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // <img src="${escapeHtml(img)}" onerror="this.src='https://placehold.co/150x150/1e293b/a855f7?text=ALBUM'" class="w-24 h-24 rounded-lg object-cover mb-2 border border-slate-700 group-hover:scale-105 transition">
+
+
+        function selectAlbum(albumId) {
+            loadMusicsByAlbum(albumId);
+            const musicsSec = document.getElementById('musicsSection');
+            if (musicsSec) musicsSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function loadMusicsByAlbum(albumId) {
+            if (!db || !albumId) return;
+
+            try {
+                const sql = `
+                    SELECT m.music_id, m.music_name, m.music_url, m.lyrics,
+                           a.album_id, a.album_name, a.album_img,
+                           ar.artist_id, m.player_name as artist_name
+                    FROM musics m
+                    JOIN albums a ON m.album_id = a.album_id
+                    JOIN artists ar ON a.artist_id = ar.artist_id
+                    WHERE m.album_id = ?;
+                `;
+                const stmt = db.prepare(sql);
+                stmt.bind([albumId]);
+
+                currentMusics = [];
+                while (stmt.step()) {
+                    currentMusics.push(stmt.getAsObject());
+                }
+                stmt.free();
+
+                const albumName = currentMusics[0]?.album_name || '專輯歌曲';
+                document.getElementById('musicSectionTitle').innerHTML = `
+                    <span class="text-purple-400 font-bold">${escapeHtml(albumName)}</span>
+                    <span class="text-xs text-slate-400 font-normal ml-2">(${currentMusics.length} 首)</span>
+                `;
+
+                currentPage = 1;
+                renderMusicsTable();
+            } catch (err) {
+                console.error("載入歌曲失敗:", err);
+            }
+        }
+
+        function loadSmartPlaylist(type) {
+            if (!db) {
+                showToast("資料庫尚未初始化");
+                return;
+            }
+
+            try {
+                let sql = "";
+                let title = "";
+
+                if (type === 'random') {
+                    title = "🎲 隨機推薦 50 首";
+                    sql = `
+                        SELECT m.music_id, m.music_name, m.music_url, m.lyrics,
+                               a.album_id, a.album_name, a.album_img,
+                               ar.artist_id, ar.artist_name
+                        FROM musics m
+                        JOIN albums a ON m.album_id = a.album_id
+                        JOIN artists ar ON a.artist_id = ar.artist_id
+                        ORDER BY RANDOM()
+                        LIMIT 50;
+                    `;
+                } else if (type === 'newest') {
+                    title = "🆕 最新發行 50 首";
+                    sql = `
+                        SELECT m.music_id, m.music_name, m.music_url, m.lyrics,
+                               a.album_id, a.album_name, a.album_img, a.release_date,
+                               ar.artist_id, ar.artist_name
+                        FROM musics m
+                        JOIN albums a ON m.album_id = a.album_id
+                        JOIN artists ar ON a.artist_id = ar.artist_id
+                        ORDER BY a.release_date DESC, m.music_id DESC
+                        LIMIT 50;
+                    `;
+                } else if (type === 'top') {
+                    title = "🏆 熱門排行榜 Top 50";
+                    sql = `
+                        SELECT m.music_id, m.music_name, m.music_url, m.lyrics,
+                               a.album_id, a.album_name, a.album_img,
+                               ar.artist_id, ar.artist_name
+                        FROM musics m
+                        JOIN albums a ON m.album_id = a.album_id
+                        JOIN artists ar ON a.artist_id = ar.artist_id
+                        ORDER BY m.music_id ASC
+                        LIMIT 50;
+                    `;
+                } else if (type === 'concert') {
+                    title = "🎤 演唱會 Live";
+                    sql = `
+                        SELECT m.music_id, m.music_name, m.music_url, m.lyrics,
+                               a.album_id, a.album_name, a.album_img,
+                               ar.artist_id, ar.artist_name
+                        FROM musics m
+                        JOIN albums a ON m.album_id = a.album_id
+                        JOIN artists ar ON a.artist_id = ar.artist_id
+                        WHERE a.album_name LIKE '%演唱會%' OR a.album_name LIKE '%Live%' OR m.music_name LIKE '%Live%' OR m.music_name LIKE '%演唱會%'
+                        ORDER BY m.music_id ASC
+                        LIMIT 50;
+                    `;
+                    
+                    document.getElementById('searchInput').value = '演唱會';
+                    document.getElementById('searchTargetSelect').value = 'album';
+                    performSearch();
+
+
+                } else if (type === 'ost') {
+                    title = "🎬 影視原聲帶";
+                    sql = `
+                        SELECT m.music_id, m.music_name, m.music_url, m.lyrics,
+                               a.album_id, a.album_name, a.album_img,
+                               ar.artist_id, ar.artist_name
+                        FROM musics m
+                        JOIN albums a ON m.album_id = a.album_id
+                        JOIN artists ar ON a.artist_id = ar.artist_id
+                        WHERE a.album_name LIKE '%原聲帶%' OR a.album_name LIKE '%OST%' OR a.album_name LIKE '%Soundtrack%' OR m.music_name LIKE '%原聲帶%'
+                        ORDER BY m.music_id ASC
+                        LIMIT 50;
+                    `;
+
+                    document.getElementById('searchInput').value = '原聲帶';
+                    document.getElementById('searchTargetSelect').value = 'album';
+                    performSearch();
+
+                } else if (type === 'best') {
+                    title = "💎 經典精選輯";
+                    sql = `
+                        SELECT m.music_id, m.music_name, m.music_url, m.lyrics,
+                               a.album_id, a.album_name, a.album_img,
+                               ar.artist_id, ar.artist_name
+                        FROM musics m
+                        JOIN albums a ON m.album_id = a.album_id
+                        JOIN artists ar ON a.artist_id = ar.artist_id
+                        WHERE a.album_name LIKE '%精選%' OR a.album_name LIKE '%Greatest Hits%' OR a.album_name LIKE '%Best%' OR m.music_name LIKE '%精選%'
+                        ORDER BY m.music_id ASC
+                        LIMIT 50;
+                    `;
+
+                    document.getElementById('searchInput').value = '滾石香港黃金十年';
+                    document.getElementById('searchTargetSelect').value = 'album';
+                    performSearch();
+                }
+
+                const res = db.exec(sql);
+                currentMusics = [];
+                if (res.length > 0) {
+                    const cols = res[0].columns;
+                    currentMusics = res[0].values.map(row => {
+                        let obj = {};
+                        cols.forEach((c, idx) => obj[c] = row[idx]);
+                        return obj;
+                    });
+                }
+
+                document.getElementById('musicSectionTitle').innerHTML = `
+                    <span class="text-cyan-400 font-bold">${title}</span>
+                    <span class="text-xs text-slate-400 font-normal ml-2">(${currentMusics.length} 首)</span>
+                `;
+
+                currentPage = 1;
+                renderMusicsTable();
+
+                const musicsSec = document.getElementById('musicsSection');
+                if (musicsSec) musicsSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                showToast(`已載入 ${title}`);
+            } catch (err) {
+                console.error("智慧歌單載入失敗:", err);
+            }
+        }
+
+        function renderMusicsTable() {
+            const tbody = document.getElementById('musicsTableBody');
+            const total = currentMusics.length;
+            const totalPages = Math.ceil(total / pageSize) || 1;
+
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIdx = (currentPage - 1) * pageSize;
+            const pageData = currentMusics.slice(startIdx, startIdx + pageSize);
+
+            if (pageData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-500">尚無歌曲資料</td></tr>`;
+                document.getElementById('paginationInfo').innerText = `第 0 / 0 頁 (共 0 首)`;
+                return;
+            }
+
+            tbody.innerHTML = pageData.map((music, idx) => {
+                const globalIndex = startIdx + idx;
+                const isCurrentTrack = music.music_id === playingTrackId;
+                const isTrackPlaying = isCurrentTrack && !audio.paused;
+
+                return `
+                    <tr class="hover:bg-slate-800/50 transition duration-150 group ${isCurrentTrack ? 'bg-cyan-500/10' : ''}">
+                        <td class="p-3 font-mono text-xs text-slate-400">${globalIndex + 1}</td>
+                        <td class="p-3">
+                            <div class="font-bold text-slate-100 ${isCurrentTrack ? 'text-cyan-400' : 'group-hover:text-cyan-300'}">${escapeHtml(music.music_name)}</div>
+                        </td>
+                        <td class="p-3 text-xs text-slate-400 hidden sm:table-cell truncate max-w-[150px]">
+                            ${escapeHtml(music.artist_name || '歌手')} / ${escapeHtml(music.album_name || '專輯')}
+                        </td>
+                        <td class="p-3 text-right">
+                            <div class="flex items-center justify-end space-x-1">
+                                <button onclick="addToQueue(currentMusics[${globalIndex}])" class="p-1.5 rounded-lg hover:bg-purple-500/20 text-purple-400 text-xs transition" title="加到佇列">
+                                    ➕
+                                </button>
+                                <button onclick="playMusicImmediately(currentMusics[${globalIndex}])" class="p-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 font-bold transition" title="立即播放">
+                                    ${isTrackPlaying ? '⏸' : '▶'}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('paginationInfo').innerText = `第 ${currentPage} / ${totalPages} 頁 (共 ${total} 首)`;
+            document.getElementById('prevPageBtn').disabled = currentPage <= 1;
+            document.getElementById('nextPageBtn').disabled = currentPage >= totalPages;
+        }
+
+        function changePage(delta) {
+            currentPage += delta;
+            renderMusicsTable();
+        }
+
+        function handleSearchDebounce() {
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                performSearch();
+            }, 300);
+        }
+
+        function performSearch() {
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const queryInput = document.getElementById('searchInput');
+            const query = queryInput ? queryInput.value.trim() : '';
+            const targetSelect = document.getElementById('searchTargetSelect');
+            const target = targetSelect ? targetSelect.value : 'all';
+
+            if (clearBtn) {
+                if (query) {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
+            }
+
+            if (!query) {
+                filteredArtists = [...allArtists];
+                renderArtistsList();
+                if (currentArtistId) {
+                    loadAlbumsByArtist(currentArtistId);
+                } else if (allArtists.length > 0) {
+                    selectArtist(allArtists[0].artist_id);
+                } else {
+                    loadSmartPlaylist('random');
+                }
+                return;
+            }
+
+            if (!db) {
+                showToast("資料庫尚未初始化");
+                return;
+            }
+
+            try {
+                const term = `%${query}%`;
+
+                // 1. 同步篩選/更新左側歌手陣容 (Column 1)
+                if (target === 'all' || target === 'artist') {
+                    filteredArtists = allArtists.filter(a => 
+                        a.artist_name.toLowerCase().includes(query.toLowerCase())
+                    );
+                } else {
+                    filteredArtists = [...allArtists];
+                }
+                renderArtistsList();
+
+                // 2. 同步篩選/更新中間專輯選單 (Column 2)
+                let albumSql = "";
+                let albumParams = [];
+                if (target === 'artist') {
+                    albumSql = `
+                        SELECT a.album_id, a.artist_id, a.album_name, a.album_img, a.release_date
+                        FROM albums a
+                        JOIN artists ar ON a.artist_id = ar.artist_id
+                        WHERE ar.artist_name LIKE ?;
+                    `;
+                    albumParams = [term];
+                } else if (target === 'album') {
+                    albumSql = `
+                        SELECT album_id, artist_id, album_name, album_img, release_date
+                        FROM albums
+                        WHERE album_name LIKE ?;
+                    `;
+                    albumParams = [term];
+                } else {
+                    albumSql = `
+                        SELECT DISTINCT a.album_id, a.artist_id, a.album_name, a.album_img, a.release_date
+                        FROM albums a
+                        JOIN artists ar ON a.artist_id = ar.artist_id
+                        WHERE a.album_name LIKE ? OR ar.artist_name LIKE ?;
+                    `;
+                    albumParams = [term, term];
+                }
+
+                currentAlbums = [];
+                try {
+                    const albumStmt = db.prepare(albumSql);
+                    albumStmt.bind(albumParams);
+                    while (albumStmt.step()) {
+                        currentAlbums.push(albumStmt.getAsObject());
+                    }
+                    albumStmt.free();
+                } catch (e) {
+                    console.warn("專輯搜尋查詢失敗:", e);
+                }
+                renderAlbumsList();
+
+                // 3. 使用 SQL.js Prepare 綁定參數搜尋右側歌曲清單 (Column 3)
+                let whereClause = "";
+                let musicParams = [];
+
+                if (target === 'music') {
+                    whereClause = "WHERE m.music_name LIKE ?";
+                    musicParams = [term];
+                } else if (target === 'artist') {
+                    whereClause = "WHERE ar.artist_name LIKE ?";
+                    musicParams = [term];
+                } else if (target === 'album') {
+                    whereClause = "WHERE a.album_name LIKE ?";
+                    musicParams = [term];
+                } else {
+                    whereClause = "WHERE m.music_name LIKE ? OR ar.artist_name LIKE ? OR a.album_name LIKE ?";
+                    musicParams = [term, term, term];
+                }
+
+                const musicSql = `
+                    SELECT m.music_id, m.music_name, m.music_url, m.lyrics,
+                           a.album_id, a.album_name, a.album_img,
+                           ar.artist_id, ar.artist_name
+                    FROM musics m
+                    JOIN albums a ON m.album_id = a.album_id
+                    JOIN artists ar ON a.artist_id = ar.artist_id
+                    ${whereClause}
+                    LIMIT 100;
+                `;
+
+                const musicStmt = db.prepare(musicSql);
+                musicStmt.bind(musicParams);
+
+                currentMusics = [];
+                while (musicStmt.step()) {
+                    currentMusics.push(musicStmt.getAsObject());
+                }
+                musicStmt.free();
+
+                let searchTargetLabel = "全部";
+                if (target === 'music') searchTargetLabel = "歌曲";
+                if (target === 'artist') searchTargetLabel = "歌手";
+                if (target === 'album') searchTargetLabel = "專輯";
+
+                document.getElementById('musicSectionTitle').innerHTML = `
+                    <span class="text-cyan-400 font-bold">🔍 搜尋「${escapeHtml(query)}」(${searchTargetLabel})</span>
+                    <span class="text-xs text-slate-400 font-normal ml-2">(${currentMusics.length} 首)</span>
+                `;
+
+                currentPage = 1;
+                renderMusicsTable();
+            } catch (err) {
+                console.error("搜尋執行失敗:", err);
+                showToast("搜尋發生錯誤，請重新嘗試");
+            }
+        }
+
+        function resetSearch() {
+            document.getElementById('searchInput').value = '';
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (clearBtn) clearBtn.classList.add('hidden');
+            document.getElementById('searchTargetSelect').value = 'all';
+            filteredArtists = [...allArtists];
+            renderArtistsList();
+            if (currentArtistId) {
+                loadAlbumsByArtist(currentArtistId);
+            } else if (allArtists.length > 0) {
+                selectArtist(allArtists[0].artist_id);
+            } else {
+                loadSmartPlaylist('random');
+            }
+        }
+
+        /* === 獨立播放佇列 (Playback Queue) 核心控制邏輯 === */
+
+        // 1. 單曲加入佇列 (不打斷播放)
+        function addToQueue(musicObj) {
+            if (!musicObj) return;
+            playbackQueue.push(musicObj);
+            updateQueueBadges();
+            renderQueueModal();
+            showToast(`已將《${musicObj.music_name}》加入佇列`);
+        }
+
+        // 2. 將整個 currentMusics 清單批次追加到佇列
+        function addAllCurrentToQueue() {
+            if (currentMusics.length === 0) return;
+            playbackQueue = [...playbackQueue, ...currentMusics];
+            updateQueueBadges();
+            renderQueueModal();
+            showToast(`已新增 ${currentMusics.length} 首歌曲至播放佇列`);
+        }
+
+        // 3. 替代播放佇列並從頭播放
+        function playAllCurrentMusics() {
+            if (currentMusics.length === 0) return;
+            playbackQueue = [...currentMusics];
+            updateQueueBadges();
+            playQueueIndex(0);
+            showToast("已載入目前清單並開始播放");
+        }
+
+        // 4. 點選單曲立即播放 (若已在佇列中則跳轉，否則插隊至下一首或尾端播放)
+        function playMusicImmediately(musicObj) {
+            if (!musicObj) return;
+
+            if (musicObj.music_id === playingTrackId) {
+                togglePlayPause();
+                return;
+            }
+
+            const existingIndex = playbackQueue.findIndex(m => m.music_id === musicObj.music_id);
+            if (existingIndex !== -1) {
+                playQueueIndex(existingIndex);
+            } else {
+                // 插入至當前播放位置後方
+                const insertPos = playingIndexInQueue >= 0 ? playingIndexInQueue + 1 : playbackQueue.length;
+                playbackQueue.splice(insertPos, 0, musicObj);
+                updateQueueBadges();
+                playQueueIndex(insertPos);
+            }
+        }
+
+        // 5. 指定佇列 Index 播放
+        function playQueueIndex(index) {
+            if (index < 0 || index >= playbackQueue.length) return;
+
+            playingIndexInQueue = index;
+            const music = playbackQueue[index];
+            playingTrackId = music.music_id;
+
+            // audio.src = music.music_url;
+			
+            fetch(`https://tang.api.s01s.cn/music_open_api.php?type=json&mid=${music.music_id}`)
+                .then(response => {
+                    if (response.ok) return response.json()
+                    throw new Error('Network response was not ok.')
+                })
+                .then(jsonData => {
+                    if (jsonData) {
+                        audio.src = jsonData.song_play_url;
+                        if (audio.src === null) {
+                            console.log('mp3Url not found !!!');
+                        } else {			
+			
+			
+			
+			
+							audio.play().then(() => {
+								updatePlayerUI(music);
+								updateMediaSession(music);
+							}).catch(err => {
+								showToast("音訊無法播放，請確認連結與格式");
+							});
+
+							renderMusicsTable();
+							renderQueueModal();
+							// parseLyrics(music.lyrics || '');
+							parseLyrics(jsonData.song_lyric || '');
+
+			
+                        }           
+                    }
+                });				
+			
+			
+			
+			
+			
+        }
+
+        // 6. 移除佇列中的某一首歌曲
+        function removeFromQueue(index, event) {
+            if (event) event.stopPropagation();
+            if (index < 0 || index >= playbackQueue.length) return;
+
+            playbackQueue.splice(index, 1);
+
+            if (index === playingIndexInQueue) {
+                if (playbackQueue.length > 0) {
+                    const nextIdx = index < playbackQueue.length ? index : 0;
+                    playQueueIndex(nextIdx);
+                } else {
+                    clearQueue();
+                }
+            } else if (index < playingIndexInQueue) {
+                playingIndexInQueue--;
+            }
+
+            updateQueueBadges();
+            renderQueueModal();
+            renderMusicsTable();
+        }
+
+        // 7. 清空佇列
+        function clearQueue() {
+            playbackQueue = [];
+            playingIndexInQueue = -1;
+            playingTrackId = null;
+            audio.pause();
+            audio.src = '';
+
+            document.getElementById('playPauseBtn').innerText = '▶';
+            document.getElementById('playerSongTitle').innerText = '尚未選擇歌曲';
+            document.getElementById('playerArtistName').innerText = '請點選歌曲開始播放';
+            document.getElementById('playerAlbumImg').src = 'https://placehold.co/120x120/1e293b/06b6d4?text=CYBER';
+
+            updateQueueBadges();
+            renderQueueModal();
+            renderMusicsTable();
+            showToast("已清空播放佇列");
+        }
+
+        function updateQueueBadges() {
+            const count = playbackQueue.length;
+            // document.getElementById('headerQueueBadge').innerText = count;
+            document.getElementById('playerQueueCount').innerText = count;
+            const badge = document.getElementById('queueCountBadge');
+            if (badge) badge.innerText = count;
+        }
+
+        function togglePlayPause() {
+            if (!audio.src) {
+                if (playbackQueue.length > 0) {
+                    playQueueIndex(0);
+                } else if (currentMusics.length > 0) {
+                    playAllCurrentMusics();
+                }
+                return;
+            }
+
+            if (audio.paused) {
+                audio.play();
+                document.getElementById('playPauseBtn').innerText = '⏸';
+            } else {
+                audio.pause();
+                document.getElementById('playPauseBtn').innerText = '▶';
+            }
+            renderMusicsTable();
+        }
+
+        function playPrevMusic() {
+            if (playingIndexInQueue > 0) {
+                playQueueIndex(playingIndexInQueue - 1);
+            }
+        }
+
+        function playNextMusic() {
+
+            if (playbackQueue.length === 0) return;
+            if (isShuffle) {
+                playingIndexInQueue = Math.floor(Math.random() * playbackQueue.length);
+            } else {
+                playingIndexInQueue = (playingIndexInQueue + 1) % playbackQueue.length;
+            }
+            playQueueIndex(playingIndexInQueue);
+
+
+            // if (playingIndexInQueue < playbackQueue.length - 1) {
+            //     playQueueIndex(playingIndexInQueue + 1);
+            // } else if (isLoopEnabled && playbackQueue.length > 0) {
+            //     playQueueIndex(0);
+            // }
+        }
+
+        function toggleLoopMode() {
+            isLoopEnabled = !isLoopEnabled;
+            const btn = document.getElementById('loopBtn');
+            btn.className = isLoopEnabled ? 'text-cyan-400 text-lg transition font-bold' : 'text-slate-500 hover:text-slate-300 text-lg transition';
+            showToast(isLoopEnabled ? "已開啟單曲/歌單循環" : "已關閉循環播放");
+        }
+
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            document.getElementById('shuffleBtn').classList.toggle('text-cyber-primary', isShuffle);
+            showToast(isShuffle ? "已開啟隨機播放" : "已關閉隨機播放", "info");
+        }
+
+
+        function seekAudio(val) {
+            if (audio.duration) {
+                audio.currentTime = (val / 100) * audio.duration;
+            }
+        }
+
+        function setVolume(val) {
+            audio.volume = val / 100;
+        }
+
+        function updatePlayerUI(music) {
+            document.getElementById('playerSongTitle').innerText = music.music_name || '未知歌曲';
+            document.getElementById('playerArtistName').innerText = `${music.artist_name || '歌手'} — ${music.album_name || '專輯'}`;
+            // document.getElementById('playerAlbumImg').src = music.album_img || 'https://placehold.co/120x120/1e293b/06b6d4?text=CYBER';
+            document.getElementById('playerAlbumImg').src = `http://y.gtimg.cn/music/photo_new/T002R500x500M000${music.album_id}_1.jpg` || 'https://placehold.co/120x120/1e293b/06b6d4?text=CYBER';
+            document.getElementById('playPauseBtn').innerText = '⏸';
+            document.getElementById('ktvSongTitle').innerText = `${music.music_name} - ${music.artist_name}`;
+        }
+
+        function updateMediaSession(music) {
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: music.music_name,
+                    artist: music.artist_name,
+                    album: music.album_name,
+                    artwork: [
+                        { src: music.album_img || 'https://placehold.co/512x512/1e293b/06b6d4?text=CYBER', sizes: '512x512', type: 'image/png' }
+                    ]
+                });
+
+                navigator.mediaSession.setActionHandler('play', () => audio.play());
+                navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+                navigator.mediaSession.setActionHandler('previoustrack', () => playPrevMusic());
+                navigator.mediaSession.setActionHandler('nexttrack', () => playNextMusic());
+            }
+        }
+
+        function setupAudioEvents() {
+            audio.ontimeupdate = function() {
+                if (audio.duration) {
+                    const pct = (audio.currentTime / audio.duration) * 100;
+                    document.getElementById('progressBar').value = pct;
+                    document.getElementById('currentTimeLabel').innerText = formatTime(audio.currentTime);
+                    document.getElementById('durationLabel').innerText = formatTime(audio.duration);
+                    syncLyricsTime(audio.currentTime);
+                }
+            };
+
+            audio.onpause = function() {
+                document.getElementById('playPauseBtn').innerText = '▶';
+                renderMusicsTable();
+            };
+
+            audio.onplay = function() {
+                document.getElementById('playPauseBtn').innerText = '⏸';
+                renderMusicsTable();
+            };
+
+            audio.onended = function() {
+                playNextMusic();
+            };
+        }
+
+        function parseLyrics(lrcText) {
+            currentLyricsList = [];
+            activeLyricIndex = -1;
+
+            if (!lrcText) {
+                currentLyricsList = [{ time: 0, text: "🎵 演奏曲或尚無動態歌詞" }];
+                renderKtvLyricsUI();
+                return;
+            }
+
+            let convertedLrc = lrcText;
+            if (openccConverter) {
+                try {
+                    convertedLrc = openccConverter(lrcText);
+                } catch (e) {
+                    console.warn("OpenCC 轉換失敗:", e);
+                }
+            }
+
+            const lines = convertedLrc.split('\n');
+            const timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
+
+            lines.forEach(line => {
+                const match = timeReg.exec(line);
+                if (match) {
+                    const min = parseInt(match[1]);
+                    const sec = parseInt(match[2]);
+                    const ms = parseInt(match[3]);
+                    const totalSec = min * 60 + sec + (ms > 99 ? ms / 1000 : ms / 100);
+                    const text = line.replace(timeReg, '').trim();
+                    if (text) {
+                        currentLyricsList.push({ time: totalSec, text });
+                    }
+                }
+            });
+
+            currentLyricsList.sort((a, b) => a.time - b.time);
+            if (currentLyricsList.length === 0) {
+                currentLyricsList = [{ time: 0, text: convertedLrc }];
+            }
+
+            renderKtvLyricsUI();
+        }
+
+        function renderKtvLyricsUI() {
+            const container = document.getElementById('ktvLyricsContainer');
+            container.innerHTML = currentLyricsList.map((item, idx) => `
+                <div id="ktvLine-${idx}" class="text-xl md:text-3xl font-extrabold text-slate-500 transition-all duration-300 py-2 cursor-pointer hover:text-slate-300" onclick="seekAudio(${item.time})">
+                    ${escapeHtml(item.text)}
+                </div>
+            `).join('');
+        }
+
+        function syncLyricsTime(currentTime) {
+            if (currentLyricsList.length === 0) return;
+
+            let idx = -1;
+            for (let i = 0; i < currentLyricsList.length; i++) {
+                if (currentTime >= currentLyricsList[i].time) {
+                    idx = i;
+                } else {
+                    break;
+                }
+            }
+
+            if (idx !== activeLyricIndex && idx !== -1) {
+                if (activeLyricIndex !== -1) {
+                    const prevEl = document.getElementById(`ktvLine-${activeLyricIndex}`);
+                    if (prevEl) prevEl.className = 'text-xl md:text-3xl font-extrabold text-slate-500 transition-all duration-300 py-2';
+                }
+
+                const currentEl = document.getElementById(`ktvLine-${idx}`);
+                if (currentEl) {
+                    currentEl.className = 'text-2xl md:text-4xl font-black ktv-lyric-line active transition-all duration-300 py-2';
+                    currentEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+
+                activeLyricIndex = idx;
+            }
+        }
+
+        function toggleKtvModal(show) {
+            const modal = document.getElementById('ktvModal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function toggleQueueModal(show) {
+            const modal = document.getElementById('queueModal');
+            if (show) {
+                renderQueueModal();
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function renderQueueModal() {
+            const container = document.getElementById('queueListContainer');
+            if (!container) return;
+
+            if (playbackQueue.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-slate-500 text-sm flex flex-col items-center justify-center h-full space-y-2">
+                        <span class="text-4xl mb-1">🎵</span>
+                        <div class="font-bold text-slate-400">目前播放佇列為空</div>
+                        <div class="text-xs text-slate-600">點選任何歌曲的 ➕ 或 ▶ 加入與收聽</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = playbackQueue.map((music, idx) => {
+                const isCurrentPlaying = idx === playingIndexInQueue;
+                return `
+                    <div onclick="playQueueIndex(${idx})" class="flex items-center justify-between p-3 rounded-xl border transition duration-200 cursor-pointer group ${
+                        isCurrentPlaying 
+                            ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 font-bold shadow-md' 
+                            : 'bg-slate-900/60 hover:bg-slate-800/80 border-slate-800/80 text-slate-300'
+                    }">
+                        <div class="flex items-center space-x-3 truncate">
+                            <span class="text-xs font-mono ${isCurrentPlaying ? 'text-cyan-400 font-bold' : 'text-slate-500'} w-5 text-center">${idx + 1}</span>
+                            <div class="truncate">
+                                <div class="text-sm truncate ${isCurrentPlaying ? 'text-cyan-300 font-bold' : 'text-slate-200'}">${escapeHtml(music.music_name)}</div>
+                                <div class="text-xs text-slate-400 truncate">${escapeHtml(music.artist_name || '歌手')} — ${escapeHtml(music.album_name || '專輯')}</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 shrink-0 ml-2">
+                            ${isCurrentPlaying ? '<span class="text-[10px] bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded-full animate-pulse font-mono">▶ 播放中</span>' : ''}
+                            <button onclick="removeFromQueue(${idx}, event)" class="w-7 h-7 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition flex items-center justify-center text-xs" title="從佇列移除">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setupVisualizer() {
+            visualCanvas = document.getElementById('visualizerCanvas');
+            if (!visualCanvas) return;
+            canvasCtx = visualCanvas.getContext('2d');
+            drawStaticVisualizer();
+        }
+
+        function drawStaticVisualizer() {
+            if (!canvasCtx) return;
+            canvasCtx.clearRect(0, 0, visualCanvas.width, visualCanvas.height);
+            const bars = 8;
+            const barWidth = visualCanvas.width / bars;
+            for (let i = 0; i < bars; i++) {
+                const h = Math.random() * 15 + 5;
+                canvasCtx.fillStyle = '#06b6d4';
+                canvasCtx.fillRect(i * barWidth + 2, visualCanvas.height - h, barWidth - 4, h);
+            }
+        }
+    </script>
+</body>
+</html>

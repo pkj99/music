@@ -388,7 +388,9 @@ function kuwoLyric(music, callback) {
 
     lyricTip('歌詞載入中...');    
     // fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${music.url_id}`)
-    fetch(`https://kw-api.cenguigui.cn/?type=song&level=standard&format=json&id=${music.url_id}`)
+    // fetch(`https://kw-api.cenguigui.cn/?type=song&level=standard&format=json&id=${music.url_id}`)    // lyric
+    fetch(`https://jk.lllt.top/api/kuwo/?type=json&level=standard&lyric=true&rid=${music.url_id}`)   // lrc
+    // fetch(`http://kw.006lp.ccwu.cc:7119/api/song?type=json&level=standard&id=${music.url_id}`)   // lyrics
         .then(response => {
             if (response.ok) return response.json()
             throw new Error('Network response was not ok.')
@@ -396,8 +398,9 @@ function kuwoLyric(music, callback) {
         .then(jsonData => {
             if (jsonData.data) {
                 // console.log(jsonData.data);
-                // var lrctxt = jsonData.data.lrc;
-                var lrctxt = jsonData.data.lyric;
+                var lrctxt = jsonData.data.lrc;
+                // var lrctxt = jsonData.data.lyric;
+                // var lrctxt = jsonData.data.lyrics;
                 // console.log(lrctxt);
                 if (callback) callback(Traditionalized(lrctxt), music.url_id);
                 // if (callback) callback(lrctxt, music.url_id);

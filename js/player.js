@@ -360,7 +360,12 @@ function initAudio() {
 function KuwoUrl(id, callback) {
 	
     // fetch(`https://api.cenguigui.cn/api/kuwo/?type=json&level=standard&rid=${id}`)
-    fetch(`https://kw-api.cenguigui.cn/?type=song&level=standard&format=json&id=${id}`)
+    // fetch(`https://kw-api.cenguigui.cn/?type=song&level=standard&format=json&id=${id}`)
+    // fetch(`https://jk.lllt.top/api/kuwo/?type=json&level=standard&lyric=false&rid=${id}`)
+    // fetch(`http://kw.006lp.ccwu.cc:7119/api/song?type=json&level=standard&id=${id}`)
+    // fetch(`http://music.nxinxz.com/kw.php?type=json&level=standard&id=${id}`)
+    fetch(`https://musicapi.haitangw.net/music/kw.php?type=json&level=standard&id=${id}`)
+    
         .then(response => {
             if (response.ok) return response.json()
             throw new Error('Network response was not ok.')

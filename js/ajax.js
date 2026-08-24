@@ -345,30 +345,60 @@ function localneteaseLyric(music, callback) {
         });
 }
 
-// function kuwoLyricOld(music, callback) {
-//     lyricTip('歌詞載入中...');
-//     fetch(`https://api2.52jan.com/kuwo/lrc/${music.url_id}.lrc`)
-//         .then(response => {
-//             if (response.ok) return response.json()
-//             throw new Error('Network response was not ok.')
-//         })
-//         .then(data => {
-//             if (data) {
-//                 // var lrctxt = data.replace('[','\n[');
-//                 var lyricData = data.split('[');
-//                 var lrctxt = '';
-//                 for (var i = 0; i < lyricData.length; i++){
-//                     lrc = lyricData[i];
-//                     lrctxt += "["+ lrc +"\n";
-//                 }
-//                 callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
-//             } else {
-//                 callback('', music.id);    // 回呼函數
-//             }
-//         });
-// }
 
-async function kuwoLyric(music, callback) {
+function formatSecondsToHMSm(totalSeconds) {
+    // 檢查輸入是否為有效數字，若小於 0 則回傳預設值
+    if (isNaN(totalSeconds) || totalSeconds < 0) {
+        return "00:00:00.000";
+    }
+
+    // 計算時、分、秒與毫秒
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = Math.floor(totalSeconds % 60);
+    // 取小數點後第一位開始計算毫秒，並四捨五入取整數
+    const milliseconds = Math.floor((totalSeconds % 1) * 1000);
+
+    // 輔助函式：確保數字不足指定位數時補零
+    const pad = (num, size = 2) => String(num).padStart(size, '0');
+    const padMs = (num, size = 3) => String(num).padStart(size, '0');
+
+    // return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}.${padMs(milliseconds)}`;
+    return `${pad(minutes)}:${pad(seconds)}.${padMs(milliseconds)}`;
+}
+
+
+function kuwoLyric(music, callback) {
+    lyricTip('歌詞載入中...');
+    fetch(`https://www.kuwo.cn/openapi/v1/www/lyric/getlyric?httpsStatus=1&plat=web_www&from=lrc&musicId=${music.url_id}`)
+        .then(response => {
+            if (response.ok) return response.json()
+            throw new Error('Network response was not ok.')
+        })
+        .then(data => {
+            if (data) {
+                var lyricData = data.data.lrclist;
+                var lrctxt = '';
+                var lrc = '';
+                var time = '';
+                var formatTime ='00:00';
+                for (var i = 0; i < lyricData.length; i++){
+                    lrc = lyricData[i].lineLyric;
+                    time = lyricData[i].time;
+
+                    formatTime = formatSecondsToHMSm(time);
+
+                    lrctxt += `[${formatTime}] ${lrc}\n`;
+                }
+                console.log(Traditionalized(lrctxt));
+                callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
+            } else {
+                callback('', music.url_id);    // 回呼函數
+            }
+        });
+}
+
+async function kuwoLyric1(music, callback) {
 
     lyricTip('歌詞載入中...');    
 
@@ -408,7 +438,6 @@ async function kuwoLyric(music, callback) {
 
             var lrctxt = data.data[apiToTest.lrc];
 
-            // console.log(lrctxt);
             if (lrctxt.length > 50) {
                 console.log(`✅ [API #${apiToTest.name}] 回應成功！耗時 ${latencyMs}ms`);
                 console.log(`API #${apiToTest.id} Data:`, data);
@@ -416,7 +445,8 @@ async function kuwoLyric(music, callback) {
                 // 成功後將下一次的預設起點移至下一個 API（實現輪流）
                 currentIndex = (currentTryingIndex + 1) % apis.length;
                 success = true;
-                if (callback) callback(Traditionalized(lrctxt), music.id);
+                console.log(Traditionalized(lrctxt));
+                if (callback) callback(Traditionalized(lrctxt), music.url_id);
             } else {
                 attempts++;
                 if (attempts < apis.length) {
@@ -439,7 +469,7 @@ async function kuwoLyric(music, callback) {
 
     if (!success) {
         console.log(`🚨 嚴重警告：所有 API 目前皆無法正常回應！`);
-        if (callback) callback('', music.id);
+        if (callback) callback('', music.url_id);
     }
 }
 

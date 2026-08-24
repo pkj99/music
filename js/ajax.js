@@ -368,8 +368,83 @@ function localneteaseLyric(music, callback) {
 //         });
 // }
 
+async function kuwoLyric(music, callback) {
 
-function kuwoLyric(music, callback) {
+    lyricTip('歌詞載入中...');    
+
+    const apis = [
+        { id: 1, name: 'lllt', url: `https://jk.lllt.top/api/kuwo/?type=json&level=standard&lyric=true&rid=${music.url_id}`, status: 'unknown', latency: '-' ,lrc:'lrc'},
+        { id: 2, name: 'ccwu', url: `http://kw.006lp.ccwu.cc:7119/api/song?type=json&level=standard&id=${music.url_id}`, status: 'unknown', latency: '-' ,lrc:'lyrics'},
+        { id: 3, name: 'cenguigui', url: `https://kw-api.cenguigui.cn/?type=song&level=standard&format=json&id=${music.url_id}`, status: 'unknown', latency: '-' ,lrc:'lyric'},
+    ];    
+
+
+    let currentIndex = 0;
+    let isRunning = false;
+    let attempts = 0;
+    let success = false;
+
+    while (attempts < apis.length && !success) {
+        const currentTryingIndex = (currentIndex + attempts) % apis.length;
+        const apiToTest = apis[currentTryingIndex];
+        
+        const startTime = performance.now();
+        try {
+            // 設定 5 秒逾時控制器 (AbortController)
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+            const response = await fetch(apiToTest.url, { signal: controller.signal });
+            clearTimeout(timeoutId);
+
+            const endTime = performance.now();
+            const latencyMs = Math.round(endTime - startTime);
+
+            if (!response.ok) {
+                throw new Error(`HTTP 錯誤狀態碼: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            var lrctxt = data.data[apiToTest.lrc];
+
+            // console.log(lrctxt);
+            if (lrctxt.length > 50) {
+                console.log(`✅ [API #${apiToTest.name}] 回應成功！耗時 ${latencyMs}ms`);
+                console.log(`API #${apiToTest.id} Data:`, data);
+
+                // 成功後將下一次的預設起點移至下一個 API（實現輪流）
+                currentIndex = (currentTryingIndex + 1) % apis.length;
+                success = true;
+                if (callback) callback(Traditionalized(lrctxt), music.id);
+            } else {
+                attempts++;
+                if (attempts < apis.length) {
+                    console.log(`⚠️ 啟動容錯機制，自動切換嘗試下一個備援 API...`);
+                }                
+            }
+
+        } catch (error) {
+            const endTime = performance.now();
+            const latencyMs = Math.round(endTime - startTime);
+
+            console.log(`❌ [API #${apiToTest.name}] 請求失敗: ${error.message} (耗時 ${latencyMs}ms)`);
+           
+            attempts++;
+            if (attempts < apis.length) {
+                console.log(`⚠️ 啟動容錯機制，自動切換嘗試下一個備援 API...`);
+            }
+        }
+    }
+
+    if (!success) {
+        console.log(`🚨 嚴重警告：所有 API 目前皆無法正常回應！`);
+        if (callback) callback('', music.id);
+    }
+}
+
+
+function kuwoLyric0(music, callback) {
 
     // lyricTip('歌詞載入中...');
     // fetch(`http://192.168.195.100:7878/kuwo/lrc/${music.url_id}.lrc`)

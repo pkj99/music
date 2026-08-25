@@ -370,13 +370,16 @@ function formatSecondsToHMSm(totalSeconds) {
 
 function kuwoLyric(music, callback) {
     lyricTip('歌詞載入中...');
-    fetch(`https://www.kuwo.cn/openapi/v1/www/lyric/getlyric?httpsStatus=1&plat=web_www&from=lrc&musicId=${music.url_id}`)
+
+    const apiUrl = `https://www.kuwo.cn/openapi/v1/www/lyric/getlyric?httpsStatus=1&plat=web_www&from=lrc&musicId=${music.url_id}`;
+    fetch("https://corsproxy.io/?url=" + encodeURIComponent(apiUrl))
         .then(response => {
             if (response.ok) return response.json()
             throw new Error('Network response was not ok.')
         })
         .then(data => {
             if (data) {
+                // console.log(data);
                 var lyricData = data.data.lrclist;
                 var lrctxt = '';
                 var lrc = '';

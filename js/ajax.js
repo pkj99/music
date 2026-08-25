@@ -379,7 +379,6 @@ function kuwoLyric(music, callback) {
         })
         .then(data => {
             if (data) {
-                // console.log(data);
                 var lyricData = data.data.lrclist;
                 var lrctxt = '';
                 var lrc = '';
@@ -388,12 +387,10 @@ function kuwoLyric(music, callback) {
                 for (var i = 0; i < lyricData.length; i++){
                     lrc = lyricData[i].lineLyric;
                     time = lyricData[i].time;
-
                     formatTime = formatSecondsToHMSm(time);
-
                     lrctxt += `[${formatTime}] ${lrc}\n`;
                 }
-                console.log(Traditionalized(lrctxt));
+                // console.log(Traditionalized(lrctxt));
                 callback(Traditionalized(lrctxt), music.url_id);    // 回呼函數
             } else {
                 callback('', music.url_id);    // 回呼函數
